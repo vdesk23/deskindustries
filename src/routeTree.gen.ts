@@ -9,38 +9,168 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ProgettiRouteImport } from './routes/progetti'
+import { Route as PacchettiRouteImport } from './routes/pacchetti'
+import { Route as MetodoCocoRouteImport } from './routes/metodo-coco'
+import { Route as ContattiRouteImport } from './routes/contatti'
+import { Route as ChiSiamoRouteImport } from './routes/chi-siamo'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SettoriIndexRouteImport } from './routes/settori.index'
+import { Route as SettoriSlugRouteImport } from './routes/settori.$slug'
 
+const ProgettiRoute = ProgettiRouteImport.update({
+  id: '/progetti',
+  path: '/progetti',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PacchettiRoute = PacchettiRouteImport.update({
+  id: '/pacchetti',
+  path: '/pacchetti',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MetodoCocoRoute = MetodoCocoRouteImport.update({
+  id: '/metodo-coco',
+  path: '/metodo-coco',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContattiRoute = ContattiRouteImport.update({
+  id: '/contatti',
+  path: '/contatti',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChiSiamoRoute = ChiSiamoRouteImport.update({
+  id: '/chi-siamo',
+  path: '/chi-siamo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettoriIndexRoute = SettoriIndexRouteImport.update({
+  id: '/settori/',
+  path: '/settori/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettoriSlugRoute = SettoriSlugRouteImport.update({
+  id: '/settori/$slug',
+  path: '/settori/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/chi-siamo': typeof ChiSiamoRoute
+  '/contatti': typeof ContattiRoute
+  '/metodo-coco': typeof MetodoCocoRoute
+  '/pacchetti': typeof PacchettiRoute
+  '/progetti': typeof ProgettiRoute
+  '/settori/$slug': typeof SettoriSlugRoute
+  '/settori/': typeof SettoriIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/chi-siamo': typeof ChiSiamoRoute
+  '/contatti': typeof ContattiRoute
+  '/metodo-coco': typeof MetodoCocoRoute
+  '/pacchetti': typeof PacchettiRoute
+  '/progetti': typeof ProgettiRoute
+  '/settori/$slug': typeof SettoriSlugRoute
+  '/settori': typeof SettoriIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/chi-siamo': typeof ChiSiamoRoute
+  '/contatti': typeof ContattiRoute
+  '/metodo-coco': typeof MetodoCocoRoute
+  '/pacchetti': typeof PacchettiRoute
+  '/progetti': typeof ProgettiRoute
+  '/settori/$slug': typeof SettoriSlugRoute
+  '/settori/': typeof SettoriIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/chi-siamo'
+    | '/contatti'
+    | '/metodo-coco'
+    | '/pacchetti'
+    | '/progetti'
+    | '/settori/$slug'
+    | '/settori/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/chi-siamo'
+    | '/contatti'
+    | '/metodo-coco'
+    | '/pacchetti'
+    | '/progetti'
+    | '/settori/$slug'
+    | '/settori'
+  id:
+    | '__root__'
+    | '/'
+    | '/chi-siamo'
+    | '/contatti'
+    | '/metodo-coco'
+    | '/pacchetti'
+    | '/progetti'
+    | '/settori/$slug'
+    | '/settori/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ChiSiamoRoute: typeof ChiSiamoRoute
+  ContattiRoute: typeof ContattiRoute
+  MetodoCocoRoute: typeof MetodoCocoRoute
+  PacchettiRoute: typeof PacchettiRoute
+  ProgettiRoute: typeof ProgettiRoute
+  SettoriSlugRoute: typeof SettoriSlugRoute
+  SettoriIndexRoute: typeof SettoriIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/progetti': {
+      id: '/progetti'
+      path: '/progetti'
+      fullPath: '/progetti'
+      preLoaderRoute: typeof ProgettiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pacchetti': {
+      id: '/pacchetti'
+      path: '/pacchetti'
+      fullPath: '/pacchetti'
+      preLoaderRoute: typeof PacchettiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/metodo-coco': {
+      id: '/metodo-coco'
+      path: '/metodo-coco'
+      fullPath: '/metodo-coco'
+      preLoaderRoute: typeof MetodoCocoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contatti': {
+      id: '/contatti'
+      path: '/contatti'
+      fullPath: '/contatti'
+      preLoaderRoute: typeof ContattiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chi-siamo': {
+      id: '/chi-siamo'
+      path: '/chi-siamo'
+      fullPath: '/chi-siamo'
+      preLoaderRoute: typeof ChiSiamoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,12 +178,42 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settori/': {
+      id: '/settori/'
+      path: '/settori'
+      fullPath: '/settori/'
+      preLoaderRoute: typeof SettoriIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settori/$slug': {
+      id: '/settori/$slug'
+      path: '/settori/$slug'
+      fullPath: '/settori/$slug'
+      preLoaderRoute: typeof SettoriSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ChiSiamoRoute: ChiSiamoRoute,
+  ContattiRoute: ContattiRoute,
+  MetodoCocoRoute: MetodoCocoRoute,
+  PacchettiRoute: PacchettiRoute,
+  ProgettiRoute: ProgettiRoute,
+  SettoriSlugRoute: SettoriSlugRoute,
+  SettoriIndexRoute: SettoriIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
