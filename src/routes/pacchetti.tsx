@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Check, Sparkles, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { StripeEmbeddedCheckout } from "@/components/StripeEmbeddedCheckout";
 
@@ -107,6 +108,8 @@ const FAQ = [
 
 function PacchettiPage() {
   const [checkoutPlan, setCheckoutPlan] = useState<{ name: string; priceId: string } | null>(null);
+  const [termsChecked, setTermsChecked] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   return (
     <>
@@ -272,14 +275,63 @@ function PacchettiPage() {
         </div>
       </section>
 
-      <Dialog open={!!checkoutPlan} onOpenChange={(open) => !open && setCheckoutPlan(null)}>
+      <Dialog
+        open={!!checkoutPlan}
+        onOpenChange={(open) => {
+          if (!open) {
+            setCheckoutPlan(null);
+            setAcceptedTerms(false);
+            setTermsChecked(false);
+          }
+        }}
+      >
         <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="font-display text-2xl">
               Sottoscrivi {checkoutPlan?.name}
             </DialogTitle>
           </DialogHeader>
-          {checkoutPlan && (
+
+          {checkoutPlan && !acceptedTerms && (
+            <div className="space-y-6 pt-2">
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Prima di procedere al pagamento, è necessario accettare le condizioni
+                contrattuali e l'informativa sulla privacy.
+              </p>
+
+              <label className="flex items-start gap-3 p-4 rounded-2xl border border-border bg-surface-elevated cursor-pointer hover:border-amber/50 transition-colors">
+                <Checkbox
+                  checked={termsChecked}
+                  onCheckedChange={(v) => setTermsChecked(v === true)}
+                  className="mt-0.5"
+                />
+                <span className="text-sm leading-relaxed">
+                  Ho letto e accetto i{" "}
+                  <Link to="/termini" target="_blank" className="text-amber hover:underline font-medium">
+                    Termini e Condizioni
+                  </Link>{" "}
+                  e la{" "}
+                  <Link to="/privacy" target="_blank" className="text-amber hover:underline font-medium">
+                    Privacy Policy
+                  </Link>
+                  . Acconsento all'inizio immediato del servizio digitale e dichiaro
+                  di rinunciare al diritto di recesso una volta erogato (art. 59 Codice del Consumo).
+                </span>
+              </label>
+
+              <Button
+                variant="amber"
+                size="lg"
+                className="w-full"
+                disabled={!termsChecked}
+                onClick={() => setAcceptedTerms(true)}
+              >
+                Procedi al pagamento <ArrowRight />
+              </Button>
+            </div>
+          )}
+
+          {checkoutPlan && acceptedTerms && (
             <StripeEmbeddedCheckout
               key={checkoutPlan.priceId}
               priceId={checkoutPlan.priceId}
