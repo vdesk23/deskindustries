@@ -4,6 +4,7 @@ import appCss from "../styles.css?url";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
+import { CookieBanner } from "@/components/CookieBanner";
 import { AuthProvider } from "@/hooks/useAuth";
 
 function NotFoundComponent() {
@@ -80,6 +81,7 @@ function RootComponent() {
           <Outlet />
         </main>
         <Footer />
+        <CookieBanner />
       </div>
     </AuthProvider>
   );
