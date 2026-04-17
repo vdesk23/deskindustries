@@ -269,7 +269,7 @@ function SectorPage() {
             </h2>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
-            {sector.problems.map((p, i) => (
+            {sector.problems.map((p: string, i: number) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, x: -20 }}
@@ -299,7 +299,7 @@ function SectorPage() {
             </h2>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
-            {sector.solutions.map((s, i) => (
+            {sector.solutions.map((s: { title: string; desc: string }, i: number) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
@@ -329,7 +329,7 @@ function SectorPage() {
             </h2>
           </div>
           <div className="grid gap-6 sm:grid-cols-3 max-w-4xl mx-auto">
-            {sector.results.map((r) => (
+            {sector.results.map((r: { metric: string; label: string }) => (
               <div
                 key={r.label}
                 className="p-8 rounded-3xl border border-border bg-surface-elevated text-center"
