@@ -4,6 +4,7 @@ import appCss from "../styles.css?url";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
+import { AuthProvider } from "@/hooks/useAuth";
 
 function NotFoundComponent() {
   return (
@@ -71,13 +72,15 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground">
-      <PaymentTestModeBanner />
-      <Header />
-      <main className="flex-1 pt-16">
-        <Outlet />
-      </main>
-      <Footer />
-    </div>
+    <AuthProvider>
+      <div className="min-h-screen flex flex-col bg-background text-foreground">
+        <PaymentTestModeBanner />
+        <Header />
+        <main className="flex-1 pt-16">
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
+    </AuthProvider>
   );
 }
