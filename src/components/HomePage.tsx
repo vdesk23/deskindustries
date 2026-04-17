@@ -7,7 +7,7 @@ import {
   Scissors,
   Pizza,
   Dumbbell,
-  Brush,
+  Syringe,
   Flower2,
   Check,
 } from "lucide-react";
@@ -53,7 +53,7 @@ const METHOD: MethodStep[] = [
 
 const SECTORS = [
   { slug: "barbieri", label: "Barbieri", Icon: Scissors },
-  { slug: "tatuatori", label: "Tatuatori", Icon: Brush },
+  { slug: "tatuatori", label: "Tatuatori", Icon: Syringe },
   { slug: "pizzerie", label: "Pizzerie", Icon: Pizza },
   { slug: "centri-estetici", label: "Centri estetici", Icon: Flower2 },
   { slug: "palestre", label: "Palestre", Icon: Dumbbell },
