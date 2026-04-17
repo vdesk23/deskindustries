@@ -1,7 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowRight, Check, Sparkles, X } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { StripeEmbeddedCheckout } from "@/components/StripeEmbeddedCheckout";
 
 export const Route = createFileRoute("/pacchetti")({
   head: () => ({
@@ -26,6 +29,7 @@ const PLANS = [
   {
     name: "COCO Lite",
     price: "197",
+    priceId: "coco_lite_monthly",
     tagline: "Le fondamenta digitali della tua attività",
     description:
       "Tutto quello che serve per esistere online in modo professionale, senza pensieri tecnici.",
@@ -42,6 +46,7 @@ const PLANS = [
   {
     name: "COCO Pro",
     price: "997",
+    priceId: "coco_pro_monthly",
     tagline: "Crescita accelerata, presenza completa",
     description:
       "Per attività che vogliono accelerare. Aggiungi visibilità social, automazioni e una squadra strategica al tuo fianco.",
@@ -101,6 +106,8 @@ const FAQ = [
 ];
 
 function PacchettiPage() {
+  const [checkoutPlan, setCheckoutPlan] = useState<{ name: string; priceId: string } | null>(null);
+
   return (
     <>
       <section className="relative overflow-hidden border-b border-border">
@@ -159,15 +166,14 @@ function PacchettiPage() {
                     </li>
                   ))}
                 </ul>
-                <Link to="/contatti" className="block mt-10">
-                  <Button
-                    variant={plan.highlighted ? "amber" : "outline"}
-                    className="w-full"
-                    size="lg"
-                  >
-                    Inizia con {plan.name} <ArrowRight />
-                  </Button>
-                </Link>
+                <Button
+                  variant={plan.highlighted ? "amber" : "outline"}
+                  className="w-full mt-10"
+                  size="lg"
+                  onClick={() => setCheckoutPlan({ name: plan.name, priceId: plan.priceId })}
+                >
+                  Inizia con {plan.name} <ArrowRight />
+                </Button>
               </motion.div>
             ))}
           </div>
@@ -265,6 +271,23 @@ function PacchettiPage() {
           </div>
         </div>
       </section>
+
+      <Dialog open={!!checkoutPlan} onOpenChange={(open) => !open && setCheckoutPlan(null)}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="font-display text-2xl">
+              Sottoscrivi {checkoutPlan?.name}
+            </DialogTitle>
+          </DialogHeader>
+          {checkoutPlan && (
+            <StripeEmbeddedCheckout
+              key={checkoutPlan.priceId}
+              priceId={checkoutPlan.priceId}
+              returnUrl={`${typeof window !== "undefined" ? window.location.origin : ""}/checkout/return?session_id={CHECKOUT_SESSION_ID}`}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

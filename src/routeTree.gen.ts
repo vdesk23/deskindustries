@@ -17,6 +17,7 @@ import { Route as ChiSiamoRouteImport } from './routes/chi-siamo'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettoriIndexRouteImport } from './routes/settori.index'
 import { Route as SettoriSlugRouteImport } from './routes/settori.$slug'
+import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
 
 const ProgettiRoute = ProgettiRouteImport.update({
   id: '/progetti',
@@ -58,6 +59,11 @@ const SettoriSlugRoute = SettoriSlugRouteImport.update({
   path: '/settori/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CheckoutReturnRoute = CheckoutReturnRouteImport.update({
+  id: '/checkout/return',
+  path: '/checkout/return',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -66,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/metodo-coco': typeof MetodoCocoRoute
   '/pacchetti': typeof PacchettiRoute
   '/progetti': typeof ProgettiRoute
+  '/checkout/return': typeof CheckoutReturnRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/settori/': typeof SettoriIndexRoute
 }
@@ -76,6 +83,7 @@ export interface FileRoutesByTo {
   '/metodo-coco': typeof MetodoCocoRoute
   '/pacchetti': typeof PacchettiRoute
   '/progetti': typeof ProgettiRoute
+  '/checkout/return': typeof CheckoutReturnRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/settori': typeof SettoriIndexRoute
 }
@@ -87,6 +95,7 @@ export interface FileRoutesById {
   '/metodo-coco': typeof MetodoCocoRoute
   '/pacchetti': typeof PacchettiRoute
   '/progetti': typeof ProgettiRoute
+  '/checkout/return': typeof CheckoutReturnRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/settori/': typeof SettoriIndexRoute
 }
@@ -99,6 +108,7 @@ export interface FileRouteTypes {
     | '/metodo-coco'
     | '/pacchetti'
     | '/progetti'
+    | '/checkout/return'
     | '/settori/$slug'
     | '/settori/'
   fileRoutesByTo: FileRoutesByTo
@@ -109,6 +119,7 @@ export interface FileRouteTypes {
     | '/metodo-coco'
     | '/pacchetti'
     | '/progetti'
+    | '/checkout/return'
     | '/settori/$slug'
     | '/settori'
   id:
@@ -119,6 +130,7 @@ export interface FileRouteTypes {
     | '/metodo-coco'
     | '/pacchetti'
     | '/progetti'
+    | '/checkout/return'
     | '/settori/$slug'
     | '/settori/'
   fileRoutesById: FileRoutesById
@@ -130,6 +142,7 @@ export interface RootRouteChildren {
   MetodoCocoRoute: typeof MetodoCocoRoute
   PacchettiRoute: typeof PacchettiRoute
   ProgettiRoute: typeof ProgettiRoute
+  CheckoutReturnRoute: typeof CheckoutReturnRoute
   SettoriSlugRoute: typeof SettoriSlugRoute
   SettoriIndexRoute: typeof SettoriIndexRoute
 }
@@ -192,6 +205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettoriSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/checkout/return': {
+      id: '/checkout/return'
+      path: '/checkout/return'
+      fullPath: '/checkout/return'
+      preLoaderRoute: typeof CheckoutReturnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -202,6 +222,7 @@ const rootRouteChildren: RootRouteChildren = {
   MetodoCocoRoute: MetodoCocoRoute,
   PacchettiRoute: PacchettiRoute,
   ProgettiRoute: ProgettiRoute,
+  CheckoutReturnRoute: CheckoutReturnRoute,
   SettoriSlugRoute: SettoriSlugRoute,
   SettoriIndexRoute: SettoriIndexRoute,
 }
