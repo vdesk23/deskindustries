@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, User, X } from "lucide-react";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
 
 const NAV = [
   { to: "/metodo-coco", label: "Metodo COCO" },
@@ -15,6 +16,7 @@ const NAV = [
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -48,6 +50,19 @@ export function Header() {
         </nav>
 
         <div className="hidden lg:flex items-center gap-3">
+          {user ? (
+            <Link to="/account">
+              <Button variant="ghost" size="sm">
+                <User className="size-4" /> Area clienti
+              </Button>
+            </Link>
+          ) : (
+            <Link to="/auth" search={{ redirect: "/account", mode: "login" }}>
+              <Button variant="ghost" size="sm">
+                Accedi
+              </Button>
+            </Link>
+          )}
           <Link to="/contatti">
             <Button variant="amber" size="sm">
               Prenota una call
@@ -83,6 +98,23 @@ export function Header() {
                 Prenota una call
               </Button>
             </Link>
+            {user ? (
+              <Link to="/account" onClick={() => setOpen(false)}>
+                <Button variant="outline" className="w-full mt-2">
+                  <User className="size-4" /> Area clienti
+                </Button>
+              </Link>
+            ) : (
+              <Link
+                to="/auth"
+                search={{ redirect: "/account", mode: "login" }}
+                onClick={() => setOpen(false)}
+              >
+                <Button variant="outline" className="w-full mt-2">
+                  Accedi
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       )}
