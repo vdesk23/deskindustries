@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Scissors, Pizza, Dumbbell, Brush, Flower2, ArrowRight } from "lucide-react";
+import { Scissors, Pizza, Dumbbell, Syringe, Flower2, ArrowRight } from "lucide-react";
 
 const SECTORS = [
   { slug: "barbieri", label: "Barbieri", Icon: Scissors, desc: "Riempi la sedia tutti i giorni." },
-  { slug: "tatuatori", label: "Tatuatori", Icon: Brush, desc: "Mostra la tua arte, prenota la tua agenda." },
+  { slug: "tatuatori", label: "Tatuatori", Icon: Syringe, desc: "Mostra la tua arte, prenota la tua agenda." },
   { slug: "pizzerie", label: "Pizzerie", Icon: Pizza, desc: "Più clienti in sala e a domicilio." },
   { slug: "centri-estetici", label: "Centri estetici", Icon: Flower2, desc: "Costruisci una clientela fidelizzata." },
   { slug: "palestre", label: "Palestre", Icon: Dumbbell, desc: "Acquisisci nuovi iscritti ogni mese." },
