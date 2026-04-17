@@ -281,6 +281,7 @@ function PacchettiPage() {
           if (!open) {
             setCheckoutPlan(null);
             setAcceptedTerms(false);
+            setTermsChecked(false);
           }
         }}
       >
