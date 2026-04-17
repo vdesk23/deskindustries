@@ -10,7 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
+import { Route as TerminiRouteImport } from './routes/termini'
 import { Route as ProgettiRouteImport } from './routes/progetti'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PacchettiRouteImport } from './routes/pacchetti'
 import { Route as MetodoCocoRouteImport } from './routes/metodo-coco'
 import { Route as ContattiRouteImport } from './routes/contatti'
@@ -32,9 +34,19 @@ const UnsubscribeRoute = UnsubscribeRouteImport.update({
   path: '/unsubscribe',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TerminiRoute = TerminiRouteImport.update({
+  id: '/termini',
+  path: '/termini',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProgettiRoute = ProgettiRouteImport.update({
   id: '/progetti',
   path: '/progetti',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PacchettiRoute = PacchettiRouteImport.update({
@@ -124,7 +136,9 @@ export interface FileRoutesByFullPath {
   '/contatti': typeof ContattiRoute
   '/metodo-coco': typeof MetodoCocoRoute
   '/pacchetti': typeof PacchettiRoute
+  '/privacy': typeof PrivacyRoute
   '/progetti': typeof ProgettiRoute
+  '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
@@ -143,7 +157,9 @@ export interface FileRoutesByTo {
   '/contatti': typeof ContattiRoute
   '/metodo-coco': typeof MetodoCocoRoute
   '/pacchetti': typeof PacchettiRoute
+  '/privacy': typeof PrivacyRoute
   '/progetti': typeof ProgettiRoute
+  '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
@@ -163,7 +179,9 @@ export interface FileRoutesById {
   '/contatti': typeof ContattiRoute
   '/metodo-coco': typeof MetodoCocoRoute
   '/pacchetti': typeof PacchettiRoute
+  '/privacy': typeof PrivacyRoute
   '/progetti': typeof ProgettiRoute
+  '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
@@ -184,7 +202,9 @@ export interface FileRouteTypes {
     | '/contatti'
     | '/metodo-coco'
     | '/pacchetti'
+    | '/privacy'
     | '/progetti'
+    | '/termini'
     | '/unsubscribe'
     | '/checkout/return'
     | '/email/unsubscribe'
@@ -203,7 +223,9 @@ export interface FileRouteTypes {
     | '/contatti'
     | '/metodo-coco'
     | '/pacchetti'
+    | '/privacy'
     | '/progetti'
+    | '/termini'
     | '/unsubscribe'
     | '/checkout/return'
     | '/email/unsubscribe'
@@ -222,7 +244,9 @@ export interface FileRouteTypes {
     | '/contatti'
     | '/metodo-coco'
     | '/pacchetti'
+    | '/privacy'
     | '/progetti'
+    | '/termini'
     | '/unsubscribe'
     | '/checkout/return'
     | '/email/unsubscribe'
@@ -242,7 +266,9 @@ export interface RootRouteChildren {
   ContattiRoute: typeof ContattiRoute
   MetodoCocoRoute: typeof MetodoCocoRoute
   PacchettiRoute: typeof PacchettiRoute
+  PrivacyRoute: typeof PrivacyRoute
   ProgettiRoute: typeof ProgettiRoute
+  TerminiRoute: typeof TerminiRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
   CheckoutReturnRoute: typeof CheckoutReturnRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
@@ -263,11 +289,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UnsubscribeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/termini': {
+      id: '/termini'
+      path: '/termini'
+      fullPath: '/termini'
+      preLoaderRoute: typeof TerminiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/progetti': {
       id: '/progetti'
       path: '/progetti'
       fullPath: '/progetti'
       preLoaderRoute: typeof ProgettiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pacchetti': {
@@ -386,7 +426,9 @@ const rootRouteChildren: RootRouteChildren = {
   ContattiRoute: ContattiRoute,
   MetodoCocoRoute: MetodoCocoRoute,
   PacchettiRoute: PacchettiRoute,
+  PrivacyRoute: PrivacyRoute,
   ProgettiRoute: ProgettiRoute,
+  TerminiRoute: TerminiRoute,
   UnsubscribeRoute: UnsubscribeRoute,
   CheckoutReturnRoute: CheckoutReturnRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
@@ -400,3 +442,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
