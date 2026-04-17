@@ -81,7 +81,13 @@ export function Footer() {
         </div>
 
         <div className="mt-14 pt-6 border-t border-border flex flex-col md:flex-row justify-between gap-4 text-xs text-muted-foreground">
-          <p>© {new Date().getFullYear()} Desk Industries SRLS. Tutti i diritti riservati.</p>
+          <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+            <p>© {new Date().getFullYear()} Desk Industries SRLS. Tutti i diritti riservati.</p>
+            <div className="flex items-center gap-4">
+              <Link to="/privacy" className="hover:text-foreground">Privacy</Link>
+              <Link to="/termini" className="hover:text-foreground">Termini</Link>
+            </div>
+          </div>
           <p className="font-display tracking-wider">
             COCO — <span className="text-amber">Costruire Online</span> per Cementificare Offline
           </p>
