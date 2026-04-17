@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, Check, Sparkles, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { StripeEmbeddedCheckout } from "@/components/StripeEmbeddedCheckout";
 
@@ -107,6 +108,8 @@ const FAQ = [
 
 function PacchettiPage() {
   const [checkoutPlan, setCheckoutPlan] = useState<{ name: string; priceId: string } | null>(null);
+  const [termsChecked, setTermsChecked] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   return (
     <>
