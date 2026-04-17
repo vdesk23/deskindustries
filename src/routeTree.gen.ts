@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as ProgettiRouteImport } from './routes/progetti'
 import { Route as PacchettiRouteImport } from './routes/pacchetti'
 import { Route as MetodoCocoRouteImport } from './routes/metodo-coco'
@@ -26,6 +27,11 @@ import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lova
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 
+const UnsubscribeRoute = UnsubscribeRouteImport.update({
+  id: '/unsubscribe',
+  path: '/unsubscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProgettiRoute = ProgettiRouteImport.update({
   id: '/progetti',
   path: '/progetti',
@@ -119,6 +125,7 @@ export interface FileRoutesByFullPath {
   '/metodo-coco': typeof MetodoCocoRoute
   '/pacchetti': typeof PacchettiRoute
   '/progetti': typeof ProgettiRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
@@ -137,6 +144,7 @@ export interface FileRoutesByTo {
   '/metodo-coco': typeof MetodoCocoRoute
   '/pacchetti': typeof PacchettiRoute
   '/progetti': typeof ProgettiRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
@@ -156,6 +164,7 @@ export interface FileRoutesById {
   '/metodo-coco': typeof MetodoCocoRoute
   '/pacchetti': typeof PacchettiRoute
   '/progetti': typeof ProgettiRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
@@ -176,6 +185,7 @@ export interface FileRouteTypes {
     | '/metodo-coco'
     | '/pacchetti'
     | '/progetti'
+    | '/unsubscribe'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/settori/$slug'
@@ -194,6 +204,7 @@ export interface FileRouteTypes {
     | '/metodo-coco'
     | '/pacchetti'
     | '/progetti'
+    | '/unsubscribe'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/settori/$slug'
@@ -212,6 +223,7 @@ export interface FileRouteTypes {
     | '/metodo-coco'
     | '/pacchetti'
     | '/progetti'
+    | '/unsubscribe'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/settori/$slug'
@@ -231,6 +243,7 @@ export interface RootRouteChildren {
   MetodoCocoRoute: typeof MetodoCocoRoute
   PacchettiRoute: typeof PacchettiRoute
   ProgettiRoute: typeof ProgettiRoute
+  UnsubscribeRoute: typeof UnsubscribeRoute
   CheckoutReturnRoute: typeof CheckoutReturnRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   SettoriSlugRoute: typeof SettoriSlugRoute
@@ -243,6 +256,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/unsubscribe': {
+      id: '/unsubscribe'
+      path: '/unsubscribe'
+      fullPath: '/unsubscribe'
+      preLoaderRoute: typeof UnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/progetti': {
       id: '/progetti'
       path: '/progetti'
@@ -367,6 +387,7 @@ const rootRouteChildren: RootRouteChildren = {
   MetodoCocoRoute: MetodoCocoRoute,
   PacchettiRoute: PacchettiRoute,
   ProgettiRoute: ProgettiRoute,
+  UnsubscribeRoute: UnsubscribeRoute,
   CheckoutReturnRoute: CheckoutReturnRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   SettoriSlugRoute: SettoriSlugRoute,
@@ -379,3 +400,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
