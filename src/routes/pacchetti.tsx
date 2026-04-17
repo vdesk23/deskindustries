@@ -29,6 +29,7 @@ const PLANS = [
   {
     name: "COCO Lite",
     price: "197",
+    priceId: "coco_lite_monthly",
     tagline: "Le fondamenta digitali della tua attività",
     description:
       "Tutto quello che serve per esistere online in modo professionale, senza pensieri tecnici.",
@@ -45,6 +46,7 @@ const PLANS = [
   {
     name: "COCO Pro",
     price: "997",
+    priceId: "coco_pro_monthly",
     tagline: "Crescita accelerata, presenza completa",
     description:
       "Per attività che vogliono accelerare. Aggiungi visibilità social, automazioni e una squadra strategica al tuo fianco.",
