@@ -41,7 +41,7 @@ export const Route = createRootRoute({
           "Agenzia di marketing per attività locali. Metodo COCO: Costruire Online per Cementificare Offline. Web design, social, automazioni, branding.",
       },
       { name: "author", content: "Desk Industries SRLS" },
-      { property: "og:title", content: "Desk Industries — Marketing per attività locali" },
+      { property: "og:title", content: "Desk Industries — Diamo voce online alle attività locali" },
       {
         property: "og:description",
         content:
@@ -49,6 +49,12 @@ export const Route = createRootRoute({
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Desk Industries — Diamo voce online alle attività locali" },
+      { name: "description", content: "COCO Digital Partner helps local businesses digitize and grow with strategic marketing and automation services." },
+      { property: "og:description", content: "COCO Digital Partner helps local businesses digitize and grow with strategic marketing and automation services." },
+      { name: "twitter:description", content: "COCO Digital Partner helps local businesses digitize and grow with strategic marketing and automation services." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/2ed34514-1176-41fd-a01b-771af3423a2e/id-preview-6b30fa60--665af6d8-e1ef-4a8b-9a76-5fea17beea52.lovable.app-1776449785296.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/2ed34514-1176-41fd-a01b-771af3423a2e/id-preview-6b30fa60--665af6d8-e1ef-4a8b-9a76-5fea17beea52.lovable.app-1776449785296.png" },
     ],
     links: [{ rel: "stylesheet", href: appCss }],
   }),
