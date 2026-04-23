@@ -7,12 +7,12 @@ export const Route = createFileRoute("/termini")({
       {
         name: "description",
         content:
-          "Termini e Condizioni di servizio di Desk Industries SRLS per i pacchetti COCO Lite e COCO Pro.",
+          "Termini e Condizioni di servizio di Desk Industries SRLS per i servizi COCO su misura.",
       },
       { property: "og:title", content: "Termini e Condizioni — Desk Industries" },
       {
         property: "og:description",
-        content: "Le condizioni contrattuali per la sottoscrizione dei pacchetti COCO.",
+        content: "Le condizioni contrattuali per i servizi COCO di Desk Industries.",
       },
     ],
   }),
@@ -47,18 +47,18 @@ function TerminiPage() {
         <section>
           <h2 className="text-2xl font-display font-semibold text-foreground">2. Oggetto del servizio</h2>
           <p className="mt-3">
-            I pacchetti <strong>COCO Lite</strong> (€197/mese) e <strong>COCO Pro</strong> (€997/mese)
-            includono i servizi descritti nella pagina <a href="/pacchetti" className="text-amber hover:underline">Pacchetti</a>.
-            Eventuali servizi straordinari vengono concordati per iscritto e fatturati a parte.
+            I servizi <strong>Coco Web</strong>, <strong>Coco Social</strong>, <strong>CoCoaching</strong> e <strong>CoCoaching Executive</strong>
+            vengono descritti nella pagina <a href="/pacchetti" className="text-amber hover:underline">Servizi COCO</a> e definiti in dettaglio nella proposta personalizzata.
+            Ogni costo, durata e perimetro operativo viene concordato per iscritto prima dell'attivazione.
           </p>
         </section>
 
         <section>
           <h2 className="text-2xl font-display font-semibold text-foreground">3. Pagamento e rinnovo</h2>
           <ul className="list-disc pl-6 mt-3 space-y-2">
-            <li>Il pagamento avviene mensilmente in via anticipata tramite Stripe.</li>
-            <li>L'abbonamento si rinnova automaticamente ogni mese fino a disdetta.</li>
-            <li>I prezzi sono espressi in Euro al netto di IVA, applicata secondo normativa.</li>
+            <li>Il pagamento avviene secondo le modalità indicate nella proposta o nel preventivo approvato.</li>
+            <li>Eventuali rinnovi o attività ricorrenti vengono specificati per iscritto nella proposta.</li>
+            <li>Gli importi sono espressi in Euro al netto di IVA, applicata secondo normativa.</li>
             <li>In caso di mancato pagamento il servizio viene sospeso dopo 7 giorni di tolleranza.</li>
           </ul>
         </section>

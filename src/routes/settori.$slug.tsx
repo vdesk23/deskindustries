@@ -7,6 +7,7 @@ import {
   Dumbbell,
   Syringe,
   Flower2,
+  BriefcaseBusiness,
   Check,
   type LucideIcon,
 } from "lucide-react";
@@ -204,6 +205,42 @@ const SECTORS: Record<string, SectorData> = {
       { metric: "+25%", label: "Vendite PT" },
     ],
   },
+  "studi-professionisti": {
+    label: "Studi di Professionisti",
+    Icon: BriefcaseBusiness,
+    hero: "Digitalizza il tuo studio senza perdere autorevolezza.",
+    tagline:
+      "Avvocati, Commercialisti e Consulenti del Lavoro hanno bisogno di fiducia, chiarezza e processi. Costruiamo una presenza digitale sobria, compliant e orientata alla relazione.",
+    problems: [
+      "Sito istituzionale datato o poco chiaro",
+      "Difficoltà a comunicare competenze specialistiche",
+      "Richieste non qualificate che consumano tempo",
+      "Processi manuali tra email, documenti e appuntamenti",
+    ],
+    solutions: [
+      {
+        title: "Coco Web per studi professionali",
+        desc: "Sito autorevole, architettura dei servizi, SEO/AIO e integrazione con strumenti Google per farti trovare in modo credibile.",
+      },
+      {
+        title: "Compliance e contenuti istituzionali",
+        desc: "Privacy, cookie, termini e contenuti sensibili impostati con attenzione, anche tramite supporto legale specializzato.",
+      },
+      {
+        title: "Coco Social sobrio e professionale",
+        desc: "Piano editoriale per spiegare temi complessi, rafforzare reputazione e mantenere continuità senza toni promozionali eccessivi.",
+      },
+      {
+        title: "Automazioni per richieste e appuntamenti",
+        desc: "Form qualificati, reminder, raccolta documenti e flussi operativi per alleggerire segreteria e professionisti.",
+      },
+    ],
+    results: [
+      { metric: "+qualità", label: "Richieste più pertinenti" },
+      { metric: "-tempo", label: "Gestione manuale" },
+      { metric: "+fiducia", label: "Percezione professionale" },
+    ],
+  },
 };
 
 export const Route = createFileRoute("/settori/$slug")({
@@ -362,7 +399,7 @@ function SectorPage() {
             </Link>
             <Link to="/pacchetti">
               <Button variant="outline" size="xl">
-                Vedi i pacchetti
+                Esplora i servizi COCO
               </Button>
             </Link>
           </div>

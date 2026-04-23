@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Scissors, Pizza, Dumbbell, Syringe, Flower2, ArrowRight } from "lucide-react";
+import { Scissors, Pizza, Dumbbell, Syringe, Flower2, BriefcaseBusiness, ArrowRight } from "lucide-react";
 
 const SECTORS = [
   { slug: "barbieri", label: "Barbieri", Icon: Scissors, desc: "Riempi la sedia tutti i giorni." },
@@ -7,6 +7,7 @@ const SECTORS = [
   { slug: "pizzerie", label: "Pizzerie", Icon: Pizza, desc: "Più clienti in sala e a domicilio." },
   { slug: "centri-estetici", label: "Centri estetici", Icon: Flower2, desc: "Costruisci una clientela fidelizzata." },
   { slug: "palestre", label: "Palestre", Icon: Dumbbell, desc: "Acquisisci nuovi iscritti ogni mese." },
+  { slug: "studi-professionisti", label: "Studi di Professionisti", Icon: BriefcaseBusiness, desc: "Avvocati, Commercialisti e Consulenti del Lavoro" },
 ] as const;
 
 export const Route = createFileRoute("/settori/")({
@@ -16,7 +17,7 @@ export const Route = createFileRoute("/settori/")({
       {
         name: "description",
         content:
-          "Strategie marketing pensate per barbieri, tatuatori, pizzerie, centri estetici e palestre.",
+          "Strategie marketing pensate per barbieri, tatuatori, pizzerie, centri estetici, palestre e studi di professionisti.",
       },
     ],
   }),
