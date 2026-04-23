@@ -13,6 +13,7 @@ import {
   Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { GoogleReviews } from "@/components/GoogleReviews";
 
 interface MethodStep {
   letter: string;
@@ -84,7 +85,7 @@ const SERVICES = [
     name: "CoCoaching Executive",
     tagline: "10 ore con Valerio per digitalizzare l’attività e affiancare il team interno.",
     features: ["10 ore founder", "Strategia digitale", "Affiancamento team", "Roadmap executive"],
-    highlighted: true,
+    highlighted: false,
   },
 ] as const;
 
@@ -285,6 +286,9 @@ export function HomePage() {
         </div>
       </section>
 
+      {/* RECENSIONI GOOGLE */}
+      <GoogleReviews />
+
       {/* PACCHETTI */}
       <section className="relative py-24 lg:py-32 border-t border-border">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
@@ -358,8 +362,10 @@ export function HomePage() {
                 <span className="italic text-amber font-normal">Un ecosistema.</span>
               </h2>
               <p className="mt-6 text-muted-foreground leading-relaxed">
-                Sviluppiamo prodotti e progetti interni per spingere i confini di ciò che il
-                marketing locale può fare. Il primo è Foll.IA.
+                Sviluppiamo internamente tool e strumenti per aiutare le attività locali a
+                crescere online. Il primo è <span className="text-foreground font-medium">Foll.IA</span>:
+                un website builder che genera siti web professionali per le attività locali
+                semplicemente compilando un breve form.
               </p>
               <Link to="/progetti" className="inline-block mt-8">
                 <Button variant="outline" size="lg">
