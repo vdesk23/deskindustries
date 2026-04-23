@@ -184,6 +184,7 @@ function ContattiPage() {
                           <SelectItem value="pizzerie">Pizzerie</SelectItem>
                           <SelectItem value="centri-estetici">Centri estetici</SelectItem>
                           <SelectItem value="palestre">Palestre</SelectItem>
+                          <SelectItem value="studi-professionisti">Studi di Professionisti</SelectItem>
                           <SelectItem value="altro">Altro</SelectItem>
                         </SelectContent>
                       </Select>
@@ -201,8 +202,10 @@ function ContattiPage() {
                           <SelectValue placeholder="Seleziona" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="lite">COCO Lite — €197/mese</SelectItem>
-                          <SelectItem value="pro">COCO Pro — €997/mese</SelectItem>
+                          <SelectItem value="coco-web">Coco Web</SelectItem>
+                          <SelectItem value="coco-social">Coco Social</SelectItem>
+                          <SelectItem value="cocoaching">CoCoaching</SelectItem>
+                          <SelectItem value="cocoaching-executive">CoCoaching Executive</SelectItem>
                           <SelectItem value="custom">Soluzione su misura</SelectItem>
                           <SelectItem value="info">Solo informazioni</SelectItem>
                         </SelectContent>

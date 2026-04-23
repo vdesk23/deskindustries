@@ -174,12 +174,12 @@ function MetodoPage() {
             per la tua attività?
           </h2>
           <p className="mt-6 text-lg text-muted-foreground">
-            Scopri quale pacchetto fa per te o prenota una call gratuita.
+            Scopri quale area COCO fa per te o prenota una call gratuita.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-3">
             <Link to="/pacchetti">
               <Button variant="hero" size="xl">
-                Vedi i pacchetti <ArrowRight />
+                Esplora i servizi COCO <ArrowRight />
               </Button>
             </Link>
             <Link to="/contatti">

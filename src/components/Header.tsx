@@ -7,7 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 const NAV = [
   { to: "/metodo-coco", label: "Metodo COCO" },
-  { to: "/pacchetti", label: "Pacchetti" },
+  { to: "/pacchetti", label: "Servizi COCO" },
   { to: "/settori", label: "Settori" },
   { to: "/progetti", label: "Progetti" },
   { to: "/chi-siamo", label: "Chi siamo" },

@@ -48,7 +48,7 @@ export function Footer() {
             </h4>
             <ul className="space-y-3 text-sm">
               <li><Link to="/metodo-coco" className="text-muted-foreground hover:text-foreground">Metodo COCO</Link></li>
-              <li><Link to="/pacchetti" className="text-muted-foreground hover:text-foreground">Pacchetti</Link></li>
+              <li><Link to="/pacchetti" className="text-muted-foreground hover:text-foreground">Servizi COCO</Link></li>
               <li><Link to="/settori" className="text-muted-foreground hover:text-foreground">Settori</Link></li>
             </ul>
           </div>

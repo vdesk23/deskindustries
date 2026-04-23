@@ -59,7 +59,7 @@ function PrivacyPage() {
         <section>
           <h2 className="text-2xl font-display font-semibold text-foreground">3. Finalità del trattamento</h2>
           <ul className="list-disc pl-6 mt-3 space-y-2">
-            <li>Erogazione dei servizi sottoscritti (pacchetti COCO Lite e Pro).</li>
+            <li>Erogazione dei servizi COCO richiesti o sottoscritti.</li>
             <li>Gestione dei pagamenti e fatturazione elettronica.</li>
             <li>Comunicazioni transazionali (conferme, rinnovi, cambi di stato).</li>
             <li>Adempimenti fiscali e contabili previsti dalla legge italiana.</li>

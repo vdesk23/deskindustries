@@ -145,7 +145,7 @@ function AccountPage() {
                   </p>
                   <Link to="/pacchetti">
                     <Button variant="amber">
-                      Scopri i pacchetti <ArrowRight />
+                      Esplora i servizi COCO <ArrowRight />
                     </Button>
                   </Link>
                 </div>
@@ -158,7 +158,7 @@ function AccountPage() {
                     >
                       <div>
                         <p className="font-display font-semibold text-lg">
-                          {s.price_id?.includes("pro") ? "COCO Pro" : s.price_id?.includes("lite") ? "COCO Lite" : s.price_id}
+                          {s.price_id || "Servizio COCO"}
                         </p>
                         <p className="text-sm text-muted-foreground mt-1">
                           Stato:{" "}
