@@ -9,6 +9,7 @@ import {
   Dumbbell,
   Syringe,
   Flower2,
+  BriefcaseBusiness,
   Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -57,34 +58,32 @@ const SECTORS = [
   { slug: "pizzerie", label: "Pizzerie", Icon: Pizza },
   { slug: "centri-estetici", label: "Centri estetici", Icon: Flower2 },
   { slug: "palestre", label: "Palestre", Icon: Dumbbell },
+  { slug: "studi-professionisti", label: "Studi di Professionisti", Icon: BriefcaseBusiness },
 ] as const;
 
-const PLANS = [
+const SERVICES = [
   {
-    name: "COCO Lite",
-    price: "197",
-    tagline: "Le fondamenta digitali della tua attività",
-    features: [
-      "Gestione sito web",
-      "Suite Google: Workspace, Analytics, Search Console, Tag Manager",
-      "Gestione Google My Business",
-      "Tutti i costi di gestione inclusi",
-      "Supporto e assistenza sulle pagine generate",
-    ],
+    name: "Coco Web",
+    tagline: "Siti, SEO/AIO, compliance, automazioni, ecommerce e suite Google.",
+    features: ["Creazione sito", "SEO/AIO", "Compliance legale", "GA4, GSC, GTM e GMB"],
+    highlighted: true,
+  },
+  {
+    name: "Coco Social",
+    tagline: "Pubblicazioni, contenuti, format, branding, registrazioni e ricerca di mercato.",
+    features: ["Pubblicazioni", "Creazione contenuti", "Format e branding", "Ricerca di mercato"],
     highlighted: false,
   },
   {
-    name: "COCO Pro",
-    price: "997",
-    tagline: "Crescita accelerata, presenza completa",
-    features: [
-      "Tutto ciò che è incluso in COCO Lite",
-      "Gestione di una piattaforma social",
-      "4 pubblicazioni a settimana",
-      "Report settimanale + call strategica mensile",
-      "Gruppo di supporto su Google Chat",
-      "Email marketing & automation",
-    ],
+    name: "CoCoaching",
+    tagline: "5 ore di coaching: 4 con il team Desk Inc e 1 strategica con Valerio.",
+    features: ["5 ore totali", "Team Desk Inc", "Sessione founder", "Piano d’azione"],
+    highlighted: false,
+  },
+  {
+    name: "CoCoaching Executive",
+    tagline: "10 ore con Valerio per digitalizzare l’attività e affiancare il team interno.",
+    features: ["10 ore founder", "Strategia digitale", "Affiancamento team", "Roadmap executive"],
     highlighted: true,
   },
 ] as const;
@@ -149,7 +148,7 @@ export function HomePage() {
           >
             <Link to="/pacchetti">
               <Button variant="hero" size="xl">
-                Scopri i pacchetti <ArrowRight />
+                Esplora i servizi COCO <ArrowRight />
               </Button>
             </Link>
             <Link to="/metodo-coco">
@@ -258,7 +257,7 @@ export function HomePage() {
             </h2>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
             {SECTORS.map(({ slug, label, Icon }, i) => (
               <motion.div
                 key={slug}
@@ -291,19 +290,19 @@ export function HomePage() {
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <p className="text-xs font-display tracking-[0.3em] text-amber uppercase mb-4">
-              Pacchetti
+              Servizi COCO
             </p>
             <h2 className="text-4xl lg:text-5xl font-display font-medium tracking-tight text-balance">
-              Pricing trasparente.{" "}
-              <span className="italic text-amber font-normal">Nessuna sorpresa.</span>
+              Quattro aree modulari.{" "}
+              <span className="italic text-amber font-normal">Una proposta su misura.</span>
             </h2>
             <p className="mt-5 text-muted-foreground">
-              Due piani pensati per accompagnarti nella crescita, dal primo passo alla scalata.
+              Coco Web, Coco Social, CoCoaching e CoCoaching Executive si declinano sul tuo settore e sulla struttura della tua azienda.
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
-            {PLANS.map((plan) => (
+          <div className="grid gap-6 md:grid-cols-2 max-w-6xl mx-auto">
+            {SERVICES.map((plan) => (
               <motion.div
                 key={plan.name}
                 initial={{ opacity: 0, y: 24 }}
@@ -323,10 +322,6 @@ export function HomePage() {
                 )}
                 <h3 className="text-2xl font-display font-semibold">{plan.name}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">{plan.tagline}</p>
-                <div className="mt-6 flex items-baseline gap-1">
-                  <span className="text-5xl font-display font-medium">€{plan.price}</span>
-                  <span className="text-muted-foreground">/mese</span>
-                </div>
                 <ul className="mt-8 space-y-3">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-start gap-3 text-sm">
@@ -335,13 +330,13 @@ export function HomePage() {
                     </li>
                   ))}
                 </ul>
-                <Link to="/pacchetti" className="block mt-10">
+                <Link to="/contatti" className="block mt-10">
                   <Button
                     variant={plan.highlighted ? "amber" : "outline"}
                     className="w-full"
                     size="lg"
                   >
-                    Scopri di più <ArrowRight />
+                    Richiedi informazioni <ArrowRight />
                   </Button>
                 </Link>
               </motion.div>
@@ -424,7 +419,7 @@ export function HomePage() {
             </Link>
             <Link to="/pacchetti">
               <Button variant="outline" size="xl">
-                Vedi i pacchetti
+                Esplora i servizi COCO
               </Button>
             </Link>
           </div>
