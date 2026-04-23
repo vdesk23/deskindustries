@@ -56,8 +56,9 @@ function ProgettiPage() {
             <span className="italic text-amber font-normal">Un ecosistema.</span>
           </h1>
           <p className="mt-8 max-w-2xl text-lg lg:text-xl text-muted-foreground leading-relaxed">
-            Costruiamo prodotti e strumenti per spingere i confini di ciò che il marketing
-            locale può fare. Ogni progetto nasce da un bisogno concreto dei nostri clienti.
+            Sviluppiamo internamente tool e strumenti pensati per aiutare le attività locali a
+            crescere online. Ogni progetto nasce da un bisogno concreto dei nostri clienti e
+            diventa un prodotto che chiunque può utilizzare.
           </p>
         </div>
       </section>
@@ -82,8 +83,9 @@ function ProgettiPage() {
                   Foll.<span className="text-amber">IA</span>
                 </div>
                 <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-                  L'intelligenza artificiale che aiuta creator e attività locali a generare
-                  contenuti, automatizzare la presenza online e crescere senza perdere autenticità.
+                  Il website builder AI per le attività locali: genera un sito web professionale
+                  e completo semplicemente compilando un breve form. Niente codice, niente
+                  template anonimi, solo un sito che parla davvero della tua attività.
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
                   <a href="https://follia.ai" target="_blank" rel="noopener noreferrer">

@@ -81,7 +81,7 @@ const SERVICES = [
       "Roadmap esecutiva per web, social e automazioni",
       "Supporto decisionale per proprietà e management",
     ],
-    highlighted: true,
+    highlighted: false,
   },
 ] as const;
 
