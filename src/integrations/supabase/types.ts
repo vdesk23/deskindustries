@@ -101,6 +101,84 @@ export type Database = {
         }
         Relationships: []
       }
+      lead_requests: {
+        Row: {
+          business: string | null
+          coaching_focus: string | null
+          company_resources: string | null
+          contact_preference: string
+          created_at: string
+          email: string
+          expected_goals: string[]
+          has_social: string
+          has_website: string
+          id: string
+          looking_for: string
+          message: string | null
+          name: string
+          phone: string | null
+          sector: string
+          selected_services: string[]
+          social_links: string | null
+          social_needs: string[]
+          status: string
+          updated_at: string
+          user_id: string | null
+          web_needs: string[]
+          website_url: string | null
+        }
+        Insert: {
+          business?: string | null
+          coaching_focus?: string | null
+          company_resources?: string | null
+          contact_preference?: string
+          created_at?: string
+          email: string
+          expected_goals?: string[]
+          has_social?: string
+          has_website?: string
+          id?: string
+          looking_for: string
+          message?: string | null
+          name: string
+          phone?: string | null
+          sector: string
+          selected_services?: string[]
+          social_links?: string | null
+          social_needs?: string[]
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+          web_needs?: string[]
+          website_url?: string | null
+        }
+        Update: {
+          business?: string | null
+          coaching_focus?: string | null
+          company_resources?: string | null
+          contact_preference?: string
+          created_at?: string
+          email?: string
+          expected_goals?: string[]
+          has_social?: string
+          has_website?: string
+          id?: string
+          looking_for?: string
+          message?: string | null
+          name?: string
+          phone?: string | null
+          sector?: string
+          selected_services?: string[]
+          social_links?: string | null
+          social_needs?: string[]
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+          web_needs?: string[]
+          website_url?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
