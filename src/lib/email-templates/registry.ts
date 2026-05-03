@@ -20,9 +20,13 @@ export interface TemplateEntry {
 import { template as welcomePostPurchase } from './welcome-post-purchase'
 import { template as leadRequestAdmin } from './lead-request-admin'
 import { template as leadRequestConfirmation } from './lead-request-confirmation'
+import { template as contentPlanAdmin } from './content-plan-admin'
+import { template as contentPlanConfirmation } from './content-plan-confirmation'
 
 export const TEMPLATES: Record<string, TemplateEntry> = {
   'welcome-post-purchase': welcomePostPurchase,
   'lead-request-admin': leadRequestAdmin,
   'lead-request-confirmation': leadRequestConfirmation,
+  'content-plan-admin': contentPlanAdmin,
+  'content-plan-confirmation': contentPlanConfirmation,
 }
