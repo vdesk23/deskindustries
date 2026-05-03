@@ -69,6 +69,22 @@ function AuthPage() {
     }
   };
 
+  const handleGoogle = async () => {
+    setError("");
+    setInfo("");
+    setLoading(true);
+    try {
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+      });
+      if (result.error) throw new Error(result.error.message ?? "Errore Google sign-in");
+      if (result.redirected) return;
+    } catch (err) {
+      setError((err as Error).message);
+      setLoading(false);
+    }
+  };
+
   return (
     <section className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-5 py-16 lg:py-24">
       <motion.div
