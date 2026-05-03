@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, ExternalLink, LogOut, Sparkles } from "lucide-react";
+import { ArrowRight, ExternalLink, LogOut, Sparkles, FileText } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { getStripeEnvironment } from "@/lib/stripe";

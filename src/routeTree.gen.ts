@@ -21,6 +21,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettoriIndexRouteImport } from './routes/settori.index'
+import { Route as ToolsPianoContenutiRouteImport } from './routes/tools.piano-contenuti'
 import { Route as SettoriSlugRouteImport } from './routes/settori.$slug'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
@@ -90,6 +91,11 @@ const IndexRoute = IndexRouteImport.update({
 const SettoriIndexRoute = SettoriIndexRouteImport.update({
   id: '/settori/',
   path: '/settori/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsPianoContenutiRoute = ToolsPianoContenutiRouteImport.update({
+  id: '/tools/piano-contenuti',
+  path: '/tools/piano-contenuti',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettoriSlugRoute = SettoriSlugRouteImport.update({
@@ -162,6 +168,7 @@ export interface FileRoutesByFullPath {
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
+  '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/settori/': typeof SettoriIndexRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/google-reviews': typeof ApiPublicGoogleReviewsRoute
@@ -186,6 +193,7 @@ export interface FileRoutesByTo {
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
+  '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/settori': typeof SettoriIndexRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/google-reviews': typeof ApiPublicGoogleReviewsRoute
@@ -211,6 +219,7 @@ export interface FileRoutesById {
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
+  '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/settori/': typeof SettoriIndexRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/google-reviews': typeof ApiPublicGoogleReviewsRoute
@@ -237,6 +246,7 @@ export interface FileRouteTypes {
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/settori/$slug'
+    | '/tools/piano-contenuti'
     | '/settori/'
     | '/api/public/content-plan-submit'
     | '/api/public/google-reviews'
@@ -261,6 +271,7 @@ export interface FileRouteTypes {
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/settori/$slug'
+    | '/tools/piano-contenuti'
     | '/settori'
     | '/api/public/content-plan-submit'
     | '/api/public/google-reviews'
@@ -285,6 +296,7 @@ export interface FileRouteTypes {
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/settori/$slug'
+    | '/tools/piano-contenuti'
     | '/settori/'
     | '/api/public/content-plan-submit'
     | '/api/public/google-reviews'
@@ -310,6 +322,7 @@ export interface RootRouteChildren {
   CheckoutReturnRoute: typeof CheckoutReturnRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   SettoriSlugRoute: typeof SettoriSlugRoute
+  ToolsPianoContenutiRoute: typeof ToolsPianoContenutiRoute
   SettoriIndexRoute: typeof SettoriIndexRoute
   ApiPublicContentPlanSubmitRoute: typeof ApiPublicContentPlanSubmitRoute
   ApiPublicGoogleReviewsRoute: typeof ApiPublicGoogleReviewsRoute
@@ -406,6 +419,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettoriIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tools/piano-contenuti': {
+      id: '/tools/piano-contenuti'
+      path: '/tools/piano-contenuti'
+      fullPath: '/tools/piano-contenuti'
+      preLoaderRoute: typeof ToolsPianoContenutiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settori/$slug': {
       id: '/settori/$slug'
       path: '/settori/$slug'
@@ -494,6 +514,7 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutReturnRoute: CheckoutReturnRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   SettoriSlugRoute: SettoriSlugRoute,
+  ToolsPianoContenutiRoute: ToolsPianoContenutiRoute,
   SettoriIndexRoute: SettoriIndexRoute,
   ApiPublicContentPlanSubmitRoute: ApiPublicContentPlanSubmitRoute,
   ApiPublicGoogleReviewsRoute: ApiPublicGoogleReviewsRoute,
