@@ -3,6 +3,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
