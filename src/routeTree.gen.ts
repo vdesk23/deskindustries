@@ -27,6 +27,7 @@ import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicLeadSubmitRouteImport } from './routes/api/public/lead-submit'
 import { Route as ApiPublicGoogleReviewsRouteImport } from './routes/api/public/google-reviews'
+import { Route as ApiPublicContentPlanSubmitRouteImport } from './routes/api/public/content-plan-submit'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -121,6 +122,12 @@ const ApiPublicGoogleReviewsRoute = ApiPublicGoogleReviewsRouteImport.update({
   path: '/api/public/google-reviews',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicContentPlanSubmitRoute =
+  ApiPublicContentPlanSubmitRouteImport.update({
+    id: '/api/public/content-plan-submit',
+    path: '/api/public/content-plan-submit',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const LovableEmailTransactionalSendRoute =
   LovableEmailTransactionalSendRouteImport.update({
     id: '/lovable/email/transactional/send',
@@ -156,6 +163,7 @@ export interface FileRoutesByFullPath {
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/settori/': typeof SettoriIndexRoute
+  '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/google-reviews': typeof ApiPublicGoogleReviewsRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -179,6 +187,7 @@ export interface FileRoutesByTo {
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/settori': typeof SettoriIndexRoute
+  '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/google-reviews': typeof ApiPublicGoogleReviewsRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -203,6 +212,7 @@ export interface FileRoutesById {
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/settori/': typeof SettoriIndexRoute
+  '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/google-reviews': typeof ApiPublicGoogleReviewsRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -228,6 +238,7 @@ export interface FileRouteTypes {
     | '/email/unsubscribe'
     | '/settori/$slug'
     | '/settori/'
+    | '/api/public/content-plan-submit'
     | '/api/public/google-reviews'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
@@ -251,6 +262,7 @@ export interface FileRouteTypes {
     | '/email/unsubscribe'
     | '/settori/$slug'
     | '/settori'
+    | '/api/public/content-plan-submit'
     | '/api/public/google-reviews'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
@@ -274,6 +286,7 @@ export interface FileRouteTypes {
     | '/email/unsubscribe'
     | '/settori/$slug'
     | '/settori/'
+    | '/api/public/content-plan-submit'
     | '/api/public/google-reviews'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
@@ -298,6 +311,7 @@ export interface RootRouteChildren {
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   SettoriSlugRoute: typeof SettoriSlugRoute
   SettoriIndexRoute: typeof SettoriIndexRoute
+  ApiPublicContentPlanSubmitRoute: typeof ApiPublicContentPlanSubmitRoute
   ApiPublicGoogleReviewsRoute: typeof ApiPublicGoogleReviewsRoute
   ApiPublicLeadSubmitRoute: typeof ApiPublicLeadSubmitRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
@@ -434,6 +448,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicGoogleReviewsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/content-plan-submit': {
+      id: '/api/public/content-plan-submit'
+      path: '/api/public/content-plan-submit'
+      fullPath: '/api/public/content-plan-submit'
+      preLoaderRoute: typeof ApiPublicContentPlanSubmitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lovable/email/transactional/send': {
       id: '/lovable/email/transactional/send'
       path: '/lovable/email/transactional/send'
@@ -474,6 +495,7 @@ const rootRouteChildren: RootRouteChildren = {
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   SettoriSlugRoute: SettoriSlugRoute,
   SettoriIndexRoute: SettoriIndexRoute,
+  ApiPublicContentPlanSubmitRoute: ApiPublicContentPlanSubmitRoute,
   ApiPublicGoogleReviewsRoute: ApiPublicGoogleReviewsRoute,
   ApiPublicLeadSubmitRoute: ApiPublicLeadSubmitRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
