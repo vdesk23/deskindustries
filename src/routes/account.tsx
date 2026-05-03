@@ -193,7 +193,44 @@ function AccountPage() {
               )}
             </motion.div>
 
-            {purchases.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.05 }}
+              className="rounded-3xl border border-border bg-surface-elevated p-8 mb-6"
+            >
+              <div className="flex items-center gap-2 mb-1">
+                <FileText className="size-5 text-amber" />
+                <h2 className="text-xl font-display font-semibold">Tool gratuiti</h2>
+              </div>
+              <p className="text-sm text-muted-foreground mb-6">
+                Strumenti sviluppati internamente da Desk Industries per accelerare
+                il tuo lavoro.
+              </p>
+              <Link
+                to="/tools/piano-contenuti"
+                className="group block rounded-2xl border border-border bg-background/40 p-5 hover:border-amber/50 transition-all"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <p className="text-[10px] font-display tracking-[0.3em] text-amber uppercase mb-2">
+                      Tool · Marketing
+                    </p>
+                    <h3 className="font-display font-semibold text-lg mb-1">
+                      Piano Contenuti
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      Modulo guidato per costruire posizionamento, post pinnati,
+                      planner settimanale e briefing dei Reel. All'invio arriva al
+                      team marketing &amp; content.
+                    </p>
+                  </div>
+                  <ArrowRight className="size-5 text-muted-foreground group-hover:text-amber group-hover:translate-x-0.5 transition" />
+                </div>
+              </Link>
+            </motion.div>
+
+
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
