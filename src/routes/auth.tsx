@@ -3,6 +3,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -64,6 +65,22 @@ function AuthPage() {
     } catch (err) {
       setError((err as Error).message);
     } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogle = async () => {
+    setError("");
+    setInfo("");
+    setLoading(true);
+    try {
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+      });
+      if (result.error) throw new Error(result.error.message ?? "Errore Google sign-in");
+      if (result.redirected) return;
+    } catch (err) {
+      setError((err as Error).message);
       setLoading(false);
     }
   };
@@ -140,9 +157,30 @@ function AuthPage() {
             </Button>
           </form>
 
+          <div className="mt-6 flex items-center gap-3">
+            <div className="h-px flex-1 bg-border" />
+            <span className="text-xs uppercase tracking-widest text-muted-foreground">oppure</span>
+            <div className="h-px flex-1 bg-border" />
+          </div>
+
+          <Button
+            type="button"
+            variant="outline"
+            size="lg"
+            className="w-full mt-4"
+            onClick={handleGoogle}
+            disabled={loading}
+          >
+            <svg className="size-4" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="#EA4335" d="M12 10.2v3.9h5.5c-.24 1.4-1.66 4.1-5.5 4.1-3.31 0-6-2.74-6-6.1s2.69-6.1 6-6.1c1.88 0 3.14.8 3.86 1.49l2.63-2.53C16.86 3.36 14.65 2.4 12 2.4 6.92 2.4 2.8 6.52 2.8 11.6S6.92 20.8 12 20.8c6.93 0 9.2-4.86 9.2-7.41 0-.5-.05-.88-.12-1.19H12z"/>
+            </svg>
+            Continua con Google
+          </Button>
+
           <div className="mt-6 text-center text-sm text-muted-foreground">
             {mode === "login" ? (
               <>
+
                 Nuovo qui?{" "}
                 <button
                   type="button"
