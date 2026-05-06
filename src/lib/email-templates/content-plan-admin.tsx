@@ -319,3 +319,31 @@ const briefTitle = {
 };
 const hr = { borderColor: "#e5e5e5", margin: "20px 0" };
 const footer = { fontSize: "12px", color: "#737373", margin: "24px 0 0" };
+const pdfBox = {
+  background: "#fffbeb",
+  border: "1px solid #fcd34d",
+  borderRadius: "10px",
+  padding: "18px 20px",
+  margin: "16px 0 8px",
+  textAlign: "center" as const,
+};
+const pdfLabel = {
+  fontSize: "11px",
+  color: "#92400e",
+  textTransform: "uppercase" as const,
+  letterSpacing: "0.12em",
+  fontWeight: "700" as const,
+  margin: "0 0 4px",
+};
+const pdfFile = { fontSize: "13px", color: "#0a0a0a", margin: "0 0 12px", fontWeight: "600" as const };
+const pdfButton = {
+  display: "inline-block",
+  background: "#d97706",
+  color: "#ffffff",
+  textDecoration: "none",
+  padding: "10px 22px",
+  borderRadius: "8px",
+  fontSize: "14px",
+  fontWeight: "600" as const,
+};
+const pdfHint = { fontSize: "11px", color: "#737373", margin: "10px 0 0" };
