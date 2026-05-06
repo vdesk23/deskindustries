@@ -221,16 +221,18 @@ function PianoContenutiPage() {
       briefings: d.briefings.filter((_, idx) => idx !== i),
     }));
 
-  const downloadDraft = () => {
-    const brand = (data.brandNome || data.clienteNome || "bozza").replace(/[^\w-]+/g, "_");
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `piano-contenuti_${brand}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-    toast.success("Bozza scaricata");
+  const downloadDraft = async () => {
+    try {
+      const { buildContentPlanPdf, contentPlanPdfFilename } = await import(
+        "@/lib/content-plan-pdf"
+      );
+      const pdf = buildContentPlanPdf(data);
+      pdf.save(contentPlanPdfFilename(data));
+      toast.success("PDF scaricato");
+    } catch (err) {
+      toast.error("Errore generazione PDF");
+      console.error(err);
+    }
   };
 
   const importDraft = (e: ChangeEvent<HTMLInputElement>) => {
@@ -276,13 +278,21 @@ function PianoContenutiPage() {
       const token = sessionRes.session?.access_token;
       if (!token) throw new Error("Sessione scaduta — accedi di nuovo");
 
+      // Genera PDF brandizzato
+      const { buildContentPlanPdf, contentPlanPdfFilename } = await import(
+        "@/lib/content-plan-pdf"
+      );
+      const pdf = buildContentPlanPdf(data);
+      const pdfBase64 = pdf.output("datauristring").split(",")[1];
+      const pdfFilename = contentPlanPdfFilename(data);
+
       const res = await fetch("/api/public/content-plan-submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, pdfBase64, pdfFilename }),
       });
       const body = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(body?.error || `Errore ${res.status}`);
@@ -760,7 +770,7 @@ function PianoContenutiPage() {
             <FileUp className="size-4" /> Importa
           </Button>
           <Button variant="outline" size="sm" onClick={downloadDraft}>
-            <Download className="size-4" /> Scarica bozza
+            <Download className="size-4" /> Scarica PDF
           </Button>
           <Button
             variant="amber"
