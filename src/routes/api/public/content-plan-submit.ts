@@ -208,13 +208,57 @@ export const Route = createFileRoute("/api/public/content-plan-submit")({
         const data = parsed.data;
         const submissionId = crypto.randomUUID();
 
-        const adminTemplateData = { ...data };
+        // Upload PDF to private storage and create signed URL
+        let pdfUrl: string | undefined;
+        let pdfFilename: string | undefined;
+        if (data.pdfBase64) {
+          try {
+            const binary = Uint8Array.from(atob(data.pdfBase64), (c) =>
+              c.charCodeAt(0),
+            );
+            pdfFilename =
+              data.pdfFilename ||
+              `piano-contenuti_${submissionId}.pdf`;
+            const safeName = pdfFilename.replace(/[^\w.\-]+/g, "_");
+            const storagePath = `${new Date().toISOString().slice(0, 10)}/${submissionId}_${safeName}`;
+            const { error: upErr } = await supabase.storage
+              .from("content-plans")
+              .upload(storagePath, binary, {
+                contentType: "application/pdf",
+                upsert: false,
+              });
+            if (upErr) {
+              console.error("PDF upload failed", upErr);
+            } else {
+              const { data: signed, error: signErr } = await supabase.storage
+                .from("content-plans")
+                .createSignedUrl(storagePath, PDF_EXPIRES_SECONDS, {
+                  download: safeName,
+                });
+              if (signErr) {
+                console.error("Signed URL failed", signErr);
+              } else {
+                pdfUrl = signed?.signedUrl;
+              }
+            }
+          } catch (err) {
+            console.error("PDF processing failed", err);
+          }
+        }
+
+        const { pdfBase64: _omit, ...planData } = data;
+        const adminTemplateData = {
+          ...planData,
+          pdfUrl,
+          pdfFilename,
+          pdfExpiresInDays: 30,
+        };
         const confirmationData = {
           clienteNome: data.clienteNome || user.user_metadata?.full_name || undefined,
           brandNome: data.brandNome || undefined,
         };
 
-        // Send to 3 admin recipients
+        // Send to admin recipients
         const adminResults = await Promise.all(
           RECIPIENTS.map((to) =>
             enqueueTemplate(
