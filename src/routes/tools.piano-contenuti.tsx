@@ -278,13 +278,21 @@ function PianoContenutiPage() {
       const token = sessionRes.session?.access_token;
       if (!token) throw new Error("Sessione scaduta — accedi di nuovo");
 
+      // Genera PDF brandizzato
+      const { buildContentPlanPdf, contentPlanPdfFilename } = await import(
+        "@/lib/content-plan-pdf"
+      );
+      const pdf = buildContentPlanPdf(data);
+      const pdfBase64 = pdf.output("datauristring").split(",")[1];
+      const pdfFilename = contentPlanPdfFilename(data);
+
       const res = await fetch("/api/public/content-plan-submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...data, pdfBase64, pdfFilename }),
       });
       const body = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(body?.error || `Errore ${res.status}`);
