@@ -221,16 +221,18 @@ function PianoContenutiPage() {
       briefings: d.briefings.filter((_, idx) => idx !== i),
     }));
 
-  const downloadDraft = () => {
-    const brand = (data.brandNome || data.clienteNome || "bozza").replace(/[^\w-]+/g, "_");
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `piano-contenuti_${brand}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-    toast.success("Bozza scaricata");
+  const downloadDraft = async () => {
+    try {
+      const { buildContentPlanPdf, contentPlanPdfFilename } = await import(
+        "@/lib/content-plan-pdf"
+      );
+      const pdf = buildContentPlanPdf(data);
+      pdf.save(contentPlanPdfFilename(data));
+      toast.success("PDF scaricato");
+    } catch (err) {
+      toast.error("Errore generazione PDF");
+      console.error(err);
+    }
   };
 
   const importDraft = (e: ChangeEvent<HTMLInputElement>) => {
