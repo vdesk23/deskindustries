@@ -89,6 +89,9 @@ const ContentPlanAdminEmail = ({
   pinTestimonianze,
   planner = [],
   briefings = [],
+  pdfUrl,
+  pdfFilename,
+  pdfExpiresInDays = 30,
 }: ContentPlanAdminProps) => {
   const filledBriefings = briefings.filter((b) =>
     Object.values(b).some((v) => v && String(v).length),
@@ -110,6 +113,19 @@ const ContentPlanAdminEmail = ({
             Modulo compilato dall'area clienti. Compilato il{" "}
             <strong>{dataCompilazione || "—"}</strong>.
           </Text>
+
+          {pdfUrl ? (
+            <Section style={pdfBox}>
+              <Text style={pdfLabel}>📎 PDF brandizzato del piano</Text>
+              <Text style={pdfFile}>{pdfFilename || "piano-contenuti.pdf"}</Text>
+              <a href={pdfUrl} style={pdfButton as any}>
+                Scarica PDF
+              </a>
+              <Text style={pdfHint}>
+                Link valido per {pdfExpiresInDays} giorni.
+              </Text>
+            </Section>
+          ) : null}
 
           <Hr style={hr} />
           <Heading as="h2" style={h2}>
