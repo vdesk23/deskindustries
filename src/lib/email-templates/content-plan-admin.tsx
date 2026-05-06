@@ -49,6 +49,9 @@ export interface ContentPlanAdminProps {
   pinTestimonianze?: string;
   planner?: PlannerRow[];
   briefings?: BriefingItem[];
+  pdfUrl?: string;
+  pdfFilename?: string;
+  pdfExpiresInDays?: number;
 }
 
 const Row = ({ label, value }: { label: string; value?: React.ReactNode }) => (
