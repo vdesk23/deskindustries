@@ -770,7 +770,7 @@ function PianoContenutiPage() {
             <FileUp className="size-4" /> Importa
           </Button>
           <Button variant="outline" size="sm" onClick={downloadDraft}>
-            <Download className="size-4" /> Scarica bozza
+            <Download className="size-4" /> Scarica PDF
           </Button>
           <Button
             variant="amber"
