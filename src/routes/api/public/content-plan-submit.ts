@@ -11,9 +11,10 @@ const FROM_DOMAIN = "deskindustries.com";
 
 const RECIPIENTS = [
   "master@deskindustries.com",
-  "marketing@deskindustries.com",
   "content@deskindustries.com",
 ];
+
+const PDF_EXPIRES_SECONDS = 60 * 60 * 24 * 30; // 30 giorni
 
 const plannerRowSchema = z.object({
   giorno: z.string().max(8),
