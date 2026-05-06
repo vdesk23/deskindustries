@@ -54,6 +54,9 @@ const planSchema = z.object({
   pinTestimonianze: z.string().max(2000).optional().or(z.literal("")),
   planner: z.array(plannerRowSchema).max(7).default([]),
   briefings: z.array(briefingSchema).max(20).default([]),
+  // PDF base64 generato lato client (max ~5MB)
+  pdfBase64: z.string().max(7_500_000).optional(),
+  pdfFilename: z.string().max(200).optional(),
 });
 
 function generateToken(): string {
