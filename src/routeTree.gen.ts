@@ -27,7 +27,6 @@ import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicLeadSubmitRouteImport } from './routes/api/public/lead-submit'
-import { Route as ApiPublicGoogleReviewsRouteImport } from './routes/api/public/google-reviews'
 import { Route as ApiPublicContentPlanSubmitRouteImport } from './routes/api/public/content-plan-submit'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
@@ -123,11 +122,6 @@ const ApiPublicLeadSubmitRoute = ApiPublicLeadSubmitRouteImport.update({
   path: '/api/public/lead-submit',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicGoogleReviewsRoute = ApiPublicGoogleReviewsRouteImport.update({
-  id: '/api/public/google-reviews',
-  path: '/api/public/google-reviews',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiPublicContentPlanSubmitRoute =
   ApiPublicContentPlanSubmitRouteImport.update({
     id: '/api/public/content-plan-submit',
@@ -171,7 +165,6 @@ export interface FileRoutesByFullPath {
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/settori/': typeof SettoriIndexRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
-  '/api/public/google-reviews': typeof ApiPublicGoogleReviewsRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -196,7 +189,6 @@ export interface FileRoutesByTo {
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/settori': typeof SettoriIndexRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
-  '/api/public/google-reviews': typeof ApiPublicGoogleReviewsRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -222,7 +214,6 @@ export interface FileRoutesById {
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/settori/': typeof SettoriIndexRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
-  '/api/public/google-reviews': typeof ApiPublicGoogleReviewsRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -249,7 +240,6 @@ export interface FileRouteTypes {
     | '/tools/piano-contenuti'
     | '/settori/'
     | '/api/public/content-plan-submit'
-    | '/api/public/google-reviews'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
     | '/lovable/email/queue/process'
@@ -274,7 +264,6 @@ export interface FileRouteTypes {
     | '/tools/piano-contenuti'
     | '/settori'
     | '/api/public/content-plan-submit'
-    | '/api/public/google-reviews'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
     | '/lovable/email/queue/process'
@@ -299,7 +288,6 @@ export interface FileRouteTypes {
     | '/tools/piano-contenuti'
     | '/settori/'
     | '/api/public/content-plan-submit'
-    | '/api/public/google-reviews'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
     | '/lovable/email/queue/process'
@@ -325,7 +313,6 @@ export interface RootRouteChildren {
   ToolsPianoContenutiRoute: typeof ToolsPianoContenutiRoute
   SettoriIndexRoute: typeof SettoriIndexRoute
   ApiPublicContentPlanSubmitRoute: typeof ApiPublicContentPlanSubmitRoute
-  ApiPublicGoogleReviewsRoute: typeof ApiPublicGoogleReviewsRoute
   ApiPublicLeadSubmitRoute: typeof ApiPublicLeadSubmitRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
@@ -461,13 +448,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicLeadSubmitRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/google-reviews': {
-      id: '/api/public/google-reviews'
-      path: '/api/public/google-reviews'
-      fullPath: '/api/public/google-reviews'
-      preLoaderRoute: typeof ApiPublicGoogleReviewsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/public/content-plan-submit': {
       id: '/api/public/content-plan-submit'
       path: '/api/public/content-plan-submit'
@@ -517,7 +497,6 @@ const rootRouteChildren: RootRouteChildren = {
   ToolsPianoContenutiRoute: ToolsPianoContenutiRoute,
   SettoriIndexRoute: SettoriIndexRoute,
   ApiPublicContentPlanSubmitRoute: ApiPublicContentPlanSubmitRoute,
-  ApiPublicGoogleReviewsRoute: ApiPublicGoogleReviewsRoute,
   ApiPublicLeadSubmitRoute: ApiPublicLeadSubmitRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
@@ -527,3 +506,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
