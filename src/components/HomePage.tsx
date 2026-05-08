@@ -13,6 +13,7 @@ import {
   Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { GoogleReviews } from "@/components/GoogleReviews";
 
 interface MethodStep {
   letter: string;
@@ -284,6 +285,9 @@ export function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* RECENSIONI GOOGLE */}
+      <GoogleReviews />
 
       {/* PACCHETTI */}
       <section className="relative py-24 lg:py-32 border-t border-border">
