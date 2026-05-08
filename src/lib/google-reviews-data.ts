@@ -17,7 +17,7 @@ export interface StaticGooglePlace {
 export const DESK_GOOGLE_PLACE: StaticGooglePlace = {
   name: "Desk Industries SRLS",
   rating: 5.0,
-  total: 10,
+  total: 12,
   url: "https://www.google.com/maps/search/?api=1&query=Desk+Industries+SRLS",
 };
 
@@ -81,5 +81,17 @@ export const DESK_GOOGLE_REVIEWS: StaticGoogleReview[] = [
     rating: 5,
     relativeTime: "10 mesi fa",
     text: "È veramente difficile trovare professionisti preparati e competenti come Valerio. Se sei una persona che pensa in grande, devi rivolgerti a professionisti che pensano altrettanto in grande. Valerio è quella persona.",
+  },
+  {
+    author: "Anthony Ferrigno",
+    rating: 5,
+    relativeTime: "2 mesi fa",
+    text: "Ho conosciuto Valerio e Francesco che gestiscono da ottobre la mia attività on-Line ed hanno fatto anche il sito. Ringrazio molto per la loro professionalità.",
+  },
+  {
+    author: "Marisela Portagnuolo",
+    rating: 5,
+    relativeTime: "1 mese fa",
+    text: "Molto competente e gentili!",
   },
 ];
