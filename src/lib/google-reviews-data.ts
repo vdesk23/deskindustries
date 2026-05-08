@@ -23,6 +23,24 @@ export const DESK_GOOGLE_PLACE: StaticGooglePlace = {
 
 export const DESK_GOOGLE_REVIEWS: StaticGoogleReview[] = [
   {
+    author: "Simone Fanelli",
+    rating: 5,
+    relativeTime: "2 mesi fa",
+    text: "Professionista preparato, giusto nei costi. Un aiuto vero per le aziende che cercano maggiore visibilità online. Consiglio vivamente.",
+  },
+  {
+    author: "Anthony Ferrigno",
+    rating: 5,
+    relativeTime: "2 mesi fa",
+    text: "Ho conosciuto Valerio e Francesco che gestiscono da ottobre la mia attività on-Line ed hanno fatto anche il sito. Ringrazio molto per la loro professionalità.",
+  },
+  {
+    author: "Antonio Sciacca",
+    rating: 5,
+    relativeTime: "10 mesi fa",
+    text: "È veramente difficile trovare professionisti preparati e competenti come Valerio. Se sei una persona che pensa in grande, devi rivolgerti a professionisti che pensano altrettanto in grande. Valerio è quella persona.",
+  },
+  {
     author: "Federica Cecere",
     rating: 5,
     relativeTime: "2 giorni fa",
@@ -69,24 +87,6 @@ export const DESK_GOOGLE_REVIEWS: StaticGoogleReview[] = [
     rating: 5,
     relativeTime: "2 ore fa",
     text: "Ho appena avuto una consulenza con Valerio. Quello che più mi ha colpita, oltre alla preparazione, è la chiarezza con cui mi ha aiutata a vedere i prossimi passi.",
-  },
-  {
-    author: "Simone Fanelli",
-    rating: 5,
-    relativeTime: "2 mesi fa",
-    text: "Professionista preparato, giusto nei costi. Un aiuto vero per le aziende che cercano maggiore visibilità online. Consiglio vivamente.",
-  },
-  {
-    author: "Antonio Sciacca",
-    rating: 5,
-    relativeTime: "10 mesi fa",
-    text: "È veramente difficile trovare professionisti preparati e competenti come Valerio. Se sei una persona che pensa in grande, devi rivolgerti a professionisti che pensano altrettanto in grande. Valerio è quella persona.",
-  },
-  {
-    author: "Anthony Ferrigno",
-    rating: 5,
-    relativeTime: "2 mesi fa",
-    text: "Ho conosciuto Valerio e Francesco che gestiscono da ottobre la mia attività on-Line ed hanno fatto anche il sito. Ringrazio molto per la loro professionalità.",
   },
   {
     author: "Marisela Portagnuolo",
