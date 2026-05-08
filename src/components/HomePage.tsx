@@ -13,6 +13,7 @@ import {
   Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { GoogleReviews } from "@/components/GoogleReviews";
 
 interface MethodStep {
   letter: string;
