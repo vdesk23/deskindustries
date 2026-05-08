@@ -286,6 +286,9 @@ export function HomePage() {
         </div>
       </section>
 
+      {/* RECENSIONI GOOGLE */}
+      <GoogleReviews />
+
       {/* PACCHETTI */}
       <section className="relative py-24 lg:py-32 border-t border-border">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
