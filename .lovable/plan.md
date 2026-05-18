@@ -1,58 +1,98 @@
-## Obiettivo
+# Ottimizzatore SEO/AIO articoli blog
 
-Mostrare in homepage le 10 recensioni Google reali di Desk Industries, con look brandizzato e marchio "Recensioni Google", **senza** dipendere dall'API di Google Places (che richiederebbe Place ID + API key configurata).
+Nuovo tool in area membri (`/tools/ottimizzatore-seo`) che ottimizza articoli incollati dall'utente, restituisce versione ottimizzata + guida con spiegazioni + meta description, slug, permalink e idee ALT. Output scaricabile in PDF.
 
-Le recensioni vengono inserite **una sola volta** come dati statici nel codice — fedeli alle 10 fornite negli screenshot. Più avanti, quando vorrai gestire l'API Google Places, basterà un piccolo intervento per passare alla versione live.
+## Modello commerciale
 
-## Cosa vede l'utente sulla homepage
+| Piano | Prezzo | Articoli/mese | Extra |
+|---|---|---|---|
+| Free | 0€ | 3 | bloccato a quota esaurita |
+| Starter | 4,99€/mese | 10 | 1€/articolo extra |
+| Pro | 9,99€/mese | 25 | 1€/articolo extra |
+| Unlimited (ruolo) | — | illimitato | — |
 
-- Nuova sezione "Recensioni Google" tra Settori e Pacchetti (stessa posizione già pianificata).
-- Header con:
-  - Eyebrow "Recensioni Google" (color amber, design system esistente)
-  - Titolo "Le voci di chi ci ha già scelto"
-  - Logo Google ufficiale + media stelle "5.0" + "10 recensioni verificate" + link a "Vedi tutte su Google" (link diretto al profilo Maps)
-- Carosello a scorrimento orizzontale automatico (marquee) con pausa all'hover, già presente nel componente `GoogleReviews.tsx`.
-- Ogni card mostra: avatar (iniziale colorata, dato che gli avatar Google non sono ridistribuibili), nome, "su Google", 5 stelle dorate, testo della recensione, badge "Recensione verificata".
-- Totalmente responsive (mobile/tablet/desktop) e in linea con palette amber/dark del sito.
+- Reset contatori il **1° del mese** (UTC).
+- Extra: checkout one-shot da 1€ per ogni articolo extra (non metered).
+- Ruolo `unlimited` assegnato dal DB (Supabase) tramite tabella `user_roles`.
 
-## Le 10 recensioni che includerò
+## UI
 
-Tutte 5 stelle, testi presi fedelmente dagli screenshot:
+Layout split-screen su `/tools/ottimizzatore-seo`:
+- **Sinistra**: textarea grande "Incolla qui il tuo articolo (Markdown supportato)" + selettore tono/keyword target opzionale + bottone "Ottimizza".
+- **Destra (dopo elaborazione)**: tab "Articolo ottimizzato" / "Guida modifiche" / "SEO meta" (meta description, slug, permalink, lista idee ALT con didascalia per ogni immagine identificata).
+- Header con badge piano corrente e contatore `X/Y articoli usati questo mese`.
+- 3 bottoni: **Copia**, **Scarica articolo (PDF)**, **Scarica guida (PDF)**.
+- Storico ultime 10 ottimizzazioni (collassabile).
+- Stati: loading con skeleton, errore con retry, quota esaurita con CTA upgrade/acquista extra.
 
-1. **Federica Cecere** — "Ho avuto modo di conoscere l'agenzia di Valerio Cattedra e mi sono trovata molto bene. L'approccio è pratico e concreto..."
-2. **Paola Piccirilli** — "Agenzia affidabile e competente. Consigliatissima"
-3. **Alessandra Cascioli** — "Desk industries, agenzia di Valerio Cattedra, è stata il mio punto di riferimento fondamentale per il completamento del..."
-4. **Caterina Barretta** — "Ho avuto una consulenza con Valerio Cattedra e sono rimasta impressionata dalla sua preparazione e dalla sua capacità di..."
-5. **Lory Casella** — "I consigli di Valerio sono molto utili per far crescere il mio progetto sui Social"
-6. **elena de mare** — "Una sessione molto interessante con Valerio.. Chiaro e coinvolgente sui temi trattati"
-7. **Chiara Lorenzi** — "Grazie Valerio Cattedra per gli utilissimi consigli che mi hai dato, continuerò senz'altro a seguirti."
-8. **Monica Irene Oddone** — "Ho appena avuto una consulenza con Valerio. Quello che più mi ha colpita, oltre alla..."
-9. **Simone Fanelli** — "Professionista preparato, giusto nei costi. Un aiuto vero per le aziende che cercano maggiore visibilità online. Consiglio vivamente"
-10. **Antonio Sciacca** — "È veramente difficile trovare professionisti preparati e competenti come Valerio. Se sei una persona che pensa in grande, devi rivolgerti a professionisti che pensano altrettanto in grande. Valerio è quella persona."
+Aggiungere card "Ottimizzatore SEO" in `/account` accanto al Piano Contenuti.
 
-I testi tagliati con "..." negli screenshot li lascio così (con ellipsis chiaro), oppure se mi mandi i testi completi li metto integrali — fammi sapere.
+## Pagamenti
 
-## Dettagli tecnici
+- 2 nuovi prodotti Stripe (price_id stabili):
+  - `seo_optimizer_starter` — 4,99€/mese ricorrente
+  - `seo_optimizer_pro` — 9,99€/mese ricorrente
+  - `seo_optimizer_extra_article` — 1€ one-time (per articolo extra)
+- Sezione pricing dedicata in cima al tool quando l'utente è Free o ha esaurito quota.
+- Checkout via componente esistente `StripeEmbeddedCheckout`.
+- Cancellazione/gestione: già coperta dal Customer Portal esistente.
+- Webhook esistente `payments-webhook` aggiornerà la nuova tabella `seo_optimizer_usage` quando arrivano gli acquisti extra (basato su `price_id`).
 
-- Creo `src/lib/google-reviews-data.ts` con l'array tipizzato delle 10 recensioni (autore, testo, rating=5, tempo relativo, opzionale link).
-- Refactor di `src/components/GoogleReviews.tsx`: rimuovo il `fetch("/api/public/google-reviews")` e leggo direttamente dai dati statici. Mantengo tutto lo stile, l'animazione marquee e il responsive.
-- Aggiungo logo Google SVG inline (versione ufficiale colorata, sicura per uso editoriale dato che mostriamo recensioni Google reali).
-- Avatar: cerchio con iniziale + colore deterministico generato dal nome (no foto, perché gli avatar Google non sono ridistribuibili senza API).
-- Re-importo `<GoogleReviews />` in `src/components/HomePage.tsx` tra `<SettoriSection />` e `<PacchettiSection />`.
-- Rimuovo l'endpoint `src/routes/api/public/google-reviews.ts` (non più usato) e i secret `GOOGLE_PLACES_API_KEY` / `GOOGLE_PLACES_PLACE_ID` non sono richiesti.
-- Aggiorno `.lovable/plan.md` per riflettere il nuovo stato (statico anziché live).
-- Link "Vedi tutte su Google": lo metto puntato al profilo Maps di Desk Industries — mi servirà l'URL esatto (puoi andare su Google Maps, cercare "Desk Industries SRLS" e copiarmi l'URL della scheda).
+## Database (migrazione)
 
-## In futuro, se vuoi passare alla versione live (automatica)
+Nuove tabelle/elementi:
 
-Quando ti servirà davvero (es. quando le recensioni saranno 30+ e vorrai aggiornarle automaticamente):
-1. Mi mandi Place ID + API Google Places attiva
-2. Riattivo l'endpoint `/api/public/google-reviews`
-3. Sostituisco la sorgente dati nel componente: 1 riga di codice
-4. La sezione torna automaticamente live
+1. **`app_role`** (enum): `admin`, `unlimited`.
+2. **`user_roles`** (user_id, role, unique(user_id, role)) + funzione `has_role(uuid, app_role)` security definer.
+3. **`seo_optimizer_usage`** — log delle ottimizzazioni:
+   - `id`, `user_id`, `created_at`, `period_month` (date troncata al 1° del mese), `is_extra` (bool), `extra_purchase_id` (nullable, FK logica a `purchases.id`), `input_chars`, `output_chars`.
+4. **`seo_optimizer_extra_credits`** — credito extra acquistato e non ancora consumato:
+   - `id`, `user_id`, `created_at`, `consumed_at` (nullable), `stripe_session_id` (unique).
+5. **Funzione `get_seo_quota(user_id)`** → ritorna `{ plan, limit, used_this_month, extra_credits, unlimited }`.
+6. RLS: utenti vedono solo le proprie righe; service_role gestisce inserimenti dal webhook.
 
-## Quello che NON faccio (per non sovra-ingegnerizzare)
+## Backend
 
-- Nessun pannello admin per gestirle (sono recensioni Google, non testimonianze libere — vanno fedeli all'originale).
-- Nessuna tabella database (10 record statici non valgono il costo di un CRUD).
-- Nessuna integrazione API ora (non sblocca valore finché non hai più di 5 recensioni e vuoi automazione).
+- **`createServerFn` `optimizeArticle`** (`src/lib/seo-optimizer.functions.ts`), protetta da `requireSupabaseAuth`:
+  1. Check quota: se `unlimited` → procede; altrimenti calcola `used_this_month` vs limit del piano attivo; se sopra, consuma 1 credito extra; se nessuno → 402 con messaggio "Acquista articolo extra o passa al piano superiore".
+  2. Chiama Lovable AI Gateway (`google/gemini-2.5-flash`) con structured output Zod:
+     ```
+     { optimized_markdown, meta_description, slug, permalink_suggestion, alt_ideas[], changes[] { type, before, after, reason } }
+     ```
+  3. Inserisce riga in `seo_optimizer_usage` (con `is_extra=true` se credito extra consumato).
+  4. Ritorna il risultato.
+- **`createServerFn` `getSeoQuota`** — legge stato quota per la UI.
+- **`createServerFn` `buyExtraArticle`** — crea checkout one-shot per `seo_optimizer_extra_article` (riusa il pattern di `create-checkout`).
+- **Webhook esistente `payments-webhook`**: aggiungere branch per `price_id === "seo_optimizer_extra_article"` che inserisce riga in `seo_optimizer_extra_credits`.
+
+## Generazione PDF
+
+Lato client con `jspdf` + `jspdf-autotable` (già consigliato per zero dipendenze Node-only). Due funzioni:
+- `generateArticlePdf(optimized)` → PDF pulito con titolo, meta, articolo.
+- `generateGuidePdf(optimized, changes)` → PDF con sezioni: articolo finale + tabella modifiche (tipo, prima, dopo, motivo) + sezione SEO (meta/slug/permalink/ALT).
+
+## File modificati / creati
+
+```text
+src/routes/tools.ottimizzatore-seo.tsx        (nuova route)
+src/components/seo-optimizer/                  (Editor, ResultPanel, QuotaBadge, PricingGate)
+src/lib/seo-optimizer.functions.ts             (server fns: optimize, getQuota, buyExtra)
+src/lib/seo-optimizer-pdf.ts                   (jsPDF generators)
+src/routes/account.tsx                         (link al nuovo tool)
+supabase/functions/payments-webhook/index.ts   (gestire extra credits)
+```
+
+Migrazione DB con `user_roles`, `has_role`, `seo_optimizer_usage`, `seo_optimizer_extra_credits`, RLS, `get_seo_quota`.
+
+## Note tecniche
+
+- AI: Lovable AI Gateway, modello `google/gemini-2.5-flash`, structured output via `Output.object()` con schema Zod.
+- Limite input: max 30.000 caratteri per articolo (validazione Zod lato server).
+- I prodotti Stripe vanno creati via tool `payments--batch_create_product` con `tax_code: txcd_10103001` (SaaS).
+- Il ruolo `unlimited` si assegna manualmente con un INSERT in `user_roles` (te lo creo già pronto da eseguire post-migrazione, oppure ti faccio una piccola UI admin in seguito se vuoi).
+
+## Fuori scopo (per ora)
+
+- Pannello admin grafico per gestire ruoli (assegnazione `unlimited` via SQL/insert tool).
+- Fatturazione metered (extra fatturati a fine mese).
+- Storico più lungo di 10 ottimizzazioni (solo le ultime 10 visibili in UI; tutto resta in DB).

@@ -254,6 +254,69 @@ export type Database = {
         }
         Relationships: []
       }
+      seo_optimizer_extra_credits: {
+        Row: {
+          consumed_at: string | null
+          created_at: string
+          id: string
+          stripe_session_id: string | null
+          user_id: string
+        }
+        Insert: {
+          consumed_at?: string | null
+          created_at?: string
+          id?: string
+          stripe_session_id?: string | null
+          user_id: string
+        }
+        Update: {
+          consumed_at?: string | null
+          created_at?: string
+          id?: string
+          stripe_session_id?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      seo_optimizer_usage: {
+        Row: {
+          created_at: string
+          extra_credit_id: string | null
+          id: string
+          input_chars: number
+          is_extra: boolean
+          output_chars: number
+          period_month: string
+          preview: string | null
+          title: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          extra_credit_id?: string | null
+          id?: string
+          input_chars?: number
+          is_extra?: boolean
+          output_chars?: number
+          period_month?: string
+          preview?: string | null
+          title?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          extra_credit_id?: string | null
+          id?: string
+          input_chars?: number
+          is_extra?: boolean
+          output_chars?: number
+          period_month?: string
+          preview?: string | null
+          title?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       subscriptions: {
         Row: {
           cancel_at_period_end: boolean | null
@@ -329,6 +392,27 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -342,8 +426,16 @@ export type Database = {
         Args: { payload: Json; queue_name: string }
         Returns: number
       }
+      get_seo_quota: { Args: { _user_id: string }; Returns: Json }
       has_active_subscription: {
         Args: { check_env?: string; user_uuid: string }
+        Returns: boolean
+      }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
         Returns: boolean
       }
       move_to_dlq: {
@@ -365,7 +457,7 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "unlimited"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -492,6 +584,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "unlimited"],
+    },
   },
 } as const
