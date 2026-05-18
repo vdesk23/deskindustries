@@ -11,3 +11,9 @@ verify_jwt = false
 
 [functions.create-portal-session]
 verify_jwt = false
+
+[functions.optimize-seo-article]
+verify_jwt = false
+
+[functions.seo-quota]
+verify_jwt = false

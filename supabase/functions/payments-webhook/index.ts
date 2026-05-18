@@ -63,6 +63,9 @@ async function handleCheckoutCompleted(session: any, env: StripeEnv) {
     .eq("email", email)
     .maybeSingle();
 
+  const metadataUserId = session.metadata?.userId || null;
+  const resolvedUserId = existingUser?.user_id || metadataUserId || null;
+
   // Get product/price info
   const stripe = createStripeClient(env);
   let productId: string | null = null;
@@ -72,16 +75,25 @@ async function handleCheckoutCompleted(session: any, env: StripeEnv) {
       const sub = await stripe.subscriptions.retrieve(session.subscription as string);
       const item = sub.items?.data?.[0];
       productId = (item?.price?.product as string) || null;
-      priceId = item?.price?.metadata?.lovable_external_id || item?.price?.id || null;
+      priceId = item?.price?.lookup_key || item?.price?.metadata?.lovable_external_id || item?.price?.id || null;
     } catch (e) {
       console.error("Could not retrieve subscription", e);
+    }
+  } else if (session.mode === "payment") {
+    try {
+      const lineItems = await stripe.checkout.sessions.listLineItems(session.id as string, { limit: 1 });
+      const li = lineItems.data?.[0];
+      productId = (li?.price?.product as string) || null;
+      priceId = li?.price?.lookup_key || li?.price?.metadata?.lovable_external_id || li?.price?.id || null;
+    } catch (e) {
+      console.error("Could not retrieve line items", e);
     }
   }
 
   // Record purchase
   await supabase.from("purchases").upsert(
     {
-      user_id: existingUser?.user_id || null,
+      user_id: resolvedUserId,
       customer_email: email,
       stripe_session_id: session.id,
       stripe_customer_id: session.customer,
@@ -95,6 +107,16 @@ async function handleCheckoutCompleted(session: any, env: StripeEnv) {
     },
     { onConflict: "stripe_session_id" }
   );
+
+  // SEO extra article credit
+  if (priceId === "seo_optimizer_extra_article" && resolvedUserId) {
+    const qty = Number(session.amount_total) > 0 ? Math.max(1, Math.round(Number(session.amount_total) / 100)) : 1;
+    const rows = Array.from({ length: qty }).map((_, i) => ({
+      user_id: resolvedUserId,
+      stripe_session_id: `${session.id}-${i}`,
+    }));
+    await supabase.from("seo_optimizer_extra_credits").upsert(rows, { onConflict: "stripe_session_id" });
+  }
 
   // Send welcome email if user does not yet exist
   if (!existingUser) {
@@ -146,10 +168,10 @@ async function handleSubscriptionUpsert(subscription: any, env: StripeEnv) {
     .maybeSingle();
 
   const item = subscription.items?.data?.[0];
-  const priceId = item?.price?.metadata?.lovable_external_id || item?.price?.id;
+  const priceId = item?.price?.lookup_key || item?.price?.metadata?.lovable_external_id || item?.price?.id;
   const productId = item?.price?.product;
-  const periodStart = subscription.current_period_start;
-  const periodEnd = subscription.current_period_end;
+  const periodStart = item?.current_period_start ?? subscription.current_period_start;
+  const periodEnd = item?.current_period_end ?? subscription.current_period_end;
 
   await supabase.from("subscriptions").upsert(
     {

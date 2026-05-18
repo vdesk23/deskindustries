@@ -209,7 +209,7 @@ function AccountPage() {
               </p>
               <Link
                 to="/tools/piano-contenuti"
-                className="group block rounded-2xl border border-border bg-background/40 p-5 hover:border-amber/50 transition-all"
+                className="group block rounded-2xl border border-border bg-background/40 p-5 hover:border-amber/50 transition-all mb-3"
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
@@ -223,6 +223,28 @@ function AccountPage() {
                       Modulo guidato per costruire posizionamento, post pinnati,
                       planner settimanale e briefing dei Reel. All'invio arriva al
                       team marketing &amp; content.
+                    </p>
+                  </div>
+                  <ArrowRight className="size-5 text-muted-foreground group-hover:text-amber group-hover:translate-x-0.5 transition" />
+                </div>
+              </Link>
+
+              <Link
+                to="/tools/ottimizzatore-seo"
+                className="group block rounded-2xl border border-border bg-background/40 p-5 hover:border-amber/50 transition-all"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <p className="text-[10px] font-display tracking-[0.3em] text-amber uppercase mb-2">
+                      Tool · SEO / AIO
+                    </p>
+                    <h3 className="font-display font-semibold text-lg mb-1">
+                      Ottimizzatore SEO/AIO
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      Ottimizza i tuoi articoli per Google e per le AI generative.
+                      Meta description, slug, permalink e idee ALT incluse. 3 articoli
+                      gratis al mese, poi piani da 4,99€.
                     </p>
                   </div>
                   <ArrowRight className="size-5 text-muted-foreground group-hover:text-amber group-hover:translate-x-0.5 transition" />
