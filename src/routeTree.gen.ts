@@ -22,6 +22,7 @@ import { Route as AccountRouteImport } from './routes/account'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettoriIndexRouteImport } from './routes/settori.index'
 import { Route as ToolsPianoContenutiRouteImport } from './routes/tools.piano-contenuti'
+import { Route as ToolsOttimizzatoreSeoRouteImport } from './routes/tools.ottimizzatore-seo'
 import { Route as SettoriSlugRouteImport } from './routes/settori.$slug'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
@@ -97,6 +98,11 @@ const ToolsPianoContenutiRoute = ToolsPianoContenutiRouteImport.update({
   path: '/tools/piano-contenuti',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ToolsOttimizzatoreSeoRoute = ToolsOttimizzatoreSeoRouteImport.update({
+  id: '/tools/ottimizzatore-seo',
+  path: '/tools/ottimizzatore-seo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettoriSlugRoute = SettoriSlugRouteImport.update({
   id: '/settori/$slug',
   path: '/settori/$slug',
@@ -162,6 +168,7 @@ export interface FileRoutesByFullPath {
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
+  '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/settori/': typeof SettoriIndexRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
@@ -186,6 +193,7 @@ export interface FileRoutesByTo {
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
+  '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/settori': typeof SettoriIndexRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
@@ -211,6 +219,7 @@ export interface FileRoutesById {
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
+  '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/settori/': typeof SettoriIndexRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
@@ -237,6 +246,7 @@ export interface FileRouteTypes {
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/settori/$slug'
+    | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
     | '/settori/'
     | '/api/public/content-plan-submit'
@@ -261,6 +271,7 @@ export interface FileRouteTypes {
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/settori/$slug'
+    | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
     | '/settori'
     | '/api/public/content-plan-submit'
@@ -285,6 +296,7 @@ export interface FileRouteTypes {
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/settori/$slug'
+    | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
     | '/settori/'
     | '/api/public/content-plan-submit'
@@ -310,6 +322,7 @@ export interface RootRouteChildren {
   CheckoutReturnRoute: typeof CheckoutReturnRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   SettoriSlugRoute: typeof SettoriSlugRoute
+  ToolsOttimizzatoreSeoRoute: typeof ToolsOttimizzatoreSeoRoute
   ToolsPianoContenutiRoute: typeof ToolsPianoContenutiRoute
   SettoriIndexRoute: typeof SettoriIndexRoute
   ApiPublicContentPlanSubmitRoute: typeof ApiPublicContentPlanSubmitRoute
@@ -413,6 +426,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolsPianoContenutiRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tools/ottimizzatore-seo': {
+      id: '/tools/ottimizzatore-seo'
+      path: '/tools/ottimizzatore-seo'
+      fullPath: '/tools/ottimizzatore-seo'
+      preLoaderRoute: typeof ToolsOttimizzatoreSeoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settori/$slug': {
       id: '/settori/$slug'
       path: '/settori/$slug'
@@ -494,6 +514,7 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutReturnRoute: CheckoutReturnRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   SettoriSlugRoute: SettoriSlugRoute,
+  ToolsOttimizzatoreSeoRoute: ToolsOttimizzatoreSeoRoute,
   ToolsPianoContenutiRoute: ToolsPianoContenutiRoute,
   SettoriIndexRoute: SettoriIndexRoute,
   ApiPublicContentPlanSubmitRoute: ApiPublicContentPlanSubmitRoute,
@@ -506,3 +527,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
