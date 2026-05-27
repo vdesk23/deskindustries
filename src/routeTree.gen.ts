@@ -15,6 +15,7 @@ import { Route as ProgettiRouteImport } from './routes/progetti'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PacchettiRouteImport } from './routes/pacchetti'
 import { Route as MetodoCocoRouteImport } from './routes/metodo-coco'
+import { Route as FolliaRouteImport } from './routes/follia'
 import { Route as ContattiRouteImport } from './routes/contatti'
 import { Route as ChiSiamoRouteImport } from './routes/chi-siamo'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -62,6 +63,11 @@ const PacchettiRoute = PacchettiRouteImport.update({
 const MetodoCocoRoute = MetodoCocoRouteImport.update({
   id: '/metodo-coco',
   path: '/metodo-coco',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FolliaRoute = FolliaRouteImport.update({
+  id: '/follia',
+  path: '/follia',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContattiRoute = ContattiRouteImport.update({
@@ -166,6 +172,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/chi-siamo': typeof ChiSiamoRoute
   '/contatti': typeof ContattiRoute
+  '/follia': typeof FolliaRoute
   '/metodo-coco': typeof MetodoCocoRoute
   '/pacchetti': typeof PacchettiRoute
   '/privacy': typeof PrivacyRoute
@@ -192,6 +199,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/chi-siamo': typeof ChiSiamoRoute
   '/contatti': typeof ContattiRoute
+  '/follia': typeof FolliaRoute
   '/metodo-coco': typeof MetodoCocoRoute
   '/pacchetti': typeof PacchettiRoute
   '/privacy': typeof PrivacyRoute
@@ -219,6 +227,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/chi-siamo': typeof ChiSiamoRoute
   '/contatti': typeof ContattiRoute
+  '/follia': typeof FolliaRoute
   '/metodo-coco': typeof MetodoCocoRoute
   '/pacchetti': typeof PacchettiRoute
   '/privacy': typeof PrivacyRoute
@@ -247,6 +256,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/chi-siamo'
     | '/contatti'
+    | '/follia'
     | '/metodo-coco'
     | '/pacchetti'
     | '/privacy'
@@ -273,6 +283,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/chi-siamo'
     | '/contatti'
+    | '/follia'
     | '/metodo-coco'
     | '/pacchetti'
     | '/privacy'
@@ -299,6 +310,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/chi-siamo'
     | '/contatti'
+    | '/follia'
     | '/metodo-coco'
     | '/pacchetti'
     | '/privacy'
@@ -326,6 +338,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ChiSiamoRoute: typeof ChiSiamoRoute
   ContattiRoute: typeof ContattiRoute
+  FolliaRoute: typeof FolliaRoute
   MetodoCocoRoute: typeof MetodoCocoRoute
   PacchettiRoute: typeof PacchettiRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -389,6 +402,13 @@ declare module '@tanstack/react-router' {
       path: '/metodo-coco'
       fullPath: '/metodo-coco'
       preLoaderRoute: typeof MetodoCocoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/follia': {
+      id: '/follia'
+      path: '/follia'
+      fullPath: '/follia'
+      preLoaderRoute: typeof FolliaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contatti': {
@@ -526,6 +546,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ChiSiamoRoute: ChiSiamoRoute,
   ContattiRoute: ContattiRoute,
+  FolliaRoute: FolliaRoute,
   MetodoCocoRoute: MetodoCocoRoute,
   PacchettiRoute: PacchettiRoute,
   PrivacyRoute: PrivacyRoute,
