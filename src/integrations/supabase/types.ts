@@ -101,6 +101,443 @@ export type Database = {
         }
         Relationships: []
       }
+      follia_appointments: {
+        Row: {
+          created_at: string
+          customer_name: string
+          email: string | null
+          id: string
+          notes: string | null
+          phone: string | null
+          service_id: string | null
+          site_id: string
+          slot_at: string
+          status: Database["public"]["Enums"]["follia_booking_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          customer_name: string
+          email?: string | null
+          id?: string
+          notes?: string | null
+          phone?: string | null
+          service_id?: string | null
+          site_id: string
+          slot_at: string
+          status?: Database["public"]["Enums"]["follia_booking_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          customer_name?: string
+          email?: string | null
+          id?: string
+          notes?: string | null
+          phone?: string | null
+          service_id?: string | null
+          site_id?: string
+          slot_at?: string
+          status?: Database["public"]["Enums"]["follia_booking_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "follia_appointments_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "follia_services"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "follia_appointments_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "follia_sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      follia_custom_domain_requests: {
+        Row: {
+          created_at: string
+          id: string
+          include_full_assistance: boolean
+          notes: string | null
+          requested_domain: string
+          site_id: string
+          status: Database["public"]["Enums"]["follia_domain_request_status"]
+          stripe_session_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          include_full_assistance?: boolean
+          notes?: string | null
+          requested_domain: string
+          site_id: string
+          status?: Database["public"]["Enums"]["follia_domain_request_status"]
+          stripe_session_id?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          include_full_assistance?: boolean
+          notes?: string | null
+          requested_domain?: string
+          site_id?: string
+          status?: Database["public"]["Enums"]["follia_domain_request_status"]
+          stripe_session_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "follia_custom_domain_requests_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "follia_sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      follia_menu_items: {
+        Row: {
+          available: boolean
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          name: string
+          position: number
+          price_cents: number | null
+          site_id: string
+          updated_at: string
+        }
+        Insert: {
+          available?: boolean
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          position?: number
+          price_cents?: number | null
+          site_id: string
+          updated_at?: string
+        }
+        Update: {
+          available?: boolean
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          position?: number
+          price_cents?: number | null
+          site_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "follia_menu_items_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "follia_sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      follia_products: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          in_stock: boolean
+          name: string
+          position: number
+          price_display: string | null
+          site_id: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          in_stock?: boolean
+          name: string
+          position?: number
+          price_display?: string | null
+          site_id: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          in_stock?: boolean
+          name?: string
+          position?: number
+          price_display?: string | null
+          site_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "follia_products_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "follia_sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      follia_services: {
+        Row: {
+          bookable: boolean
+          created_at: string
+          description: string | null
+          duration_minutes: number | null
+          id: string
+          name: string
+          position: number
+          price_cents: number | null
+          site_id: string
+          updated_at: string
+        }
+        Insert: {
+          bookable?: boolean
+          created_at?: string
+          description?: string | null
+          duration_minutes?: number | null
+          id?: string
+          name: string
+          position?: number
+          price_cents?: number | null
+          site_id: string
+          updated_at?: string
+        }
+        Update: {
+          bookable?: boolean
+          created_at?: string
+          description?: string | null
+          duration_minutes?: number | null
+          id?: string
+          name?: string
+          position?: number
+          price_cents?: number | null
+          site_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "follia_services_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "follia_sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      follia_sites: {
+        Row: {
+          business_data: Json
+          business_type: Database["public"]["Enums"]["follia_business_type"]
+          claimed_at: string | null
+          config: Json
+          created_at: string
+          custom_domain: string | null
+          has_full_assistance: boolean
+          id: string
+          lead_email: string
+          plan: Database["public"]["Enums"]["follia_plan"] | null
+          status: Database["public"]["Enums"]["follia_site_status"]
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          subdomain: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          business_data?: Json
+          business_type?: Database["public"]["Enums"]["follia_business_type"]
+          claimed_at?: string | null
+          config?: Json
+          created_at?: string
+          custom_domain?: string | null
+          has_full_assistance?: boolean
+          id?: string
+          lead_email: string
+          plan?: Database["public"]["Enums"]["follia_plan"] | null
+          status?: Database["public"]["Enums"]["follia_site_status"]
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          subdomain: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          business_data?: Json
+          business_type?: Database["public"]["Enums"]["follia_business_type"]
+          claimed_at?: string | null
+          config?: Json
+          created_at?: string
+          custom_domain?: string | null
+          has_full_assistance?: boolean
+          id?: string
+          lead_email?: string
+          plan?: Database["public"]["Enums"]["follia_plan"] | null
+          status?: Database["public"]["Enums"]["follia_site_status"]
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          subdomain?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      follia_table_bookings: {
+        Row: {
+          created_at: string
+          customer_name: string
+          email: string | null
+          id: string
+          notes: string | null
+          party_size: number
+          phone: string | null
+          site_id: string
+          slot_at: string
+          status: Database["public"]["Enums"]["follia_booking_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          customer_name: string
+          email?: string | null
+          id?: string
+          notes?: string | null
+          party_size: number
+          phone?: string | null
+          site_id: string
+          slot_at: string
+          status?: Database["public"]["Enums"]["follia_booking_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          customer_name?: string
+          email?: string | null
+          id?: string
+          notes?: string | null
+          party_size?: number
+          phone?: string | null
+          site_id?: string
+          slot_at?: string
+          status?: Database["public"]["Enums"]["follia_booking_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "follia_table_bookings_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "follia_sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      follia_ticket_messages: {
+        Row: {
+          author_id: string
+          body: string
+          created_at: string
+          id: string
+          is_staff: boolean
+          ticket_id: string
+        }
+        Insert: {
+          author_id: string
+          body: string
+          created_at?: string
+          id?: string
+          is_staff?: boolean
+          ticket_id: string
+        }
+        Update: {
+          author_id?: string
+          body?: string
+          created_at?: string
+          id?: string
+          is_staff?: boolean
+          ticket_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "follia_ticket_messages_ticket_id_fkey"
+            columns: ["ticket_id"]
+            isOneToOne: false
+            referencedRelation: "follia_tickets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      follia_tickets: {
+        Row: {
+          category: Database["public"]["Enums"]["follia_ticket_category"]
+          created_at: string
+          id: string
+          priority: string
+          site_id: string
+          status: Database["public"]["Enums"]["follia_ticket_status"]
+          subject: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          category?: Database["public"]["Enums"]["follia_ticket_category"]
+          created_at?: string
+          id?: string
+          priority?: string
+          site_id: string
+          status?: Database["public"]["Enums"]["follia_ticket_status"]
+          subject: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["follia_ticket_category"]
+          created_at?: string
+          id?: string
+          priority?: string
+          site_id?: string
+          status?: Database["public"]["Enums"]["follia_ticket_status"]
+          subject?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "follia_tickets_site_id_fkey"
+            columns: ["site_id"]
+            isOneToOne: false
+            referencedRelation: "follia_sites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lead_requests: {
         Row: {
           business: string | null
@@ -458,6 +895,28 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "unlimited"
+      follia_booking_status: "pending" | "confirmed" | "declined" | "cancelled"
+      follia_business_type:
+        | "restaurant"
+        | "retail_shop"
+        | "barbershop_salon"
+        | "professional"
+        | "other"
+      follia_domain_request_status:
+        | "pending_payment"
+        | "paid"
+        | "configuring"
+        | "live"
+        | "cancelled"
+      follia_plan: "basic_19" | "with_setup_297"
+      follia_site_status:
+        | "draft"
+        | "awaiting_payment"
+        | "in_review"
+        | "live"
+        | "suspended"
+      follia_ticket_category: "general" | "edit_request" | "bug" | "billing"
+      follia_ticket_status: "open" | "in_progress" | "resolved" | "closed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -586,6 +1045,31 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "unlimited"],
+      follia_booking_status: ["pending", "confirmed", "declined", "cancelled"],
+      follia_business_type: [
+        "restaurant",
+        "retail_shop",
+        "barbershop_salon",
+        "professional",
+        "other",
+      ],
+      follia_domain_request_status: [
+        "pending_payment",
+        "paid",
+        "configuring",
+        "live",
+        "cancelled",
+      ],
+      follia_plan: ["basic_19", "with_setup_297"],
+      follia_site_status: [
+        "draft",
+        "awaiting_payment",
+        "in_review",
+        "live",
+        "suspended",
+      ],
+      follia_ticket_category: ["general", "edit_request", "bug", "billing"],
+      follia_ticket_status: ["open", "in_progress", "resolved", "closed"],
     },
   },
 } as const
