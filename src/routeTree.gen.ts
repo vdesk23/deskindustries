@@ -32,6 +32,7 @@ import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/em
 import { Route as ApiPublicLeadSubmitRouteImport } from './routes/api/public/lead-submit'
 import { Route as ApiPublicFolliaPreviewEmailRouteImport } from './routes/api/public/follia-preview-email'
 import { Route as ApiPublicContentPlanSubmitRouteImport } from './routes/api/public/content-plan-submit'
+import { Route as AccountSitesSiteIdRouteImport } from './routes/account.sites.$siteId'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -153,6 +154,11 @@ const ApiPublicContentPlanSubmitRoute =
     path: '/api/public/content-plan-submit',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AccountSitesSiteIdRoute = AccountSitesSiteIdRouteImport.update({
+  id: '/$siteId',
+  path: '/$siteId',
+  getParentRoute: () => AccountSitesRoute,
+} as any)
 const LovableEmailTransactionalSendRoute =
   LovableEmailTransactionalSendRouteImport.update({
     id: '/lovable/email/transactional/send',
@@ -185,13 +191,14 @@ export interface FileRoutesByFullPath {
   '/progetti': typeof ProgettiRoute
   '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
-  '/account/sites': typeof AccountSitesRoute
+  '/account/sites': typeof AccountSitesRouteWithChildren
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/settori/': typeof SettoriIndexRoute
+  '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
@@ -213,13 +220,14 @@ export interface FileRoutesByTo {
   '/progetti': typeof ProgettiRoute
   '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
-  '/account/sites': typeof AccountSitesRoute
+  '/account/sites': typeof AccountSitesRouteWithChildren
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/settori': typeof SettoriIndexRoute
+  '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
@@ -242,13 +250,14 @@ export interface FileRoutesById {
   '/progetti': typeof ProgettiRoute
   '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
-  '/account/sites': typeof AccountSitesRoute
+  '/account/sites': typeof AccountSitesRouteWithChildren
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/settori/': typeof SettoriIndexRoute
+  '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
@@ -279,6 +288,7 @@ export interface FileRouteTypes {
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
     | '/settori/'
+    | '/account/sites/$siteId'
     | '/api/public/content-plan-submit'
     | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
@@ -307,6 +317,7 @@ export interface FileRouteTypes {
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
     | '/settori'
+    | '/account/sites/$siteId'
     | '/api/public/content-plan-submit'
     | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
@@ -335,6 +346,7 @@ export interface FileRouteTypes {
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
     | '/settori/'
+    | '/account/sites/$siteId'
     | '/api/public/content-plan-submit'
     | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
@@ -535,6 +547,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicContentPlanSubmitRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account/sites/$siteId': {
+      id: '/account/sites/$siteId'
+      path: '/$siteId'
+      fullPath: '/account/sites/$siteId'
+      preLoaderRoute: typeof AccountSitesSiteIdRouteImport
+      parentRoute: typeof AccountSitesRoute
+    }
     '/lovable/email/transactional/send': {
       id: '/lovable/email/transactional/send'
       path: '/lovable/email/transactional/send'
@@ -559,12 +578,24 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AccountSitesRouteChildren {
+  AccountSitesSiteIdRoute: typeof AccountSitesSiteIdRoute
+}
+
+const AccountSitesRouteChildren: AccountSitesRouteChildren = {
+  AccountSitesSiteIdRoute: AccountSitesSiteIdRoute,
+}
+
+const AccountSitesRouteWithChildren = AccountSitesRoute._addFileChildren(
+  AccountSitesRouteChildren,
+)
+
 interface AccountRouteChildren {
-  AccountSitesRoute: typeof AccountSitesRoute
+  AccountSitesRoute: typeof AccountSitesRouteWithChildren
 }
 
 const AccountRouteChildren: AccountRouteChildren = {
-  AccountSitesRoute: AccountSitesRoute,
+  AccountSitesRoute: AccountSitesRouteWithChildren,
 }
 
 const AccountRouteWithChildren =
