@@ -27,6 +27,7 @@ import { Route as ToolsOttimizzatoreSeoRouteImport } from './routes/tools.ottimi
 import { Route as SettoriSlugRouteImport } from './routes/settori.$slug'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
+import { Route as AccountSitesRouteImport } from './routes/account.sites'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicLeadSubmitRouteImport } from './routes/api/public/lead-submit'
 import { Route as ApiPublicFolliaPreviewEmailRouteImport } from './routes/api/public/follia-preview-email'
@@ -125,6 +126,11 @@ const CheckoutReturnRoute = CheckoutReturnRouteImport.update({
   path: '/checkout/return',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountSitesRoute = AccountSitesRouteImport.update({
+  id: '/sites',
+  path: '/sites',
+  getParentRoute: () => AccountRoute,
+} as any)
 const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   id: '/lovable/email/suppression',
   path: '/lovable/email/suppression',
@@ -168,7 +174,7 @@ const LovableEmailQueueProcessRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/account': typeof AccountRoute
+  '/account': typeof AccountRouteWithChildren
   '/auth': typeof AuthRoute
   '/chi-siamo': typeof ChiSiamoRoute
   '/contatti': typeof ContattiRoute
@@ -179,6 +185,7 @@ export interface FileRoutesByFullPath {
   '/progetti': typeof ProgettiRoute
   '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/account/sites': typeof AccountSitesRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
@@ -195,7 +202,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/account': typeof AccountRoute
+  '/account': typeof AccountRouteWithChildren
   '/auth': typeof AuthRoute
   '/chi-siamo': typeof ChiSiamoRoute
   '/contatti': typeof ContattiRoute
@@ -206,6 +213,7 @@ export interface FileRoutesByTo {
   '/progetti': typeof ProgettiRoute
   '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/account/sites': typeof AccountSitesRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
@@ -223,7 +231,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/account': typeof AccountRoute
+  '/account': typeof AccountRouteWithChildren
   '/auth': typeof AuthRoute
   '/chi-siamo': typeof ChiSiamoRoute
   '/contatti': typeof ContattiRoute
@@ -234,6 +242,7 @@ export interface FileRoutesById {
   '/progetti': typeof ProgettiRoute
   '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/account/sites': typeof AccountSitesRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
@@ -263,6 +272,7 @@ export interface FileRouteTypes {
     | '/progetti'
     | '/termini'
     | '/unsubscribe'
+    | '/account/sites'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/settori/$slug'
@@ -290,6 +300,7 @@ export interface FileRouteTypes {
     | '/progetti'
     | '/termini'
     | '/unsubscribe'
+    | '/account/sites'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/settori/$slug'
@@ -317,6 +328,7 @@ export interface FileRouteTypes {
     | '/progetti'
     | '/termini'
     | '/unsubscribe'
+    | '/account/sites'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/settori/$slug'
@@ -334,7 +346,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AccountRoute: typeof AccountRoute
+  AccountRoute: typeof AccountRouteWithChildren
   AuthRoute: typeof AuthRoute
   ChiSiamoRoute: typeof ChiSiamoRoute
   ContattiRoute: typeof ContattiRoute
@@ -488,6 +500,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckoutReturnRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account/sites': {
+      id: '/account/sites'
+      path: '/sites'
+      fullPath: '/account/sites'
+      preLoaderRoute: typeof AccountSitesRouteImport
+      parentRoute: typeof AccountRoute
+    }
     '/lovable/email/suppression': {
       id: '/lovable/email/suppression'
       path: '/lovable/email/suppression'
@@ -540,9 +559,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AccountRouteChildren {
+  AccountSitesRoute: typeof AccountSitesRoute
+}
+
+const AccountRouteChildren: AccountRouteChildren = {
+  AccountSitesRoute: AccountSitesRoute,
+}
+
+const AccountRouteWithChildren =
+  AccountRoute._addFileChildren(AccountRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AccountRoute: AccountRoute,
+  AccountRoute: AccountRouteWithChildren,
   AuthRoute: AuthRoute,
   ChiSiamoRoute: ChiSiamoRoute,
   ContattiRoute: ContattiRoute,
