@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, ExternalLink, LogOut, Sparkles, FileText } from "lucide-react";
+import { ArrowRight, ExternalLink, LogOut, Sparkles, FileText, Globe } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { getStripeEnvironment } from "@/lib/stripe";
@@ -250,7 +250,23 @@ function AccountPage() {
                   <ArrowRight className="size-5 text-muted-foreground group-hover:text-amber group-hover:translate-x-0.5 transition" />
                 </div>
               </Link>
+              <Link
+                to="/account/sites"
+                className="group block rounded-2xl border border-border bg-background/40 p-5 hover:border-amber/50 transition-all mt-3"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <p className="text-[10px] font-display tracking-[0.3em] text-amber uppercase mb-2">Tool · Foll.IA</p>
+                    <h3 className="font-display font-semibold text-lg mb-1 flex items-center gap-2"><Globe className="size-4" /> I miei siti Foll.IA</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Genera, pubblica e gestisci il tuo sito vetrina locale con AI. Dashboard, ticket e modifiche manuali.
+                    </p>
+                  </div>
+                  <ArrowRight className="size-5 text-muted-foreground group-hover:text-amber group-hover:translate-x-0.5 transition" />
+                </div>
+              </Link>
             </motion.div>
+
             {purchases.length > 0 && (
               <motion.div
                 initial={{ opacity: 0, y: 12 }}

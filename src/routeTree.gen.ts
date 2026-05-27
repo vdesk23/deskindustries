@@ -25,12 +25,15 @@ import { Route as SettoriIndexRouteImport } from './routes/settori.index'
 import { Route as ToolsPianoContenutiRouteImport } from './routes/tools.piano-contenuti'
 import { Route as ToolsOttimizzatoreSeoRouteImport } from './routes/tools.ottimizzatore-seo'
 import { Route as SettoriSlugRouteImport } from './routes/settori.$slug'
+import { Route as SSubdomainRouteImport } from './routes/s.$subdomain'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
+import { Route as AccountSitesRouteImport } from './routes/account.sites'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicLeadSubmitRouteImport } from './routes/api/public/lead-submit'
 import { Route as ApiPublicFolliaPreviewEmailRouteImport } from './routes/api/public/follia-preview-email'
 import { Route as ApiPublicContentPlanSubmitRouteImport } from './routes/api/public/content-plan-submit'
+import { Route as AccountSitesSiteIdRouteImport } from './routes/account.sites.$siteId'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -115,6 +118,11 @@ const SettoriSlugRoute = SettoriSlugRouteImport.update({
   path: '/settori/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SSubdomainRoute = SSubdomainRouteImport.update({
+  id: '/s/$subdomain',
+  path: '/s/$subdomain',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
   id: '/email/unsubscribe',
   path: '/email/unsubscribe',
@@ -124,6 +132,11 @@ const CheckoutReturnRoute = CheckoutReturnRouteImport.update({
   id: '/checkout/return',
   path: '/checkout/return',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AccountSitesRoute = AccountSitesRouteImport.update({
+  id: '/sites',
+  path: '/sites',
+  getParentRoute: () => AccountRoute,
 } as any)
 const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   id: '/lovable/email/suppression',
@@ -147,6 +160,11 @@ const ApiPublicContentPlanSubmitRoute =
     path: '/api/public/content-plan-submit',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AccountSitesSiteIdRoute = AccountSitesSiteIdRouteImport.update({
+  id: '/$siteId',
+  path: '/$siteId',
+  getParentRoute: () => AccountSitesRoute,
+} as any)
 const LovableEmailTransactionalSendRoute =
   LovableEmailTransactionalSendRouteImport.update({
     id: '/lovable/email/transactional/send',
@@ -168,7 +186,7 @@ const LovableEmailQueueProcessRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/account': typeof AccountRoute
+  '/account': typeof AccountRouteWithChildren
   '/auth': typeof AuthRoute
   '/chi-siamo': typeof ChiSiamoRoute
   '/contatti': typeof ContattiRoute
@@ -179,12 +197,15 @@ export interface FileRoutesByFullPath {
   '/progetti': typeof ProgettiRoute
   '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/account/sites': typeof AccountSitesRouteWithChildren
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/s/$subdomain': typeof SSubdomainRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/settori/': typeof SettoriIndexRoute
+  '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
@@ -195,7 +216,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/account': typeof AccountRoute
+  '/account': typeof AccountRouteWithChildren
   '/auth': typeof AuthRoute
   '/chi-siamo': typeof ChiSiamoRoute
   '/contatti': typeof ContattiRoute
@@ -206,12 +227,15 @@ export interface FileRoutesByTo {
   '/progetti': typeof ProgettiRoute
   '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/account/sites': typeof AccountSitesRouteWithChildren
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/s/$subdomain': typeof SSubdomainRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/settori': typeof SettoriIndexRoute
+  '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
@@ -223,7 +247,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/account': typeof AccountRoute
+  '/account': typeof AccountRouteWithChildren
   '/auth': typeof AuthRoute
   '/chi-siamo': typeof ChiSiamoRoute
   '/contatti': typeof ContattiRoute
@@ -234,12 +258,15 @@ export interface FileRoutesById {
   '/progetti': typeof ProgettiRoute
   '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
+  '/account/sites': typeof AccountSitesRouteWithChildren
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/s/$subdomain': typeof SSubdomainRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/settori/': typeof SettoriIndexRoute
+  '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
@@ -263,12 +290,15 @@ export interface FileRouteTypes {
     | '/progetti'
     | '/termini'
     | '/unsubscribe'
+    | '/account/sites'
     | '/checkout/return'
     | '/email/unsubscribe'
+    | '/s/$subdomain'
     | '/settori/$slug'
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
     | '/settori/'
+    | '/account/sites/$siteId'
     | '/api/public/content-plan-submit'
     | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
@@ -290,12 +320,15 @@ export interface FileRouteTypes {
     | '/progetti'
     | '/termini'
     | '/unsubscribe'
+    | '/account/sites'
     | '/checkout/return'
     | '/email/unsubscribe'
+    | '/s/$subdomain'
     | '/settori/$slug'
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
     | '/settori'
+    | '/account/sites/$siteId'
     | '/api/public/content-plan-submit'
     | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
@@ -317,12 +350,15 @@ export interface FileRouteTypes {
     | '/progetti'
     | '/termini'
     | '/unsubscribe'
+    | '/account/sites'
     | '/checkout/return'
     | '/email/unsubscribe'
+    | '/s/$subdomain'
     | '/settori/$slug'
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
     | '/settori/'
+    | '/account/sites/$siteId'
     | '/api/public/content-plan-submit'
     | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
@@ -334,7 +370,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AccountRoute: typeof AccountRoute
+  AccountRoute: typeof AccountRouteWithChildren
   AuthRoute: typeof AuthRoute
   ChiSiamoRoute: typeof ChiSiamoRoute
   ContattiRoute: typeof ContattiRoute
@@ -347,6 +383,7 @@ export interface RootRouteChildren {
   UnsubscribeRoute: typeof UnsubscribeRoute
   CheckoutReturnRoute: typeof CheckoutReturnRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
+  SSubdomainRoute: typeof SSubdomainRoute
   SettoriSlugRoute: typeof SettoriSlugRoute
   ToolsOttimizzatoreSeoRoute: typeof ToolsOttimizzatoreSeoRoute
   ToolsPianoContenutiRoute: typeof ToolsPianoContenutiRoute
@@ -474,6 +511,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettoriSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/s/$subdomain': {
+      id: '/s/$subdomain'
+      path: '/s/$subdomain'
+      fullPath: '/s/$subdomain'
+      preLoaderRoute: typeof SSubdomainRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/email/unsubscribe': {
       id: '/email/unsubscribe'
       path: '/email/unsubscribe'
@@ -487,6 +531,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/checkout/return'
       preLoaderRoute: typeof CheckoutReturnRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/account/sites': {
+      id: '/account/sites'
+      path: '/sites'
+      fullPath: '/account/sites'
+      preLoaderRoute: typeof AccountSitesRouteImport
+      parentRoute: typeof AccountRoute
     }
     '/lovable/email/suppression': {
       id: '/lovable/email/suppression'
@@ -516,6 +567,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicContentPlanSubmitRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account/sites/$siteId': {
+      id: '/account/sites/$siteId'
+      path: '/$siteId'
+      fullPath: '/account/sites/$siteId'
+      preLoaderRoute: typeof AccountSitesSiteIdRouteImport
+      parentRoute: typeof AccountSitesRoute
+    }
     '/lovable/email/transactional/send': {
       id: '/lovable/email/transactional/send'
       path: '/lovable/email/transactional/send'
@@ -540,9 +598,32 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AccountSitesRouteChildren {
+  AccountSitesSiteIdRoute: typeof AccountSitesSiteIdRoute
+}
+
+const AccountSitesRouteChildren: AccountSitesRouteChildren = {
+  AccountSitesSiteIdRoute: AccountSitesSiteIdRoute,
+}
+
+const AccountSitesRouteWithChildren = AccountSitesRoute._addFileChildren(
+  AccountSitesRouteChildren,
+)
+
+interface AccountRouteChildren {
+  AccountSitesRoute: typeof AccountSitesRouteWithChildren
+}
+
+const AccountRouteChildren: AccountRouteChildren = {
+  AccountSitesRoute: AccountSitesRouteWithChildren,
+}
+
+const AccountRouteWithChildren =
+  AccountRoute._addFileChildren(AccountRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AccountRoute: AccountRoute,
+  AccountRoute: AccountRouteWithChildren,
   AuthRoute: AuthRoute,
   ChiSiamoRoute: ChiSiamoRoute,
   ContattiRoute: ContattiRoute,
@@ -555,6 +636,7 @@ const rootRouteChildren: RootRouteChildren = {
   UnsubscribeRoute: UnsubscribeRoute,
   CheckoutReturnRoute: CheckoutReturnRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
+  SSubdomainRoute: SSubdomainRoute,
   SettoriSlugRoute: SettoriSlugRoute,
   ToolsOttimizzatoreSeoRoute: ToolsOttimizzatoreSeoRoute,
   ToolsPianoContenutiRoute: ToolsPianoContenutiRoute,

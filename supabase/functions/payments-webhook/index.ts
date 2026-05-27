@@ -118,6 +118,26 @@ async function handleCheckoutCompleted(session: any, env: StripeEnv) {
     await supabase.from("seo_optimizer_extra_credits").upsert(rows, { onConflict: "stripe_session_id" });
   }
 
+  // Foll.IA: activate site when metadata.folliaSiteId present
+  const folliaSiteId = session.metadata?.folliaSiteId;
+  const folliaPlan = session.metadata?.folliaPlan; // 'basic' | 'with_setup'
+  if (folliaSiteId) {
+    const newStatus = folliaPlan === "with_setup" ? "in_review" : "live";
+    const planValue = folliaPlan === "with_setup" ? "with_setup_297" : "basic_19";
+    const { error: siteErr } = await supabase
+      .from("follia_sites")
+      .update({
+        status: newStatus,
+        plan: planValue,
+        stripe_customer_id: session.customer,
+        stripe_subscription_id: session.subscription,
+        ...(resolvedUserId && { user_id: resolvedUserId, claimed_at: new Date().toISOString() }),
+      })
+      .eq("id", folliaSiteId);
+    if (siteErr) console.error("Could not update follia_site", siteErr);
+  }
+
+
   // Send welcome email if user does not yet exist
   if (!existingUser) {
     try {
