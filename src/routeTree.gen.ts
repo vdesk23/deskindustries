@@ -15,6 +15,7 @@ import { Route as ProgettiRouteImport } from './routes/progetti'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PacchettiRouteImport } from './routes/pacchetti'
 import { Route as MetodoCocoRouteImport } from './routes/metodo-coco'
+import { Route as FolliaRouteImport } from './routes/follia'
 import { Route as ContattiRouteImport } from './routes/contatti'
 import { Route as ChiSiamoRouteImport } from './routes/chi-siamo'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -28,6 +29,7 @@ import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicLeadSubmitRouteImport } from './routes/api/public/lead-submit'
+import { Route as ApiPublicFolliaPreviewEmailRouteImport } from './routes/api/public/follia-preview-email'
 import { Route as ApiPublicContentPlanSubmitRouteImport } from './routes/api/public/content-plan-submit'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
@@ -61,6 +63,11 @@ const PacchettiRoute = PacchettiRouteImport.update({
 const MetodoCocoRoute = MetodoCocoRouteImport.update({
   id: '/metodo-coco',
   path: '/metodo-coco',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FolliaRoute = FolliaRouteImport.update({
+  id: '/follia',
+  path: '/follia',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContattiRoute = ContattiRouteImport.update({
@@ -128,6 +135,12 @@ const ApiPublicLeadSubmitRoute = ApiPublicLeadSubmitRouteImport.update({
   path: '/api/public/lead-submit',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicFolliaPreviewEmailRoute =
+  ApiPublicFolliaPreviewEmailRouteImport.update({
+    id: '/api/public/follia-preview-email',
+    path: '/api/public/follia-preview-email',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicContentPlanSubmitRoute =
   ApiPublicContentPlanSubmitRouteImport.update({
     id: '/api/public/content-plan-submit',
@@ -159,6 +172,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/chi-siamo': typeof ChiSiamoRoute
   '/contatti': typeof ContattiRoute
+  '/follia': typeof FolliaRoute
   '/metodo-coco': typeof MetodoCocoRoute
   '/pacchetti': typeof PacchettiRoute
   '/privacy': typeof PrivacyRoute
@@ -172,6 +186,7 @@ export interface FileRoutesByFullPath {
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/settori/': typeof SettoriIndexRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
+  '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -184,6 +199,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/chi-siamo': typeof ChiSiamoRoute
   '/contatti': typeof ContattiRoute
+  '/follia': typeof FolliaRoute
   '/metodo-coco': typeof MetodoCocoRoute
   '/pacchetti': typeof PacchettiRoute
   '/privacy': typeof PrivacyRoute
@@ -197,6 +213,7 @@ export interface FileRoutesByTo {
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/settori': typeof SettoriIndexRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
+  '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -210,6 +227,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/chi-siamo': typeof ChiSiamoRoute
   '/contatti': typeof ContattiRoute
+  '/follia': typeof FolliaRoute
   '/metodo-coco': typeof MetodoCocoRoute
   '/pacchetti': typeof PacchettiRoute
   '/privacy': typeof PrivacyRoute
@@ -223,6 +241,7 @@ export interface FileRoutesById {
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/settori/': typeof SettoriIndexRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
+  '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -237,6 +256,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/chi-siamo'
     | '/contatti'
+    | '/follia'
     | '/metodo-coco'
     | '/pacchetti'
     | '/privacy'
@@ -250,6 +270,7 @@ export interface FileRouteTypes {
     | '/tools/piano-contenuti'
     | '/settori/'
     | '/api/public/content-plan-submit'
+    | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
     | '/lovable/email/queue/process'
@@ -262,6 +283,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/chi-siamo'
     | '/contatti'
+    | '/follia'
     | '/metodo-coco'
     | '/pacchetti'
     | '/privacy'
@@ -275,6 +297,7 @@ export interface FileRouteTypes {
     | '/tools/piano-contenuti'
     | '/settori'
     | '/api/public/content-plan-submit'
+    | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
     | '/lovable/email/queue/process'
@@ -287,6 +310,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/chi-siamo'
     | '/contatti'
+    | '/follia'
     | '/metodo-coco'
     | '/pacchetti'
     | '/privacy'
@@ -300,6 +324,7 @@ export interface FileRouteTypes {
     | '/tools/piano-contenuti'
     | '/settori/'
     | '/api/public/content-plan-submit'
+    | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
     | '/lovable/email/queue/process'
@@ -313,6 +338,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ChiSiamoRoute: typeof ChiSiamoRoute
   ContattiRoute: typeof ContattiRoute
+  FolliaRoute: typeof FolliaRoute
   MetodoCocoRoute: typeof MetodoCocoRoute
   PacchettiRoute: typeof PacchettiRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -326,6 +352,7 @@ export interface RootRouteChildren {
   ToolsPianoContenutiRoute: typeof ToolsPianoContenutiRoute
   SettoriIndexRoute: typeof SettoriIndexRoute
   ApiPublicContentPlanSubmitRoute: typeof ApiPublicContentPlanSubmitRoute
+  ApiPublicFolliaPreviewEmailRoute: typeof ApiPublicFolliaPreviewEmailRoute
   ApiPublicLeadSubmitRoute: typeof ApiPublicLeadSubmitRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
@@ -375,6 +402,13 @@ declare module '@tanstack/react-router' {
       path: '/metodo-coco'
       fullPath: '/metodo-coco'
       preLoaderRoute: typeof MetodoCocoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/follia': {
+      id: '/follia'
+      path: '/follia'
+      fullPath: '/follia'
+      preLoaderRoute: typeof FolliaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contatti': {
@@ -468,6 +502,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicLeadSubmitRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/follia-preview-email': {
+      id: '/api/public/follia-preview-email'
+      path: '/api/public/follia-preview-email'
+      fullPath: '/api/public/follia-preview-email'
+      preLoaderRoute: typeof ApiPublicFolliaPreviewEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/content-plan-submit': {
       id: '/api/public/content-plan-submit'
       path: '/api/public/content-plan-submit'
@@ -505,6 +546,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ChiSiamoRoute: ChiSiamoRoute,
   ContattiRoute: ContattiRoute,
+  FolliaRoute: FolliaRoute,
   MetodoCocoRoute: MetodoCocoRoute,
   PacchettiRoute: PacchettiRoute,
   PrivacyRoute: PrivacyRoute,
@@ -518,6 +560,7 @@ const rootRouteChildren: RootRouteChildren = {
   ToolsPianoContenutiRoute: ToolsPianoContenutiRoute,
   SettoriIndexRoute: SettoriIndexRoute,
   ApiPublicContentPlanSubmitRoute: ApiPublicContentPlanSubmitRoute,
+  ApiPublicFolliaPreviewEmailRoute: ApiPublicFolliaPreviewEmailRoute,
   ApiPublicLeadSubmitRoute: ApiPublicLeadSubmitRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
