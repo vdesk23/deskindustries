@@ -79,7 +79,7 @@ const ticketSchema = z.object({
   siteId: z.string().uuid(),
   subject: z.string().trim().min(3).max(140),
   body: z.string().trim().min(5).max(4000),
-  category: z.enum(["general", "edit", "bug", "billing"]).default("general"),
+  category: z.enum(["general", "edit_request", "bug", "billing"]).default("general"),
 });
 
 export const createFolliaTicket = createServerFn({ method: "POST" })
