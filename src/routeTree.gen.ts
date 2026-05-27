@@ -25,6 +25,7 @@ import { Route as SettoriIndexRouteImport } from './routes/settori.index'
 import { Route as ToolsPianoContenutiRouteImport } from './routes/tools.piano-contenuti'
 import { Route as ToolsOttimizzatoreSeoRouteImport } from './routes/tools.ottimizzatore-seo'
 import { Route as SettoriSlugRouteImport } from './routes/settori.$slug'
+import { Route as SSubdomainRouteImport } from './routes/s.$subdomain'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
 import { Route as AccountSitesRouteImport } from './routes/account.sites'
@@ -117,6 +118,11 @@ const SettoriSlugRoute = SettoriSlugRouteImport.update({
   path: '/settori/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SSubdomainRoute = SSubdomainRouteImport.update({
+  id: '/s/$subdomain',
+  path: '/s/$subdomain',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
   id: '/email/unsubscribe',
   path: '/email/unsubscribe',
@@ -194,6 +200,7 @@ export interface FileRoutesByFullPath {
   '/account/sites': typeof AccountSitesRouteWithChildren
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/s/$subdomain': typeof SSubdomainRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
@@ -223,6 +230,7 @@ export interface FileRoutesByTo {
   '/account/sites': typeof AccountSitesRouteWithChildren
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/s/$subdomain': typeof SSubdomainRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
@@ -253,6 +261,7 @@ export interface FileRoutesById {
   '/account/sites': typeof AccountSitesRouteWithChildren
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
+  '/s/$subdomain': typeof SSubdomainRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
@@ -284,6 +293,7 @@ export interface FileRouteTypes {
     | '/account/sites'
     | '/checkout/return'
     | '/email/unsubscribe'
+    | '/s/$subdomain'
     | '/settori/$slug'
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
@@ -313,6 +323,7 @@ export interface FileRouteTypes {
     | '/account/sites'
     | '/checkout/return'
     | '/email/unsubscribe'
+    | '/s/$subdomain'
     | '/settori/$slug'
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
@@ -342,6 +353,7 @@ export interface FileRouteTypes {
     | '/account/sites'
     | '/checkout/return'
     | '/email/unsubscribe'
+    | '/s/$subdomain'
     | '/settori/$slug'
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
@@ -371,6 +383,7 @@ export interface RootRouteChildren {
   UnsubscribeRoute: typeof UnsubscribeRoute
   CheckoutReturnRoute: typeof CheckoutReturnRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
+  SSubdomainRoute: typeof SSubdomainRoute
   SettoriSlugRoute: typeof SettoriSlugRoute
   ToolsOttimizzatoreSeoRoute: typeof ToolsOttimizzatoreSeoRoute
   ToolsPianoContenutiRoute: typeof ToolsPianoContenutiRoute
@@ -498,6 +511,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettoriSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/s/$subdomain': {
+      id: '/s/$subdomain'
+      path: '/s/$subdomain'
+      fullPath: '/s/$subdomain'
+      preLoaderRoute: typeof SSubdomainRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/email/unsubscribe': {
       id: '/email/unsubscribe'
       path: '/email/unsubscribe'
@@ -616,6 +636,7 @@ const rootRouteChildren: RootRouteChildren = {
   UnsubscribeRoute: UnsubscribeRoute,
   CheckoutReturnRoute: CheckoutReturnRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
+  SSubdomainRoute: SSubdomainRoute,
   SettoriSlugRoute: SettoriSlugRoute,
   ToolsOttimizzatoreSeoRoute: ToolsOttimizzatoreSeoRoute,
   ToolsPianoContenutiRoute: ToolsPianoContenutiRoute,
