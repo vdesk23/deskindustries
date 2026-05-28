@@ -227,3 +227,182 @@ export const checkFolliaSubdomain = createServerFn({ method: "POST" })
       .maybeSingle();
     return { available: !existing, reason: existing ? "Già in uso." : undefined };
   });
+
+// ---------------------------------------------------------------------------
+// Prefill from URLs: vecchio sito, sito di ispirazione, Google My Business
+// ---------------------------------------------------------------------------
+
+const prefillSchema = z.object({
+  oldSiteUrl: z.string().trim().max(500).url().optional().or(z.literal("")),
+  inspirationUrl: z.string().trim().max(500).url().optional().or(z.literal("")),
+  gmbUrl: z.string().trim().max(500).url().optional().or(z.literal("")),
+});
+
+async function fetchTextFromUrl(url: string, maxChars = 30000): Promise<{ ok: boolean; text?: string; title?: string; error?: string }> {
+  try {
+    const u = new URL(url);
+    if (!/^https?:$/.test(u.protocol)) return { ok: false, error: "protocol" };
+  } catch {
+    return { ok: false, error: "invalid_url" };
+  }
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), 6500);
+  try {
+    const res = await fetch(url, {
+      signal: ctrl.signal,
+      redirect: "follow",
+      headers: {
+        "User-Agent": "Mozilla/5.0 (compatible; FolliaPrefill/1.0; +https://deskindustries.com)",
+        "Accept": "text/html,application/xhtml+xml",
+        "Accept-Language": "it-IT,it;q=0.9,en;q=0.8",
+      },
+    });
+    if (!res.ok) return { ok: false, error: `status_${res.status}` };
+    const ct = res.headers.get("content-type") || "";
+    if (!ct.includes("text/") && !ct.includes("html") && !ct.includes("xml")) {
+      return { ok: false, error: "not_html" };
+    }
+    let html = await res.text();
+    if (html.length > 400000) html = html.slice(0, 400000);
+    const titleMatch = html.match(/<title[^>]*>([^<]{1,300})<\/title>/i);
+    const title = titleMatch?.[1]?.trim();
+    // strip script/style/svg/noscript
+    const cleaned = html
+      .replace(/<script[\s\S]*?<\/script>/gi, " ")
+      .replace(/<style[\s\S]*?<\/style>/gi, " ")
+      .replace(/<svg[\s\S]*?<\/svg>/gi, " ")
+      .replace(/<noscript[\s\S]*?<\/noscript>/gi, " ")
+      .replace(/<!--[\s\S]*?-->/g, " ")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/&nbsp;/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    return { ok: true, text: cleaned.slice(0, maxChars), title };
+  } catch (e: any) {
+    return { ok: false, error: e?.name === "AbortError" ? "timeout" : "fetch_error" };
+  } finally {
+    clearTimeout(t);
+  }
+}
+
+const PREFILL_SYSTEM_PROMPT = `Sei un assistente che estrae i dati di un'attività locale italiana da pagine web grezze. Ricevi fino a 3 fonti:
+- "old_site": il sito web attuale dell'attività (fonte primaria per nome, contatti, descrizione, servizi)
+- "inspiration": un sito che l'utente vuole come riferimento di STILE (NON copiare contenuti: estrai solo palette colori e tono di voce)
+- "gmb": pagina Google Maps/My Business (fonte primaria per indirizzo, telefono, orari, città)
+
+Restituisci SOLO JSON valido con esattamente questa struttura, usando null per i campi che non riesci a determinare con ragionevole certezza:
+{
+  "business_type_guess": "restaurant" | "retail_shop" | "barbershop_salon" | "professional" | "other" | null,
+  "business_name": string | null,
+  "city": string | null,
+  "address": string | null,
+  "phone": string | null,
+  "description": string | null,        // 1-3 frasi, italiano
+  "services": string | null,            // lista discorsiva di servizi/prodotti/piatti, max 300 char
+  "opening_hours": string | null,       // formato libero leggibile, es. "Lun-Ven 9-19, Sab 9-13"
+  "primary_color": string | null,       // hex #rrggbb estratto da 'inspiration' se presente, altrimenti da 'old_site'
+  "secondary_color": string | null,
+  "tone_notes": string | null,          // max 200 char, derivato SOLO da 'inspiration'
+  "subdomain_suggestion": string | null // solo a-z 0-9 e trattini, 3-30 char, basato sul nome
+}
+
+Regole critiche:
+- Non inventare numeri di telefono, indirizzi o orari: se non li trovi, usa null.
+- Non copiare frasi intere dal sito di ispirazione nei campi description/services.
+- I colori devono essere hex validi #rrggbb.`;
+
+async function callAiPrefill(payload: {
+  oldSite?: { title?: string; text: string };
+  inspiration?: { title?: string; text: string };
+  gmb?: { title?: string; text: string };
+}): Promise<Record<string, unknown> | null> {
+  const lovableKey = process.env.LOVABLE_API_KEY;
+  if (!lovableKey) return null;
+
+  const parts: string[] = [];
+  if (payload.oldSite) parts.push(`=== old_site ===\nTITLE: ${payload.oldSite.title || ""}\n${payload.oldSite.text}`);
+  if (payload.inspiration) parts.push(`=== inspiration ===\nTITLE: ${payload.inspiration.title || ""}\n${payload.inspiration.text}`);
+  if (payload.gmb) parts.push(`=== gmb ===\nTITLE: ${payload.gmb.title || ""}\n${payload.gmb.text}`);
+  if (!parts.length) return null;
+
+  const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${lovableKey}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: "google/gemini-2.5-flash",
+      messages: [
+        { role: "system", content: PREFILL_SYSTEM_PROMPT },
+        { role: "user", content: parts.join("\n\n") },
+      ],
+      response_format: { type: "json_object" },
+    }),
+  });
+  if (!res.ok) {
+    console.error("Prefill AI error", res.status, await res.text().catch(() => ""));
+    return null;
+  }
+  const json = await res.json();
+  const content = json?.choices?.[0]?.message?.content;
+  if (!content) return null;
+  try { return JSON.parse(content); } catch { return null; }
+}
+
+export const prefillFolliaFromUrls = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) => prefillSchema.parse(input))
+  .handler(async ({ data }) => {
+    const oldSiteUrl = data.oldSiteUrl?.trim() || "";
+    const inspirationUrl = data.inspirationUrl?.trim() || "";
+    const gmbUrl = data.gmbUrl?.trim() || "";
+
+    if (!oldSiteUrl && !inspirationUrl && !gmbUrl) {
+      return { ok: true as const, data: {}, sources: [] as Array<{ url: string; kind: string; ok: boolean; error?: string }> };
+    }
+
+    const tasks: Array<Promise<{ kind: "old_site" | "inspiration" | "gmb"; url: string; res: Awaited<ReturnType<typeof fetchTextFromUrl>> }>> = [];
+    if (oldSiteUrl) tasks.push(fetchTextFromUrl(oldSiteUrl).then((res) => ({ kind: "old_site", url: oldSiteUrl, res })));
+    if (inspirationUrl) tasks.push(fetchTextFromUrl(inspirationUrl).then((res) => ({ kind: "inspiration", url: inspirationUrl, res })));
+    if (gmbUrl) tasks.push(fetchTextFromUrl(gmbUrl, 15000).then((res) => ({ kind: "gmb", url: gmbUrl, res })));
+
+    const results = await Promise.all(tasks);
+    const sources = results.map((r) => ({ url: r.url, kind: r.kind, ok: r.res.ok, error: r.res.error }));
+
+    const payload: Parameters<typeof callAiPrefill>[0] = {};
+    for (const r of results) {
+      if (!r.res.ok || !r.res.text) continue;
+      payload[r.kind === "old_site" ? "oldSite" : r.kind === "inspiration" ? "inspiration" : "gmb"] = {
+        title: r.res.title,
+        text: r.res.text,
+      };
+    }
+
+    const aiData = await callAiPrefill(payload);
+    if (!aiData) {
+      return { ok: true as const, data: {}, sources };
+    }
+
+    // sanitize / whitelist fields
+    const allowedTypes = new Set(["restaurant", "retail_shop", "barbershop_salon", "professional", "other"]);
+    const hex = (v: unknown) => (typeof v === "string" && /^#[0-9a-fA-F]{6}$/.test(v) ? v.toLowerCase() : null);
+    const str = (v: unknown, max: number) => (typeof v === "string" && v.trim() ? v.trim().slice(0, max) : null);
+    const sub = (v: unknown) => {
+      if (typeof v !== "string") return null;
+      const s = v.toLowerCase().replace(/[^a-z0-9-]/g, "").replace(/^-+|-+$/g, "").slice(0, 30);
+      return s.length >= 3 ? s : null;
+    };
+    const cleaned = {
+      business_type_guess: typeof aiData.business_type_guess === "string" && allowedTypes.has(aiData.business_type_guess) ? aiData.business_type_guess : null,
+      business_name: str(aiData.business_name, 80),
+      city: str(aiData.city, 80),
+      address: str(aiData.address, 200),
+      phone: str(aiData.phone, 40),
+      description: str(aiData.description, 800),
+      services: str(aiData.services, 500),
+      opening_hours: str(aiData.opening_hours, 300),
+      primary_color: hex(aiData.primary_color),
+      secondary_color: hex(aiData.secondary_color),
+      tone_notes: str(aiData.tone_notes, 200),
+      subdomain_suggestion: sub(aiData.subdomain_suggestion),
+    };
+
+    return { ok: true as const, data: cleaned, sources };
+  });
