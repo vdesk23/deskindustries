@@ -30,12 +30,20 @@ type BusinessTypeId = typeof BUSINESS_TYPES[number]["id"];
 function FolliaLanding() {
   const submit = useServerFn(createFolliaDraft);
   const checkSub = useServerFn(checkFolliaSubdomain);
+  const prefill = useServerFn(prefillFolliaFromUrls);
 
-  const [step, setStep] = useState<"intro" | "form" | "success">("intro");
+  const [step, setStep] = useState<"intro" | "prefill" | "form" | "success">("intro");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [subStatus, setSubStatus] = useState<{ checking: boolean; available?: boolean; reason?: string }>({ checking: false });
   const [createdSiteId, setCreatedSiteId] = useState<string | null>(null);
+
+  // Step "prefill"
+  const [prefillUrls, setPrefillUrls] = useState({ oldSiteUrl: "", inspirationUrl: "", gmbUrl: "" });
+  const [prefillLoading, setPrefillLoading] = useState(false);
+  const [prefillError, setPrefillError] = useState<string | null>(null);
+  const [prefillSources, setPrefillSources] = useState<Array<{ url: string; kind: string; ok: boolean; error?: string }>>([]);
+  const [prefilledFields, setPrefilledFields] = useState<Set<string>>(new Set());
 
   const [form, setForm] = useState({
     businessType: "" as BusinessTypeId | "",
