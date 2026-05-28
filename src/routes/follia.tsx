@@ -493,3 +493,22 @@ function PricingCard({ title, price, period, tagline, features, highlighted }: {
     </div>
   );
 }
+
+function PrefillUrlField({ icon: Icon, label, hint, placeholder, value, onChange }: { icon: React.ComponentType<{ className?: string }>; label: string; hint: string; placeholder: string; value: string; onChange: (v: string) => void }) {
+  return (
+    <div>
+      <label className="flex items-center gap-2 text-sm font-medium mb-1.5">
+        <Icon className="w-4 h-4 text-muted-foreground" />
+        {label}
+      </label>
+      <input
+        type="url"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className="w-full px-3.5 py-2.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:border-amber"
+      />
+      <p className="text-xs text-muted-foreground mt-1">{hint}</p>
+    </div>
+  );
+}
