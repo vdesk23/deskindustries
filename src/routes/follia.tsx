@@ -2,8 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, Sparkles, Store, UtensilsCrossed, Scissors, Briefcase, Building2, Loader2 } from "lucide-react";
-import { createFolliaDraft, checkFolliaSubdomain } from "@/lib/follia.functions";
+import { ArrowRight, CheckCircle2, Sparkles, Store, UtensilsCrossed, Scissors, Briefcase, Building2, Loader2, Globe, Wand2, MapPin } from "lucide-react";
+import { createFolliaDraft, checkFolliaSubdomain, prefillFolliaFromUrls } from "@/lib/follia.functions";
 
 export const Route = createFileRoute("/follia")({
   component: FolliaLanding,
