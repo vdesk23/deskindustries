@@ -190,7 +190,7 @@ function FolliaLanding() {
             {step === "intro" && (
               <div className="flex flex-col sm:flex-row gap-3">
                 <button
-                  onClick={() => setStep("form")}
+                  onClick={() => setStep("prefill")}
                   className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-amber text-amber-foreground font-semibold hover:opacity-90 transition shadow-lg shadow-amber/20"
                 >
                   Crea il mio sito gratis <ArrowRight className="w-4 h-4" />
