@@ -98,6 +98,65 @@ function FolliaLanding() {
     }
   }
 
+  async function runPrefill() {
+    setPrefillError(null);
+    const hasAny = prefillUrls.oldSiteUrl || prefillUrls.inspirationUrl || prefillUrls.gmbUrl;
+    if (!hasAny) {
+      setStep("form");
+      return;
+    }
+    setPrefillLoading(true);
+    try {
+      const res = await prefill({ data: prefillUrls });
+      setPrefillSources(res.sources || []);
+      const d = res.data || {};
+      const filled = new Set<string>();
+      setForm((p) => {
+        const next = { ...p };
+        const setIf = (key: keyof typeof p, val: unknown) => {
+          if (typeof val === "string" && val.trim() && !next[key]) {
+            (next[key] as string) = val;
+            filled.add(key as string);
+          }
+        };
+        if (d.business_type_guess && !next.businessType) {
+          next.businessType = d.business_type_guess as BusinessTypeId;
+          filled.add("businessType");
+        }
+        setIf("businessName", d.business_name);
+        setIf("city", d.city);
+        setIf("address", d.address);
+        setIf("phone", d.phone);
+        setIf("description", d.description);
+        setIf("services", d.services);
+        setIf("openingHours", d.opening_hours);
+        if (d.primary_color && /^#[0-9a-f]{6}$/i.test(d.primary_color)) {
+          next.primaryColor = d.primary_color;
+          filled.add("primaryColor");
+        }
+        if (d.secondary_color && /^#[0-9a-f]{6}$/i.test(d.secondary_color)) {
+          next.secondaryColor = d.secondary_color;
+          filled.add("secondaryColor");
+        }
+        if (d.subdomain_suggestion && !next.subdomain) {
+          next.subdomain = d.subdomain_suggestion as string;
+          filled.add("subdomain");
+        }
+        if (d.tone_notes) {
+          next.notes = next.notes ? next.notes : `Tono di voce/stile: ${d.tone_notes}`;
+          filled.add("notes");
+        }
+        return next;
+      });
+      setPrefilledFields(filled);
+      setStep("form");
+    } catch (err: any) {
+      setPrefillError(err?.message || "Non sono riuscito a leggere i link. Puoi compilare a mano.");
+    } finally {
+      setPrefillLoading(false);
+    }
+  }
+
   return (
     <main className="min-h-screen bg-background text-foreground">
       <section className="relative overflow-hidden border-b border-border/40">
