@@ -2,8 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, Sparkles, Store, UtensilsCrossed, Scissors, Briefcase, Building2, Loader2 } from "lucide-react";
-import { createFolliaDraft, checkFolliaSubdomain } from "@/lib/follia.functions";
+import { ArrowRight, CheckCircle2, Sparkles, Store, UtensilsCrossed, Scissors, Briefcase, Building2, Loader2, Globe, Wand2, MapPin } from "lucide-react";
+import { createFolliaDraft, checkFolliaSubdomain, prefillFolliaFromUrls } from "@/lib/follia.functions";
 
 export const Route = createFileRoute("/follia")({
   component: FolliaLanding,
@@ -30,12 +30,20 @@ type BusinessTypeId = typeof BUSINESS_TYPES[number]["id"];
 function FolliaLanding() {
   const submit = useServerFn(createFolliaDraft);
   const checkSub = useServerFn(checkFolliaSubdomain);
+  const prefill = useServerFn(prefillFolliaFromUrls);
 
-  const [step, setStep] = useState<"intro" | "form" | "success">("intro");
+  const [step, setStep] = useState<"intro" | "prefill" | "form" | "success">("intro");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [subStatus, setSubStatus] = useState<{ checking: boolean; available?: boolean; reason?: string }>({ checking: false });
   const [createdSiteId, setCreatedSiteId] = useState<string | null>(null);
+
+  // Step "prefill"
+  const [prefillUrls, setPrefillUrls] = useState({ oldSiteUrl: "", inspirationUrl: "", gmbUrl: "" });
+  const [prefillLoading, setPrefillLoading] = useState(false);
+  const [prefillError, setPrefillError] = useState<string | null>(null);
+  const [prefillSources, setPrefillSources] = useState<Array<{ url: string; kind: string; ok: boolean; error?: string }>>([]);
+  const [prefilledFields, setPrefilledFields] = useState<Set<string>>(new Set());
 
   const [form, setForm] = useState({
     businessType: "" as BusinessTypeId | "",
@@ -90,6 +98,78 @@ function FolliaLanding() {
     }
   }
 
+  async function runPrefill() {
+    setPrefillError(null);
+    const hasAny = prefillUrls.oldSiteUrl || prefillUrls.inspirationUrl || prefillUrls.gmbUrl;
+    if (!hasAny) {
+      setStep("form");
+      return;
+    }
+    setPrefillLoading(true);
+    try {
+      const res = await prefill({ data: prefillUrls });
+      setPrefillSources(res.sources || []);
+      const d = (res.data || {}) as Partial<{
+        business_type_guess: BusinessTypeId;
+        business_name: string;
+        city: string;
+        address: string;
+        phone: string;
+        description: string;
+        services: string;
+        opening_hours: string;
+        primary_color: string;
+        secondary_color: string;
+        tone_notes: string;
+        subdomain_suggestion: string;
+      }>;
+      const filled = new Set<string>();
+      setForm((p) => {
+        const next = { ...p };
+        const setIf = (key: keyof typeof p, val: unknown) => {
+          if (typeof val === "string" && val.trim() && !next[key]) {
+            (next[key] as string) = val;
+            filled.add(key as string);
+          }
+        };
+        if (d.business_type_guess && !next.businessType) {
+          next.businessType = d.business_type_guess as BusinessTypeId;
+          filled.add("businessType");
+        }
+        setIf("businessName", d.business_name);
+        setIf("city", d.city);
+        setIf("address", d.address);
+        setIf("phone", d.phone);
+        setIf("description", d.description);
+        setIf("services", d.services);
+        setIf("openingHours", d.opening_hours);
+        if (d.primary_color && /^#[0-9a-f]{6}$/i.test(d.primary_color)) {
+          next.primaryColor = d.primary_color;
+          filled.add("primaryColor");
+        }
+        if (d.secondary_color && /^#[0-9a-f]{6}$/i.test(d.secondary_color)) {
+          next.secondaryColor = d.secondary_color;
+          filled.add("secondaryColor");
+        }
+        if (d.subdomain_suggestion && !next.subdomain) {
+          next.subdomain = d.subdomain_suggestion as string;
+          filled.add("subdomain");
+        }
+        if (d.tone_notes) {
+          next.notes = next.notes ? next.notes : `Tono di voce/stile: ${d.tone_notes}`;
+          filled.add("notes");
+        }
+        return next;
+      });
+      setPrefilledFields(filled);
+      setStep("form");
+    } catch (err: any) {
+      setPrefillError(err?.message || "Non sono riuscito a leggere i link. Puoi compilare a mano.");
+    } finally {
+      setPrefillLoading(false);
+    }
+  }
+
   return (
     <main className="min-h-screen bg-background text-foreground">
       <section className="relative overflow-hidden border-b border-border/40">
@@ -110,7 +190,7 @@ function FolliaLanding() {
             {step === "intro" && (
               <div className="flex flex-col sm:flex-row gap-3">
                 <button
-                  onClick={() => setStep("form")}
+                  onClick={() => setStep("prefill")}
                   className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-amber text-amber-foreground font-semibold hover:opacity-90 transition shadow-lg shadow-amber/20"
                 >
                   Crea il mio sito gratis <ArrowRight className="w-4 h-4" />
@@ -160,8 +240,80 @@ function FolliaLanding() {
         </>
       )}
 
+      {step === "prefill" && (
+        <section className="max-w-2xl mx-auto px-6 py-12 md:py-16">
+          <div className="rounded-2xl border border-border/40 bg-surface-elevated p-6 md:p-10">
+            <div className="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-full bg-amber/10 text-amber border border-amber/30 mb-5">
+              <Wand2 className="w-3.5 h-3.5" /> Compila per me (opzionale)
+            </div>
+            <h2 className="font-display text-2xl md:text-3xl font-bold mb-2">Partiamo dai tuoi link?</h2>
+            <p className="text-sm text-muted-foreground mb-6">
+              Incolla uno o più link: l'IA legge i contenuti e pre-compila il form per te. Potrai sempre rivedere e correggere prima di generare il sito. Tutti i campi sono opzionali.
+            </p>
+
+            <div className="space-y-4">
+              <PrefillUrlField
+                icon={Globe}
+                label="URL del tuo sito attuale"
+                hint="Da qui prendiamo nome, contatti, servizi, descrizione."
+                placeholder="https://www.tuosito.it"
+                value={prefillUrls.oldSiteUrl}
+                onChange={(v) => setPrefillUrls((p) => ({ ...p, oldSiteUrl: v }))}
+              />
+              <PrefillUrlField
+                icon={Sparkles}
+                label="URL di un sito che ti piace"
+                hint="Solo per ispirazione: colori e tono di voce. Non copiamo i contenuti."
+                placeholder="https://www.sito-che-mi-piace.com"
+                value={prefillUrls.inspirationUrl}
+                onChange={(v) => setPrefillUrls((p) => ({ ...p, inspirationUrl: v }))}
+              />
+              <PrefillUrlField
+                icon={MapPin}
+                label="Link del tuo profilo Google My Business"
+                hint="Indirizzo, telefono, orari dalla tua scheda Google Maps."
+                placeholder="https://maps.google.com/?cid=…  oppure  https://g.co/kgs/…"
+                value={prefillUrls.gmbUrl}
+                onChange={(v) => setPrefillUrls((p) => ({ ...p, gmbUrl: v }))}
+              />
+            </div>
+
+            {prefillError && <p className="text-sm text-destructive mt-4">{prefillError}</p>}
+
+            <div className="flex flex-col sm:flex-row gap-3 justify-between items-center pt-6 mt-6 border-t border-border/40">
+              <button
+                type="button"
+                onClick={() => { setPrefillUrls({ oldSiteUrl: "", inspirationUrl: "", gmbUrl: "" }); setStep("form"); }}
+                className="text-sm text-muted-foreground hover:text-foreground"
+              >
+                Salto, compilo a mano
+              </button>
+              <button
+                type="button"
+                onClick={runPrefill}
+                disabled={prefillLoading}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-amber text-amber-foreground font-semibold disabled:opacity-60 hover:opacity-90 transition shadow-lg shadow-amber/20"
+              >
+                {prefillLoading ? <><Loader2 className="w-4 h-4 animate-spin"/> Sto leggendo i tuoi link…</> : <>Compila per me <Wand2 className="w-4 h-4"/></>}
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
+
       {step === "form" && (
         <section className="max-w-3xl mx-auto px-6 py-12">
+          {prefilledFields.size > 0 && (
+            <div className="mb-5 rounded-xl border border-amber/30 bg-amber/5 p-4 flex items-start gap-3">
+              <Wand2 className="w-4 h-4 text-amber mt-0.5 flex-shrink-0" />
+              <div className="text-sm">
+                <p className="font-medium">Ho compilato {prefilledFields.size} {prefilledFields.size === 1 ? "campo" : "campi"} per te.</p>
+                <p className="text-muted-foreground text-xs mt-0.5">
+                  Controlla che tutto sia corretto, poi modifica o completa quello che vuoi. Le fonti lette: {prefillSources.filter(s => s.ok).map(s => s.kind).join(", ") || "nessuna"}{prefillSources.some(s => !s.ok) ? ` · non lette: ${prefillSources.filter(s => !s.ok).map(s => s.kind).join(", ")}` : ""}.
+                </p>
+              </div>
+            </div>
+          )}
           <form onSubmit={onSubmit} className="space-y-8 rounded-2xl border border-border/40 bg-surface-elevated p-6 md:p-10">
             <div>
               <h2 className="font-display text-2xl font-bold mb-2">Che tipo di attività hai?</h2>
@@ -338,6 +490,25 @@ function PricingCard({ title, price, period, tagline, features, highlighted }: {
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+function PrefillUrlField({ icon: Icon, label, hint, placeholder, value, onChange }: { icon: React.ComponentType<{ className?: string }>; label: string; hint: string; placeholder: string; value: string; onChange: (v: string) => void }) {
+  return (
+    <div>
+      <label className="flex items-center gap-2 text-sm font-medium mb-1.5">
+        <Icon className="w-4 h-4 text-muted-foreground" />
+        {label}
+      </label>
+      <input
+        type="url"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className="w-full px-3.5 py-2.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:border-amber"
+      />
+      <p className="text-xs text-muted-foreground mt-1">{hint}</p>
     </div>
   );
 }
