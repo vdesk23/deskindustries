@@ -109,7 +109,20 @@ function FolliaLanding() {
     try {
       const res = await prefill({ data: prefillUrls });
       setPrefillSources(res.sources || []);
-      const d = res.data || {};
+      const d = (res.data || {}) as Partial<{
+        business_type_guess: BusinessTypeId;
+        business_name: string;
+        city: string;
+        address: string;
+        phone: string;
+        description: string;
+        services: string;
+        opening_hours: string;
+        primary_color: string;
+        secondary_color: string;
+        tone_notes: string;
+        subdomain_suggestion: string;
+      }>;
       const filled = new Set<string>();
       setForm((p) => {
         const next = { ...p };
