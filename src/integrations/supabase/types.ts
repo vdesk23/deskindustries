@@ -496,34 +496,52 @@ export type Database = {
       }
       follia_tickets: {
         Row: {
+          amount_cents: number | null
+          attachments: Json
           category: Database["public"]["Enums"]["follia_ticket_category"]
           created_at: string
+          customer_email: string | null
           id: string
+          paid_at: string | null
           priority: string
+          requires_payment: boolean
           site_id: string
           status: Database["public"]["Enums"]["follia_ticket_status"]
+          stripe_session_id: string | null
           subject: string
           updated_at: string
           user_id: string
         }
         Insert: {
+          amount_cents?: number | null
+          attachments?: Json
           category?: Database["public"]["Enums"]["follia_ticket_category"]
           created_at?: string
+          customer_email?: string | null
           id?: string
+          paid_at?: string | null
           priority?: string
+          requires_payment?: boolean
           site_id: string
           status?: Database["public"]["Enums"]["follia_ticket_status"]
+          stripe_session_id?: string | null
           subject: string
           updated_at?: string
           user_id: string
         }
         Update: {
+          amount_cents?: number | null
+          attachments?: Json
           category?: Database["public"]["Enums"]["follia_ticket_category"]
           created_at?: string
+          customer_email?: string | null
           id?: string
+          paid_at?: string | null
           priority?: string
+          requires_payment?: boolean
           site_id?: string
           status?: Database["public"]["Enums"]["follia_ticket_status"]
+          stripe_session_id?: string | null
           subject?: string
           updated_at?: string
           user_id?: string
@@ -915,8 +933,20 @@ export type Database = {
         | "in_review"
         | "live"
         | "suspended"
-      follia_ticket_category: "general" | "edit_request" | "bug" | "billing"
-      follia_ticket_status: "open" | "in_progress" | "resolved" | "closed"
+      follia_ticket_category:
+        | "general"
+        | "edit_request"
+        | "bug"
+        | "billing"
+        | "domain"
+        | "branding"
+        | "copy"
+      follia_ticket_status:
+        | "open"
+        | "in_progress"
+        | "resolved"
+        | "closed"
+        | "awaiting_payment"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1068,8 +1098,22 @@ export const Constants = {
         "live",
         "suspended",
       ],
-      follia_ticket_category: ["general", "edit_request", "bug", "billing"],
-      follia_ticket_status: ["open", "in_progress", "resolved", "closed"],
+      follia_ticket_category: [
+        "general",
+        "edit_request",
+        "bug",
+        "billing",
+        "domain",
+        "branding",
+        "copy",
+      ],
+      follia_ticket_status: [
+        "open",
+        "in_progress",
+        "resolved",
+        "closed",
+        "awaiting_payment",
+      ],
     },
   },
 } as const
