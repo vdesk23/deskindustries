@@ -426,11 +426,11 @@ function SiteDetailPage() {
           <h2 className="text-xl font-display font-semibold mb-2">Altri servizi Desk Industries</h2>
           <p className="text-sm text-muted-foreground mb-6">Esplora gli strumenti collegati al tuo account.</p>
           <div className="grid sm:grid-cols-2 gap-3">
-            <Link to="/seo-optimizer" className="rounded-2xl border border-border p-5 hover:border-amber transition">
+            <Link to="/tools/ottimizzatore-seo" className="rounded-2xl border border-border p-5 hover:border-amber transition">
               <p className="font-display font-semibold mb-1">SEO Optimizer</p>
               <p className="text-xs text-muted-foreground">Ottimizza contenuti e meta tag con AI.</p>
             </Link>
-            <Link to="/services" className="rounded-2xl border border-border p-5 hover:border-amber transition">
+            <Link to="/pacchetti" className="rounded-2xl border border-border p-5 hover:border-amber transition">
               <p className="font-display font-semibold mb-1">Tutti i servizi</p>
               <p className="text-xs text-muted-foreground">Scopri cosa può fare per te Desk Industries.</p>
             </Link>
