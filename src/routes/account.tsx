@@ -40,11 +40,33 @@ interface Purchase {
   created_at: string;
 }
 
+type FolliaSite = {
+  id: string;
+  subdomain: string;
+  custom_domain: string | null;
+  business_type: string;
+  business_data: { name?: string } & Record<string, unknown>;
+  status: string;
+  plan: string | null;
+  has_full_assistance: boolean;
+  created_at: string;
+};
+
+const SITE_STATUS_LABEL: Record<string, string> = {
+  draft: "Bozza",
+  awaiting_payment: "In attesa di pagamento",
+  in_review: "In revisione",
+  live: "Online",
+  suspended: "Sospeso",
+};
+
 function AccountPage() {
   const { user, loading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
+  const fetchSites = useServerFn(listMyFolliaSites);
   const [subs, setSubs] = useState<Subscription[]>([]);
   const [purchases, setPurchases] = useState<Purchase[]>([]);
+  const [folliaSites, setFolliaSites] = useState<FolliaSite[]>([]);
   const [loading, setLoading] = useState(true);
   const [portalLoading, setPortalLoading] = useState(false);
 
@@ -57,7 +79,7 @@ function AccountPage() {
   useEffect(() => {
     if (!user) return;
     const load = async () => {
-      const [{ data: s }, { data: p }] = await Promise.all([
+      const [{ data: s }, { data: p }, sitesRes] = await Promise.all([
         supabase
           .from("subscriptions")
           .select("*")
@@ -68,13 +90,16 @@ function AccountPage() {
           .select("*")
           .eq("user_id", user.id)
           .order("created_at", { ascending: false }),
+        fetchSites().catch(() => ({ sites: [] as FolliaSite[] })),
       ]);
       setSubs((s as Subscription[]) || []);
       setPurchases((p as Purchase[]) || []);
+      setFolliaSites(((sitesRes as { sites: FolliaSite[] }).sites) || []);
       setLoading(false);
     };
     load();
-  }, [user]);
+  }, [user, fetchSites]);
+
 
   const openPortal = async () => {
     setPortalLoading(true);
