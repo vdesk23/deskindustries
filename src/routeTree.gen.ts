@@ -34,9 +34,11 @@ import { Route as ApiPublicLeadSubmitRouteImport } from './routes/api/public/lea
 import { Route as ApiPublicFolliaPreviewEmailRouteImport } from './routes/api/public/follia-preview-email'
 import { Route as ApiPublicContentPlanSubmitRouteImport } from './routes/api/public/content-plan-submit'
 import { Route as AccountSitesSiteIdRouteImport } from './routes/account.sites.$siteId'
+import { Route as LovableEmailTransactionalSendTicketStaffRouteImport } from './routes/lovable/email/transactional/send-ticket-staff'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
+import { Route as AccountTicketsTicketIdPayRouteImport } from './routes/account.tickets.$ticketId.pay'
 
 const UnsubscribeRoute = UnsubscribeRouteImport.update({
   id: '/unsubscribe',
@@ -165,6 +167,12 @@ const AccountSitesSiteIdRoute = AccountSitesSiteIdRouteImport.update({
   path: '/$siteId',
   getParentRoute: () => AccountSitesRoute,
 } as any)
+const LovableEmailTransactionalSendTicketStaffRoute =
+  LovableEmailTransactionalSendTicketStaffRouteImport.update({
+    id: '/lovable/email/transactional/send-ticket-staff',
+    path: '/lovable/email/transactional/send-ticket-staff',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const LovableEmailTransactionalSendRoute =
   LovableEmailTransactionalSendRouteImport.update({
     id: '/lovable/email/transactional/send',
@@ -182,6 +190,12 @@ const LovableEmailQueueProcessRoute =
     id: '/lovable/email/queue/process',
     path: '/lovable/email/queue/process',
     getParentRoute: () => rootRouteImport,
+  } as any)
+const AccountTicketsTicketIdPayRoute =
+  AccountTicketsTicketIdPayRouteImport.update({
+    id: '/tickets/$ticketId/pay',
+    path: '/tickets/$ticketId/pay',
+    getParentRoute: () => AccountRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -210,9 +224,11 @@ export interface FileRoutesByFullPath {
   '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
+  '/lovable/email/transactional/send-ticket-staff': typeof LovableEmailTransactionalSendTicketStaffRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -240,9 +256,11 @@ export interface FileRoutesByTo {
   '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
+  '/lovable/email/transactional/send-ticket-staff': typeof LovableEmailTransactionalSendTicketStaffRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -271,9 +289,11 @@ export interface FileRoutesById {
   '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
+  '/lovable/email/transactional/send-ticket-staff': typeof LovableEmailTransactionalSendTicketStaffRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -303,9 +323,11 @@ export interface FileRouteTypes {
     | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
+    | '/account/tickets/$ticketId/pay'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
+    | '/lovable/email/transactional/send-ticket-staff'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -333,9 +355,11 @@ export interface FileRouteTypes {
     | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
+    | '/account/tickets/$ticketId/pay'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
+    | '/lovable/email/transactional/send-ticket-staff'
   id:
     | '__root__'
     | '/'
@@ -363,9 +387,11 @@ export interface FileRouteTypes {
     | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
+    | '/account/tickets/$ticketId/pay'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
+    | '/lovable/email/transactional/send-ticket-staff'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -395,6 +421,7 @@ export interface RootRouteChildren {
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
   LovableEmailTransactionalSendRoute: typeof LovableEmailTransactionalSendRoute
+  LovableEmailTransactionalSendTicketStaffRoute: typeof LovableEmailTransactionalSendTicketStaffRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -574,6 +601,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountSitesSiteIdRouteImport
       parentRoute: typeof AccountSitesRoute
     }
+    '/lovable/email/transactional/send-ticket-staff': {
+      id: '/lovable/email/transactional/send-ticket-staff'
+      path: '/lovable/email/transactional/send-ticket-staff'
+      fullPath: '/lovable/email/transactional/send-ticket-staff'
+      preLoaderRoute: typeof LovableEmailTransactionalSendTicketStaffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lovable/email/transactional/send': {
       id: '/lovable/email/transactional/send'
       path: '/lovable/email/transactional/send'
@@ -595,6 +629,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account/tickets/$ticketId/pay': {
+      id: '/account/tickets/$ticketId/pay'
+      path: '/tickets/$ticketId/pay'
+      fullPath: '/account/tickets/$ticketId/pay'
+      preLoaderRoute: typeof AccountTicketsTicketIdPayRouteImport
+      parentRoute: typeof AccountRoute
+    }
   }
 }
 
@@ -612,10 +653,12 @@ const AccountSitesRouteWithChildren = AccountSitesRoute._addFileChildren(
 
 interface AccountRouteChildren {
   AccountSitesRoute: typeof AccountSitesRouteWithChildren
+  AccountTicketsTicketIdPayRoute: typeof AccountTicketsTicketIdPayRoute
 }
 
 const AccountRouteChildren: AccountRouteChildren = {
   AccountSitesRoute: AccountSitesRouteWithChildren,
+  AccountTicketsTicketIdPayRoute: AccountTicketsTicketIdPayRoute,
 }
 
 const AccountRouteWithChildren =
@@ -648,6 +691,8 @@ const rootRouteChildren: RootRouteChildren = {
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
   LovableEmailTransactionalSendRoute: LovableEmailTransactionalSendRoute,
+  LovableEmailTransactionalSendTicketStaffRoute:
+    LovableEmailTransactionalSendTicketStaffRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

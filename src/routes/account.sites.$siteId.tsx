@@ -14,6 +14,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, ExternalLink, Rocket, MessagesSquare, Settings, CheckCircle2 } from "lucide-react";
 import { useStripeCheckout } from "@/hooks/useStripeCheckout";
+import { AssistanceFab } from "@/components/follia/AssistanceFab";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/account/sites/$siteId")({
@@ -41,6 +42,7 @@ type Site = {
   };
   status: string;
   plan: string | null;
+  has_full_assistance: boolean;
 };
 
 type Ticket = { id: string; subject: string; status: string; category: string; created_at: string };
@@ -328,6 +330,7 @@ function SiteDetailPage() {
           )}
         </div>
       </div>
+      <AssistanceFab siteId={site.id} siteName={name} hasFullAssistance={!!site.has_full_assistance} />
     </section>
   );
 }

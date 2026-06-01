@@ -23,6 +23,8 @@ import { template as leadRequestConfirmation } from './lead-request-confirmation
 import { template as contentPlanAdmin } from './content-plan-admin'
 import { template as contentPlanConfirmation } from './content-plan-confirmation'
 import { template as folliaPreviewReady } from './follia-preview-ready'
+import { template as folliaTicketStaff } from './follia-ticket-staff'
+import { template as folliaTicketCustomerConfirmation } from './follia-ticket-customer-confirmation'
 
 export const TEMPLATES: Record<string, TemplateEntry> = {
   'welcome-post-purchase': welcomePostPurchase,
@@ -31,5 +33,7 @@ export const TEMPLATES: Record<string, TemplateEntry> = {
   'content-plan-admin': contentPlanAdmin,
   'content-plan-confirmation': contentPlanConfirmation,
   'follia-preview-ready': folliaPreviewReady,
+  'follia-ticket-staff': folliaTicketStaff,
+  'follia-ticket-customer-confirmation': folliaTicketCustomerConfirmation,
 }
 
