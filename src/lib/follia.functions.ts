@@ -164,42 +164,43 @@ export const createFolliaDraft = createServerFn({ method: "POST" })
     const adminUrl = `${APP_BASE_URL}/admin/sites/${site.id}`;
     const accountUrl = `${APP_BASE_URL}/auth?mode=signup&email=${encodeURIComponent(data.email)}&redirect=${encodeURIComponent("/account")}`;
 
-    (async () => {
-      try {
-        for (const staff of STAFF_EMAILS) {
-          await enqueueEmail({
+    try {
+      const staffData = {
+        businessName: data.businessName,
+        businessType: BUSINESS_TYPE_LABELS[data.businessType] || data.businessType,
+        subdomain: data.subdomain,
+        email: data.email,
+        city: data.city,
+        address: data.address,
+        phone: data.phone,
+        description: data.description,
+        services: data.services,
+        openingHours: data.openingHours,
+        primaryColor: data.primaryColor,
+        secondaryColor: data.secondaryColor,
+        notes: data.notes,
+        prompt,
+        adminUrl,
+      };
+      await Promise.all([
+        ...STAFF_EMAILS.map((staff) =>
+          enqueueEmail({
             templateName: "follia-new-request-staff",
             to: staff,
             idempotencyKey: `follia-request-${site.id}-${staff}`,
-            templateData: {
-              businessName: data.businessName,
-              businessType: BUSINESS_TYPE_LABELS[data.businessType] || data.businessType,
-              subdomain: data.subdomain,
-              email: data.email,
-              city: data.city,
-              address: data.address,
-              phone: data.phone,
-              description: data.description,
-              services: data.services,
-              openingHours: data.openingHours,
-              primaryColor: data.primaryColor,
-              secondaryColor: data.secondaryColor,
-              notes: data.notes,
-              prompt,
-              adminUrl,
-            },
-          });
-        }
-        await enqueueEmail({
+            templateData: staffData,
+          }),
+        ),
+        enqueueEmail({
           templateName: "follia-request-received",
           to: data.email,
           idempotencyKey: `follia-request-customer-${site.id}`,
           templateData: { businessName: data.businessName, accountUrl },
-        });
-      } catch (e) {
-        console.error("Failed to enqueue follia request emails", e);
-      }
-    })();
+        }),
+      ]);
+    } catch (e) {
+      console.error("Failed to enqueue follia request emails", e);
+    }
 
     return { ok: true as const, siteId: site.id };
   });
