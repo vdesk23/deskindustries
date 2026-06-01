@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { motion } from "framer-motion";
@@ -63,6 +63,7 @@ const REQUEST_STATUS_LABEL: Record<string, string> = {
 };
 
 function AccountPage() {
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
   const { user, loading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
   const fetchSites = useServerFn(listMyFolliaSites);
@@ -116,6 +117,8 @@ function AccountPage() {
   if (authLoading || !user) {
     return <div className="flex items-center justify-center min-h-[60vh]"><p className="text-muted-foreground">Caricamento...</p></div>;
   }
+
+  if (pathname !== "/account") return <Outlet />;
 
   const activeSubs = subs.filter(
     (s) =>

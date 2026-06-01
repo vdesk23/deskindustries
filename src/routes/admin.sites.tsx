@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { adminListSites, adminAssignSite, adminDeleteSite } from "@/lib/follia-admin.functions";
@@ -33,6 +33,7 @@ const STATUS_LABEL: Record<string, string> = {
 };
 
 function AdminSitesList() {
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
   const list = useServerFn(adminListSites);
   const assign = useServerFn(adminAssignSite);
   const del = useServerFn(adminDeleteSite);
@@ -62,6 +63,8 @@ function AdminSitesList() {
     try { await del({ data: { siteId: id } }); load(); }
     catch (e) { alert((e as Error).message); }
   };
+
+  if (pathname !== "/admin/sites") return <Outlet />;
 
   return (
     <div>

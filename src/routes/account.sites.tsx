@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useAuth } from "@/hooks/useAuth";
@@ -37,6 +37,7 @@ const STATUS_LABEL: Record<string, string> = {
 };
 
 function SitesListPage() {
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const fetchSites = useServerFn(listMyFolliaSites);
@@ -59,6 +60,8 @@ function SitesListPage() {
   if (authLoading || !user) {
     return <div className="flex min-h-[60vh] items-center justify-center text-muted-foreground">Caricamento...</div>;
   }
+
+  if (pathname !== "/account/sites") return <Outlet />;
 
   return (
     <section className="py-16 lg:py-24">
