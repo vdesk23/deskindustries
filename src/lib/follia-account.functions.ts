@@ -1,6 +1,10 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
+import { TEMPLATES } from "@/lib/email-templates/registry";
+import { render } from "@react-email/components";
+import * as React from "react";
+import { createClient } from "@supabase/supabase-js";
 
 export const listMyFolliaSites = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
