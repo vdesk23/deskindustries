@@ -71,6 +71,23 @@ function SiteDetailPage() {
 
   const { openCheckout, checkoutElement, isOpen, closeCheckout } = useStripeCheckout();
 
+  const [portalLoading, setPortalLoading] = useState(false);
+
+  const openPortal = async () => {
+    setPortalLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("create-portal-session", {
+        body: { returnUrl: `${window.location.origin}/account/sites/${siteId}`, environment: getStripeEnvironment() },
+      });
+      if (error || !data?.url) throw new Error(error?.message || "Errore portale");
+      window.open(data.url, "_blank");
+    } catch (e) {
+      toast.error((e as Error).message);
+    } finally {
+      setPortalLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!authLoading && !user) {
       navigate({ to: "/auth", search: { redirect: `/account/sites/${siteId}`, mode: "login" }, replace: true });
