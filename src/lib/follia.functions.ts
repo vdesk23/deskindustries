@@ -93,16 +93,22 @@ Note: ${payload.notes || "—"}`;
 
 async function sendPreviewEmail(email: string, businessName: string, siteId: string, baseUrl: string) {
   try {
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!serviceKey) return;
     const previewUrl = `${baseUrl}/auth?mode=signup&redirect=${encodeURIComponent(`/account/sites/${siteId}`)}&email=${encodeURIComponent(email)}`;
     await fetch(`${baseUrl}/api/public/follia-preview-email`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${serviceKey}`,
+      },
       body: JSON.stringify({ email, businessName, previewUrl, siteId }),
     });
   } catch (e) {
     console.error("Failed to enqueue preview email", e);
   }
 }
+
 
 export const createFolliaDraft = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => draftSchema.parse(input))
