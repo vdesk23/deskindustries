@@ -15,6 +15,8 @@ import { Label } from "@/components/ui/label";
 import { ArrowLeft, ExternalLink, Eye, Rocket, MessagesSquare, Settings, CheckCircle2 } from "lucide-react";
 import { useStripeCheckout } from "@/hooks/useStripeCheckout";
 import { AssistanceFab } from "@/components/follia/AssistanceFab";
+import { supabase } from "@/integrations/supabase/client";
+import { getStripeEnvironment } from "@/lib/stripe";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/account/sites/$siteId")({
