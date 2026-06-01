@@ -183,11 +183,11 @@ function AccountPage() {
                   <p className="text-muted-foreground mb-6">
                     Non hai abbonamenti attivi al momento.
                   </p>
-                  <Link to="/pacchetti">
-                    <Button variant="amber">
+                  <Button asChild variant="amber">
+                    <Link to="/pacchetti">
                       Esplora i servizi COCO <ArrowRight />
-                    </Button>
-                  </Link>
+                    </Link>
+                  </Button>
                 </div>
               ) : (
                 <div className="space-y-4">
