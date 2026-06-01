@@ -38,6 +38,7 @@ function FolliaLanding() {
   const [error, setError] = useState<string | null>(null);
   const [subStatus, setSubStatus] = useState<{ checking: boolean; available?: boolean; reason?: string }>({ checking: false });
   const [createdSiteId, setCreatedSiteId] = useState<string | null>(null);
+  const stepSectionRef = useRef<HTMLDivElement | null>(null);
 
   // Step "prefill"
   const [prefillUrls, setPrefillUrls] = useState({ oldSiteUrl: "", inspirationUrl: "", gmbUrl: "" });
@@ -45,6 +46,13 @@ function FolliaLanding() {
   const [prefillError, setPrefillError] = useState<string | null>(null);
   const [prefillSources, setPrefillSources] = useState<Array<{ url: string; kind: string; ok: boolean; error?: string }>>([]);
   const [prefilledFields, setPrefilledFields] = useState<Set<string>>(new Set());
+  const [prefillAttempted, setPrefillAttempted] = useState(false);
+
+  useEffect(() => {
+    if (step !== "intro" && stepSectionRef.current) {
+      stepSectionRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [step]);
 
   const [form, setForm] = useState({
     businessType: "" as BusinessTypeId | "",
