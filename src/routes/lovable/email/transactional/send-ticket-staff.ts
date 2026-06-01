@@ -76,7 +76,7 @@ export const Route = createFileRoute("/lovable/email/transactional/send-ticket-s
           return Response.json({ error: "Invalid body" }, { status: 400 });
         }
 
-        const admin = createClient(supabaseUrl, serviceKey);
+        const admin: any = createClient(supabaseUrl, serviceKey);
         const { data: ticket } = await admin
           .from("follia_tickets")
           .select("id, site_id, subject, category, attachments, customer_email, requires_payment, paid_at")
