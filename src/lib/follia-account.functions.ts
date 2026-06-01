@@ -47,12 +47,37 @@ export const getMyFolliaSite = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => z.object({ siteId: z.string().uuid() }).parse(input))
   .handler(async ({ context, data }) => {
     const { supabase, userId } = context;
-    const { data: site, error } = await supabase
+    let { data: site, error } = await supabase
       .from("follia_sites")
       .select("id, subdomain, custom_domain, business_type, business_data, config, status, request_status, plan, has_full_assistance, published_url, created_at, lead_email")
       .eq("id", data.siteId)
       .maybeSingle();
     if (error) throw new Error(error.message);
+    if (!site) {
+      const admin = getAdminClient();
+      const { data: profile } = await admin
+        .from("profiles")
+        .select("email")
+        .eq("user_id", userId)
+        .maybeSingle();
+      const email = (profile?.email || context.claims?.email || "").toLowerCase().trim();
+      if (email) {
+        await admin
+          .from("follia_sites")
+          .update({ user_id: userId, claimed_at: new Date().toISOString() })
+          .eq("id", data.siteId)
+          .is("user_id", null)
+          .ilike("lead_email", email);
+
+        const retry = await supabase
+          .from("follia_sites")
+          .select("id, subdomain, custom_domain, business_type, business_data, config, status, request_status, plan, has_full_assistance, published_url, created_at, lead_email")
+          .eq("id", data.siteId)
+          .maybeSingle();
+        if (retry.error) throw new Error(retry.error.message);
+        site = retry.data;
+      }
+    }
     if (!site) throw new Error("Sito non trovato");
 
     const { data: tickets } = await supabase
