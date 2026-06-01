@@ -1,11 +1,14 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { motion } from "framer-motion";
-import { ArrowRight, ExternalLink, LogOut, Sparkles, FileText, Globe } from "lucide-react";
+import { ArrowRight, ExternalLink, Eye, LogOut, Sparkles, FileText, Globe, Rocket } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { getStripeEnvironment } from "@/lib/stripe";
 import { Button } from "@/components/ui/button";
+import { listMyFolliaSites } from "@/lib/follia-account.functions";
+
 
 export const Route = createFileRoute("/account")({
   head: () => ({
