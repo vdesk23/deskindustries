@@ -8,6 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { getStripeEnvironment } from "@/lib/stripe";
 import { Button } from "@/components/ui/button";
 import { listMyFolliaSites } from "@/lib/follia-account.functions";
+import { checkIsAdmin } from "@/lib/follia-admin.functions";
 
 
 export const Route = createFileRoute("/account")({
@@ -64,6 +65,8 @@ function AccountPage() {
   const { user, loading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
   const fetchSites = useServerFn(listMyFolliaSites);
+  const checkAdmin = useServerFn(checkIsAdmin);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [subs, setSubs] = useState<Subscription[]>([]);
   const [purchases, setPurchases] = useState<Purchase[]>([]);
   const [folliaSites, setFolliaSites] = useState<FolliaSite[]>([]);
@@ -79,7 +82,7 @@ function AccountPage() {
   useEffect(() => {
     if (!user) return;
     const load = async () => {
-      const [{ data: s }, { data: p }, sitesRes] = await Promise.all([
+      const [{ data: s }, { data: p }, sitesRes, adminRes] = await Promise.all([
         supabase
           .from("subscriptions")
           .select("*")
@@ -91,14 +94,16 @@ function AccountPage() {
           .eq("user_id", user.id)
           .order("created_at", { ascending: false }),
         fetchSites().catch(() => ({ sites: [] as FolliaSite[] })),
+        checkAdmin().catch(() => ({ isAdmin: false })),
       ]);
       setSubs((s as Subscription[]) || []);
       setPurchases((p as Purchase[]) || []);
       setFolliaSites(((sitesRes as { sites: FolliaSite[] }).sites) || []);
+      setIsAdmin(!!(adminRes as { isAdmin: boolean }).isAdmin);
       setLoading(false);
     };
     load();
-  }, [user, fetchSites]);
+  }, [user, fetchSites, checkAdmin]);
 
 
   const openPortal = async () => {
@@ -146,9 +151,16 @@ function AccountPage() {
             </h1>
             <p className="mt-2 text-sm text-muted-foreground">{user.email}</p>
           </div>
-          <Button variant="ghost" size="sm" onClick={signOut}>
-            <LogOut className="size-4" /> Esci
-          </Button>
+          <div className="flex items-center gap-2">
+            {isAdmin && (
+              <Link to="/admin">
+                <Button variant="outline" size="sm">Admin</Button>
+              </Link>
+            )}
+            <Button variant="ghost" size="sm" onClick={signOut}>
+              <LogOut className="size-4" /> Esci
+            </Button>
+          </div>
         </div>
 
         {loading ? (

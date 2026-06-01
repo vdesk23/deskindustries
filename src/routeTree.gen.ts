@@ -19,20 +19,25 @@ import { Route as FolliaRouteImport } from './routes/follia'
 import { Route as ContattiRouteImport } from './routes/contatti'
 import { Route as ChiSiamoRouteImport } from './routes/chi-siamo'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettoriIndexRouteImport } from './routes/settori.index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ToolsPianoContenutiRouteImport } from './routes/tools.piano-contenuti'
 import { Route as ToolsOttimizzatoreSeoRouteImport } from './routes/tools.ottimizzatore-seo'
 import { Route as SettoriSlugRouteImport } from './routes/settori.$slug'
 import { Route as SSubdomainRouteImport } from './routes/s.$subdomain'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
+import { Route as AdminTicketsRouteImport } from './routes/admin.tickets'
+import { Route as AdminSitesRouteImport } from './routes/admin.sites'
 import { Route as AccountSitesRouteImport } from './routes/account.sites'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicLeadSubmitRouteImport } from './routes/api/public/lead-submit'
 import { Route as ApiPublicFolliaPreviewEmailRouteImport } from './routes/api/public/follia-preview-email'
 import { Route as ApiPublicContentPlanSubmitRouteImport } from './routes/api/public/content-plan-submit'
+import { Route as AdminSitesSiteIdRouteImport } from './routes/admin.sites.$siteId'
 import { Route as AccountSitesSiteIdRouteImport } from './routes/account.sites.$siteId'
 import { Route as LovableEmailTransactionalSendTicketStaffRouteImport } from './routes/lovable/email/transactional/send-ticket-staff'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
@@ -90,6 +95,11 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AccountRoute = AccountRouteImport.update({
   id: '/account',
   path: '/account',
@@ -104,6 +114,11 @@ const SettoriIndexRoute = SettoriIndexRouteImport.update({
   id: '/settori/',
   path: '/settori/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const ToolsPianoContenutiRoute = ToolsPianoContenutiRouteImport.update({
   id: '/tools/piano-contenuti',
@@ -135,6 +150,16 @@ const CheckoutReturnRoute = CheckoutReturnRouteImport.update({
   path: '/checkout/return',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminTicketsRoute = AdminTicketsRouteImport.update({
+  id: '/tickets',
+  path: '/tickets',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSitesRoute = AdminSitesRouteImport.update({
+  id: '/sites',
+  path: '/sites',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AccountSitesRoute = AccountSitesRouteImport.update({
   id: '/sites',
   path: '/sites',
@@ -162,6 +187,11 @@ const ApiPublicContentPlanSubmitRoute =
     path: '/api/public/content-plan-submit',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AdminSitesSiteIdRoute = AdminSitesSiteIdRouteImport.update({
+  id: '/$siteId',
+  path: '/$siteId',
+  getParentRoute: () => AdminSitesRoute,
+} as any)
 const AccountSitesSiteIdRoute = AccountSitesSiteIdRouteImport.update({
   id: '/$siteId',
   path: '/$siteId',
@@ -201,6 +231,7 @@ const AccountTicketsTicketIdPayRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account': typeof AccountRouteWithChildren
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/chi-siamo': typeof ChiSiamoRoute
   '/contatti': typeof ContattiRoute
@@ -212,14 +243,18 @@ export interface FileRoutesByFullPath {
   '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/account/sites': typeof AccountSitesRouteWithChildren
+  '/admin/sites': typeof AdminSitesRouteWithChildren
+  '/admin/tickets': typeof AdminTicketsRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/s/$subdomain': typeof SSubdomainRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
+  '/admin/': typeof AdminIndexRoute
   '/settori/': typeof SettoriIndexRoute
   '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
+  '/admin/sites/$siteId': typeof AdminSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
@@ -244,14 +279,18 @@ export interface FileRoutesByTo {
   '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/account/sites': typeof AccountSitesRouteWithChildren
+  '/admin/sites': typeof AdminSitesRouteWithChildren
+  '/admin/tickets': typeof AdminTicketsRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/s/$subdomain': typeof SSubdomainRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
+  '/admin': typeof AdminIndexRoute
   '/settori': typeof SettoriIndexRoute
   '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
+  '/admin/sites/$siteId': typeof AdminSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
@@ -266,6 +305,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/account': typeof AccountRouteWithChildren
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/chi-siamo': typeof ChiSiamoRoute
   '/contatti': typeof ContattiRoute
@@ -277,14 +317,18 @@ export interface FileRoutesById {
   '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/account/sites': typeof AccountSitesRouteWithChildren
+  '/admin/sites': typeof AdminSitesRouteWithChildren
+  '/admin/tickets': typeof AdminTicketsRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/s/$subdomain': typeof SSubdomainRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
+  '/admin/': typeof AdminIndexRoute
   '/settori/': typeof SettoriIndexRoute
   '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
+  '/admin/sites/$siteId': typeof AdminSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
@@ -300,6 +344,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/account'
+    | '/admin'
     | '/auth'
     | '/chi-siamo'
     | '/contatti'
@@ -311,14 +356,18 @@ export interface FileRouteTypes {
     | '/termini'
     | '/unsubscribe'
     | '/account/sites'
+    | '/admin/sites'
+    | '/admin/tickets'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/s/$subdomain'
     | '/settori/$slug'
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
+    | '/admin/'
     | '/settori/'
     | '/account/sites/$siteId'
+    | '/admin/sites/$siteId'
     | '/api/public/content-plan-submit'
     | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
@@ -343,14 +392,18 @@ export interface FileRouteTypes {
     | '/termini'
     | '/unsubscribe'
     | '/account/sites'
+    | '/admin/sites'
+    | '/admin/tickets'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/s/$subdomain'
     | '/settori/$slug'
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
+    | '/admin'
     | '/settori'
     | '/account/sites/$siteId'
+    | '/admin/sites/$siteId'
     | '/api/public/content-plan-submit'
     | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
@@ -364,6 +417,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/account'
+    | '/admin'
     | '/auth'
     | '/chi-siamo'
     | '/contatti'
@@ -375,14 +429,18 @@ export interface FileRouteTypes {
     | '/termini'
     | '/unsubscribe'
     | '/account/sites'
+    | '/admin/sites'
+    | '/admin/tickets'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/s/$subdomain'
     | '/settori/$slug'
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
+    | '/admin/'
     | '/settori/'
     | '/account/sites/$siteId'
+    | '/admin/sites/$siteId'
     | '/api/public/content-plan-submit'
     | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
@@ -397,6 +455,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountRoute: typeof AccountRouteWithChildren
+  AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRoute
   ChiSiamoRoute: typeof ChiSiamoRoute
   ContattiRoute: typeof ContattiRoute
@@ -496,6 +555,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/account': {
       id: '/account'
       path: '/account'
@@ -516,6 +582,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/settori/'
       preLoaderRoute: typeof SettoriIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/tools/piano-contenuti': {
       id: '/tools/piano-contenuti'
@@ -559,6 +632,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckoutReturnRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/tickets': {
+      id: '/admin/tickets'
+      path: '/tickets'
+      fullPath: '/admin/tickets'
+      preLoaderRoute: typeof AdminTicketsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/sites': {
+      id: '/admin/sites'
+      path: '/sites'
+      fullPath: '/admin/sites'
+      preLoaderRoute: typeof AdminSitesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/account/sites': {
       id: '/account/sites'
       path: '/sites'
@@ -593,6 +680,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/public/content-plan-submit'
       preLoaderRoute: typeof ApiPublicContentPlanSubmitRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/sites/$siteId': {
+      id: '/admin/sites/$siteId'
+      path: '/$siteId'
+      fullPath: '/admin/sites/$siteId'
+      preLoaderRoute: typeof AdminSitesSiteIdRouteImport
+      parentRoute: typeof AdminSitesRoute
     }
     '/account/sites/$siteId': {
       id: '/account/sites/$siteId'
@@ -664,9 +758,36 @@ const AccountRouteChildren: AccountRouteChildren = {
 const AccountRouteWithChildren =
   AccountRoute._addFileChildren(AccountRouteChildren)
 
+interface AdminSitesRouteChildren {
+  AdminSitesSiteIdRoute: typeof AdminSitesSiteIdRoute
+}
+
+const AdminSitesRouteChildren: AdminSitesRouteChildren = {
+  AdminSitesSiteIdRoute: AdminSitesSiteIdRoute,
+}
+
+const AdminSitesRouteWithChildren = AdminSitesRoute._addFileChildren(
+  AdminSitesRouteChildren,
+)
+
+interface AdminRouteChildren {
+  AdminSitesRoute: typeof AdminSitesRouteWithChildren
+  AdminTicketsRoute: typeof AdminTicketsRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminSitesRoute: AdminSitesRouteWithChildren,
+  AdminTicketsRoute: AdminTicketsRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountRoute: AccountRouteWithChildren,
+  AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRoute,
   ChiSiamoRoute: ChiSiamoRoute,
   ContattiRoute: ContattiRoute,
