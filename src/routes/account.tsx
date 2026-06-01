@@ -153,9 +153,9 @@ function AccountPage() {
           </div>
           <div className="flex items-center gap-2">
             {isAdmin && (
-              <Link to="/admin">
-                <Button variant="outline" size="sm">Admin</Button>
-              </Link>
+              <Button asChild variant="outline" size="sm">
+                <Link to="/admin">Admin</Link>
+              </Button>
             )}
             <Button variant="ghost" size="sm" onClick={signOut}>
               <LogOut className="size-4" /> Esci
