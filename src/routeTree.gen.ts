@@ -34,7 +34,6 @@ import { Route as AdminSitesRouteImport } from './routes/admin.sites'
 import { Route as AccountSitesRouteImport } from './routes/account.sites'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicLeadSubmitRouteImport } from './routes/api/public/lead-submit'
-import { Route as ApiPublicFolliaPreviewEmailRouteImport } from './routes/api/public/follia-preview-email'
 import { Route as ApiPublicContentPlanSubmitRouteImport } from './routes/api/public/content-plan-submit'
 import { Route as AdminSitesSiteIdRouteImport } from './routes/admin.sites.$siteId'
 import { Route as AccountSitesSiteIdRouteImport } from './routes/account.sites.$siteId'
@@ -169,12 +168,6 @@ const ApiPublicLeadSubmitRoute = ApiPublicLeadSubmitRouteImport.update({
   path: '/api/public/lead-submit',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicFolliaPreviewEmailRoute =
-  ApiPublicFolliaPreviewEmailRouteImport.update({
-    id: '/api/public/follia-preview-email',
-    path: '/api/public/follia-preview-email',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const ApiPublicContentPlanSubmitRoute =
   ApiPublicContentPlanSubmitRouteImport.update({
     id: '/api/public/content-plan-submit',
@@ -249,7 +242,6 @@ export interface FileRoutesByFullPath {
   '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
   '/admin/sites/$siteId': typeof AdminSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
-  '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
@@ -284,7 +276,6 @@ export interface FileRoutesByTo {
   '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
   '/admin/sites/$siteId': typeof AdminSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
-  '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
@@ -321,7 +312,6 @@ export interface FileRoutesById {
   '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
   '/admin/sites/$siteId': typeof AdminSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
-  '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
@@ -359,7 +349,6 @@ export interface FileRouteTypes {
     | '/account/sites/$siteId'
     | '/admin/sites/$siteId'
     | '/api/public/content-plan-submit'
-    | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
     | '/account/tickets/$ticketId/pay'
@@ -394,7 +383,6 @@ export interface FileRouteTypes {
     | '/account/sites/$siteId'
     | '/admin/sites/$siteId'
     | '/api/public/content-plan-submit'
-    | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
     | '/account/tickets/$ticketId/pay'
@@ -430,7 +418,6 @@ export interface FileRouteTypes {
     | '/account/sites/$siteId'
     | '/admin/sites/$siteId'
     | '/api/public/content-plan-submit'
-    | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
     | '/account/tickets/$ticketId/pay'
@@ -461,7 +448,6 @@ export interface RootRouteChildren {
   ToolsPianoContenutiRoute: typeof ToolsPianoContenutiRoute
   SettoriIndexRoute: typeof SettoriIndexRoute
   ApiPublicContentPlanSubmitRoute: typeof ApiPublicContentPlanSubmitRoute
-  ApiPublicFolliaPreviewEmailRoute: typeof ApiPublicFolliaPreviewEmailRoute
   ApiPublicLeadSubmitRoute: typeof ApiPublicLeadSubmitRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
@@ -647,13 +633,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicLeadSubmitRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/follia-preview-email': {
-      id: '/api/public/follia-preview-email'
-      path: '/api/public/follia-preview-email'
-      fullPath: '/api/public/follia-preview-email'
-      preLoaderRoute: typeof ApiPublicFolliaPreviewEmailRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/public/content-plan-submit': {
       id: '/api/public/content-plan-submit'
       path: '/api/public/content-plan-submit'
@@ -785,7 +764,6 @@ const rootRouteChildren: RootRouteChildren = {
   ToolsPianoContenutiRoute: ToolsPianoContenutiRoute,
   SettoriIndexRoute: SettoriIndexRoute,
   ApiPublicContentPlanSubmitRoute: ApiPublicContentPlanSubmitRoute,
-  ApiPublicFolliaPreviewEmailRoute: ApiPublicFolliaPreviewEmailRoute,
   ApiPublicLeadSubmitRoute: ApiPublicLeadSubmitRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
@@ -797,3 +775,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
