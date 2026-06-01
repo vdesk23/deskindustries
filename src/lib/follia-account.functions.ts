@@ -9,7 +9,31 @@ import { createClient } from "@supabase/supabase-js";
 export const listMyFolliaSites = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { supabase } = context;
+    const { supabase, userId } = context;
+
+    // Auto-claim: assegna eventuali siti non rivendicati il cui lead_email
+    // coincide con l'email dell'utente loggato. Copre i clienti che hanno
+    // creato il sito via form e poi si sono registrati senza passare dal
+    // link email con ?siteId=.
+    try {
+      const admin = getAdminClient();
+      const { data: profile } = await admin
+        .from("profiles")
+        .select("email")
+        .eq("user_id", userId)
+        .maybeSingle();
+      const email = (profile?.email || "").toLowerCase().trim();
+      if (email) {
+        await admin
+          .from("follia_sites")
+          .update({ user_id: userId, claimed_at: new Date().toISOString() })
+          .is("user_id", null)
+          .ilike("lead_email", email);
+      }
+    } catch (e) {
+      console.error("auto-claim follia sites failed", e);
+    }
+
     const { data, error } = await supabase
       .from("follia_sites")
       .select("id, subdomain, custom_domain, business_type, business_data, status, plan, has_full_assistance, created_at")
