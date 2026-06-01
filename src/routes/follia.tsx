@@ -111,10 +111,12 @@ function FolliaLanding() {
     setPrefillError(null);
     const hasAny = prefillUrls.oldSiteUrl || prefillUrls.inspirationUrl || prefillUrls.gmbUrl;
     if (!hasAny) {
+      setPrefillAttempted(false);
       setStep("form");
       return;
     }
     setPrefillLoading(true);
+    setPrefillAttempted(true);
     try {
       const res = await prefill({ data: prefillUrls });
       setPrefillSources(res.sources || []);
@@ -178,6 +180,8 @@ function FolliaLanding() {
       setPrefillLoading(false);
     }
   }
+
+  const gmbIsShortlink = /^(https?:\/\/)?(share\.google|goo\.gl\/maps|maps\.app\.goo\.gl)\//i.test(prefillUrls.gmbUrl.trim());
 
   return (
     <main className="min-h-screen bg-background text-foreground">
