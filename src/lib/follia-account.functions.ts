@@ -93,6 +93,16 @@ export const createFolliaTicket = createServerFn({ method: "POST" })
   .handler(async ({ context, data }) => {
     const { supabase, userId } = context;
 
+    // Verify site ownership before creating ticket
+    const { data: site, error: siteErr } = await supabase
+      .from("follia_sites")
+      .select("id, user_id")
+      .eq("id", data.siteId)
+      .maybeSingle();
+    if (siteErr || !site) throw new Error("Sito non trovato");
+    if (site.user_id !== userId) throw new Error("Non sei il proprietario di questo sito");
+
+
     // rate-limit: 5 / 30gg
     const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
     const { count } = await supabase
