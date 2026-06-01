@@ -47,31 +47,36 @@ export const getMyFolliaSite = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => z.object({ siteId: z.string().uuid() }).parse(input))
   .handler(async ({ context, data }) => {
     const { supabase, userId } = context;
+    const siteSelect = "id, subdomain, custom_domain, business_type, business_data, config, status, request_status, plan, has_full_assistance, published_url, created_at, lead_email, user_id";
     let { data: site, error } = await supabase
       .from("follia_sites")
-      .select("id, subdomain, custom_domain, business_type, business_data, config, status, request_status, plan, has_full_assistance, published_url, created_at, lead_email")
+      .select(siteSelect)
       .eq("id", data.siteId)
       .maybeSingle();
     if (error) throw new Error(error.message);
+    let canUseAdminReads = false;
     if (!site) {
       const admin = getAdminClient();
-      const { data: profile } = await admin
-        .from("profiles")
-        .select("email")
-        .eq("user_id", userId)
-        .maybeSingle();
+      const [{ data: profile }, { data: role }, { data: adminSite }] = await Promise.all([
+        admin.from("profiles").select("email").eq("user_id", userId).maybeSingle(),
+        admin.from("user_roles").select("role").eq("user_id", userId).eq("role", "admin").maybeSingle(),
+        admin.from("follia_sites").select(siteSelect).eq("id", data.siteId).maybeSingle(),
+      ]);
+      const isAdmin = !!role;
       const email = (profile?.email || context.claims?.email || "").toLowerCase().trim();
-      if (email) {
+      if (adminSite && isAdmin) {
+        site = adminSite;
+        canUseAdminReads = true;
+      } else if (adminSite && email && !adminSite.user_id && String(adminSite.lead_email).toLowerCase() === email) {
         await admin
           .from("follia_sites")
           .update({ user_id: userId, claimed_at: new Date().toISOString() })
           .eq("id", data.siteId)
-          .is("user_id", null)
-          .ilike("lead_email", email);
+          .is("user_id", null);
 
         const retry = await supabase
           .from("follia_sites")
-          .select("id, subdomain, custom_domain, business_type, business_data, config, status, request_status, plan, has_full_assistance, published_url, created_at, lead_email")
+          .select(siteSelect)
           .eq("id", data.siteId)
           .maybeSingle();
         if (retry.error) throw new Error(retry.error.message);
@@ -80,23 +85,13 @@ export const getMyFolliaSite = createServerFn({ method: "POST" })
     }
     if (!site) throw new Error("Sito non trovato");
 
-    const { data: tickets } = await supabase
-      .from("follia_tickets")
-      .select("id, subject, status, category, created_at")
-      .eq("site_id", data.siteId)
-      .order("created_at", { ascending: false });
-
-    // Billing for current user (RLS-scoped)
-    const { data: purchases } = await supabase
-      .from("purchases")
-      .select("id, amount_total, currency, mode, price_id, environment, created_at")
-      .eq("user_id", userId)
-      .order("created_at", { ascending: false });
-    const { data: subscriptions } = await supabase
-      .from("subscriptions")
-      .select("id, status, price_id, current_period_end, cancel_at_period_end, environment, created_at")
-      .eq("user_id", userId)
-      .order("created_at", { ascending: false });
+    const reader = canUseAdminReads ? getAdminClient() : supabase;
+    const billingUserId = (site as { user_id?: string | null }).user_id || userId;
+    const [{ data: tickets }, { data: purchases }, { data: subscriptions }] = await Promise.all([
+      reader.from("follia_tickets").select("id, subject, status, category, created_at").eq("site_id", data.siteId).order("created_at", { ascending: false }),
+      reader.from("purchases").select("id, amount_total, currency, mode, price_id, environment, created_at").eq("user_id", billingUserId).order("created_at", { ascending: false }),
+      reader.from("subscriptions").select("id, status, price_id, current_period_end, cancel_at_period_end, environment, created_at").eq("user_id", billingUserId).order("created_at", { ascending: false }),
+    ]);
 
     return { site, tickets: tickets || [], purchases: purchases || [], subscriptions: subscriptions || [] };
   });
