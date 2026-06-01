@@ -1,59 +1,73 @@
-## Problemi rilevati
+## Problema
 
-### 1. "Crea il mio sito" non porta al form
+Oggi se un cliente Foll.IA si logga e prova ad aprire il suo sito:
 
-Cliccando il CTA dell'hero, lo stato passa a `prefill` ma la nuova sezione viene renderizzata sotto l'hero senza scroll automatico → l'utente resta a vedere lo stesso hero e pensa che non sia successo nulla.
+- **In `/account**` vede solo una card generica "I miei siti Foll.IA" che porta a una lista — non vede il sito creato né il suo stato.
+- **Cliccando "Foll.IA"** dall'home (link a `/follia`) gli si riapre il form di lead come se fosse un nuovo utente, anche se ha già un sito in bozza.
+- **Aprendo l'anteprima** (`/s/<subdomain>`) il sito è invisibile perché `getPublicFolliaSite` filtra `status = 'live'`, e finché non paga il sito resta `draft` → schermata "Sito non trovato o non ancora pubblicato".
 
-### 2. Link Google Maps shortlink non compila niente
+Risultato: il cliente non vede mai la sua anteprima e non trova il bottone Publish/pagamento.
 
-`https://share.google/...` è uno shortlink Google che redirige a una pagina Maps caricata via JS. `fetchTextFromUrl` ottiene HTML praticamente vuoto, l'AI non estrae nulla, e l'utente passa al form senza alcun messaggio: sembra che il bottone non abbia fatto nulla.
+## Obiettivo
 
-### 3. Sito non visibile dopo signup
+1. Il cliente può vedere gratis l'anteprima del proprio sito (anche in stato `draft`) dalla dashboard cliente, dopo il login su deskindustries.com
+2. Dalla `/account` vede subito i suoi siti Foll.IA, con stato e CTA verso anteprima / pubblicazione.
+3. Un singolo account non può creare più di un sito web.
+4. Cliccando "Foll.IA" da home, se è loggato e ha almeno un sito, viene portato alla dashboard del sito, non al form.
 
-Il trigger `handle_new_user` rivendica i siti via `lead_email = NEW.email`. Se l'utente in fase di signup digita un'email diversa da quella usata nel form Foll.IA (anche solo case/typo, o usa Google login con altra mail), il sito resta orfano: `user_id IS NULL`, RLS lo nasconde, lista vuota in `/account/sites`.
+## Modifiche
 
-Inoltre nell'`/account` principale manca un riferimento esplicito ai siti Foll.IA appena creati (c'è solo il link in pagina ma non un highlight post-signup).
+### 1. Anteprima gratuita per siti in bozza
 
-## Fix proposti
+`src/lib/follia-public.functions.ts`
 
-### Fix 1 — Auto-scroll alla sezione attiva
+- Aggiungere parametro opzionale `preview: boolean` allo schema di `getPublicFolliaSite`.
+- Se `preview === true`: rimuovere il filtro `.eq("status", "live")` e includere anche `status` nel select, così il sito viene restituito anche in `draft` / `in_review`.
+- Restituire anche `status` nel payload per permettere al frontend di mostrare il banner "Anteprima — sito non ancora pubblicato".
 
-In `src/routes/follia.tsx`, quando `step` cambia da `intro` a `prefill` (o `form`/`success`), fare uno `scrollIntoView` smooth sulla nuova sezione. Aggiungere un `ref` sul container `prefill`/`form`/`success` e un `useEffect` che scrolla quando `step !== "intro"`.
+`src/routes/s.$subdomain.tsx`
 
-### Fix 2 — Feedback prefill quando l'estrazione fallisce
+- Leggere `?preview=1` dai search params.
+- Passare `preview` a `fetchSite`.
+- Se il sito ritorna con `status !== "live"`, mostrare un banner sticky in alto con la dicitura "Anteprima gratuita — questo sito non è ancora online" e (se l'utente è il proprietario o non c'è gating) un link "Pubblica ora" verso `/account/sites/<id>`. Per non-owner basta il banner informativo.
+- Per `status === "live"` resta tutto invariato (nessun banner).
 
-In `runPrefill`:
+Questo permette al cliente di condividere un link `/s/<subdomain>?preview=1` come anteprima gratuita prima del pagamento.
 
-- Se `prefillSources` ha tutte le fonti `ok: false` (o l'AI restituisce 0 campi), mostrare un toast/banner sullo step `form` tipo: "Non sono riuscito a leggere i tuoi link (Google Maps shortlink, sito JS-only o pagina protetta). Compila a mano qui sotto."
-- Modificare il banner verde di "Ho compilato N campi" per gestire anche il caso 0 con un tono diverso (avviso ambra invece di successo).
-- Bonus: per gli URL `share.google` / `goo.gl/maps` / `maps.app.goo.gl`, mostrare un hint inline sotto il campo GMB tipo: "Per i link condivisi di Google Maps copia invece l'URL completo della scheda dal browser desktop" — gli shortlink non sono indicizzabili lato server.
+### 2. Siti Foll.IA visibili in `/account`
 
-### Fix 3 — Claim del sito post-signup anche con email diversa
+`src/routes/account.tsx`
 
-Due interventi complementari per rendere il sito visibile al cliente o con un messaggio di caricamento tipo "In costruzione":
+- Caricare in parallelo i siti del cliente con `listMyFolliaSites` (serverFn già esistente).
+- Sopra il blocco "Tool gratuiti", inserire una nuova sezione "I tuoi siti Foll.IA" che:
+  - Se non ha siti → CTA "Crea il tuo sito" → `/follia`.
+  - Se ne ha → lista (max 3, con link "Vedi tutti" se >3) con: nome business, subdomain, badge di stato ("Bozza" amber / "Online" verde / "In revisione" grigio), due bottoni inline: **Anteprima gratis** (apre `/s/<subdomain>?preview=1` in nuova tab) e, se `status==='draft'`, **Pubblica** (link a `/account/sites/<id>` dove c'è già il blocco checkout).
+- Mantenere la card link a `/account/sites` come "Gestisci tutti i siti" sotto la lista.
 
-**a) Passare `siteId` come hint nel redirect post-auth**
-Su `/follia` step success, il link `/auth?...&redirect=/account/sites/${siteId}` già esiste. Aggiungere su `auth.tsx`, dopo signup riuscito, una server function `claimFolliaSite({ siteId })` che:
+### 3. Routing intelligente dal CTA "Foll.IA" su home
 
-- verifica che il chiamante sia autenticato (`requireSupabaseAuth`)
-- usa service role per `UPDATE follia_sites SET user_id = auth.uid(), claimed_at = now() WHERE id = $1 AND user_id IS NULL`
-- ritorna ok/already_claimed/not_found
+`src/routes/follia.tsx`
 
-Se l'utente arriva su `/auth` con `redirect=/account/sites/<uuid>`, dopo signup/login chiamiamo `claimFolliaSite` con quell'id prima del redirect finale. Così anche se l'email del signup è diversa dalla `lead_email`, il sito viene assegnato al nuovo utente (siamo sicuri che è "suo" perché ha cliccato il link arrivato sulla sua casella).
+- Se l'utente è loggato e `listMyFolliaSites` restituisce ≥1 sito, mostrare in cima alla pagina (sopra l'hero/form) un banner "Hai già un sito Foll.IA in lavorazione" con CTA primaria "Vai al mio sito →" verso `/account/sites/<id>` (primo sito). Mantenere comunque il form sotto, dentro un accordion/sezione "Crea un altro sito".
+- Non eseguire redirect forzati: alcuni clienti possono volerne creare più di uno.
 
-**b) Mostrare i siti Foll.IA nell'`/account` dashboard**
-Nel dashboard principale `/account`, aggiungere una card "I tuoi siti Foll.IA" che chiama `listMyFolliaSites` e mostra i primi 2-3 con link a `/account/sites/$siteId`. Così appena fatto login l'utente vede subito il sito, non deve sapere che esiste `/account/sites`.
+### 4. Bottone "Apri preview" in dettaglio sito
+
+`src/routes/account.sites.$siteId.tsx`
+
+- Cambiare il link del bottone "Apri preview" da `/s/${subdomain}` a `/s/${subdomain}?preview=1` così funziona anche per i draft.
+- Lasciare la label "Apri preview"; in più, se `isLive`, mostrare anche un secondo bottone "Apri sito pubblico" senza `?preview=1`.
 
 ## File toccati
 
-- `src/routes/follia.tsx` — ref + scroll, banner prefill fallito, hint shortlink GMB
-- `src/lib/follia-account.functions.ts` — nuova `claimFolliaSite` server function
-- `src/routes/auth.tsx` — chiamata claim post-signup quando redirect contiene `/account/sites/<id>`
-- `src/routes/account.tsx` — card "I tuoi siti Foll.IA" con preview lista
+- `src/lib/follia-public.functions.ts` — supporto `preview` flag + ritorno status.
+- `src/routes/s.$subdomain.tsx` — leggere `?preview`, banner anteprima.
+- `src/routes/account.tsx` — sezione siti Foll.IA inline.
+- `src/routes/account.sites.$siteId.tsx` — link preview con `?preview=1`.
+- `src/routes/follia.tsx` — banner "hai già un sito" per utenti loggati con siti esistenti.
 
-Nessuna migrazione DB necessaria.
+## Fuori scope
 
-## Non in scope
-
-- Riscrivere il parsing di Google Maps shortlink lato server (richiederebbe headless browser, fuori scope su Worker runtime — si limita a fornire hint UX all'utente).
-- Cambiare il flusso email/conferma signup.
+- Modifiche al flusso Stripe / pagamenti (è già funzionante in `account.sites.$siteId.tsx`).
+- Modifica RLS DB: usiamo il service role nel serverFn `getPublicFolliaSite`, quindi nessuna migration.
+- Rinominare/cambiare il subdomain di farmacialeone (è già claimato dall'utente e visibile in `/account/sites`).

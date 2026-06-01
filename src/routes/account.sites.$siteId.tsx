@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, ExternalLink, Rocket, MessagesSquare, Settings, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, ExternalLink, Eye, Rocket, MessagesSquare, Settings, CheckCircle2 } from "lucide-react";
 import { useStripeCheckout } from "@/hooks/useStripeCheckout";
 import { AssistanceFab } from "@/components/follia/AssistanceFab";
 import { toast } from "sonner";
@@ -98,8 +98,10 @@ function SiteDetailPage() {
   }
 
   const name = site.business_data?.name || site.subdomain;
+  const previewUrl = `/s/${site.subdomain}?preview=1`;
   const publicUrl = `/s/${site.subdomain}`;
   const isLive = site.status === "live";
+
   const isInReview = site.status === "in_review";
   const isDraft = site.status === "draft";
   const canEditRequests = site.plan === "with_setup_297" && (isInReview || isLive);
@@ -170,10 +172,18 @@ function SiteDetailPage() {
               {site.custom_domain || `${site.subdomain}.deskinc.app`}
             </p>
           </div>
-          <a href={publicUrl} target="_blank" rel="noreferrer">
-            <Button variant="outline"><ExternalLink className="size-4" /> Apri preview</Button>
-          </a>
+          <div className="flex gap-2 flex-wrap">
+            <a href={previewUrl} target="_blank" rel="noreferrer">
+              <Button variant="outline"><Eye className="size-4" /> Anteprima gratis</Button>
+            </a>
+            {isLive && (
+              <a href={publicUrl} target="_blank" rel="noreferrer">
+                <Button variant="amber"><ExternalLink className="size-4" /> Apri sito pubblico</Button>
+              </a>
+            )}
+          </div>
         </div>
+
 
         {/* CTA pagamento per draft */}
         {isDraft && (

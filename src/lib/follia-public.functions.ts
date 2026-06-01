@@ -2,16 +2,23 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { createClient } from "@supabase/supabase-js";
 
+const inputSchema = z.object({
+  subdomain: z.string().trim().toLowerCase().min(1).max(60),
+  preview: z.boolean().optional(),
+});
+
 export const getPublicFolliaSite = createServerFn({ method: "POST" })
-  .inputValidator((input: unknown) => z.object({ subdomain: z.string().trim().toLowerCase().min(1).max(60) }).parse(input))
+  .inputValidator((input: unknown) => inputSchema.parse(input))
   .handler(async ({ data }) => {
     const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
-    const { data: site } = await supabase
+    let query = supabase
       .from("follia_sites")
       .select("id, subdomain, business_type, business_data, config, status")
-      .eq("subdomain", data.subdomain)
-      .eq("status", "live")
-      .maybeSingle();
+      .eq("subdomain", data.subdomain);
+    if (!data.preview) {
+      query = query.eq("status", "live");
+    }
+    const { data: site } = await query.maybeSingle();
     if (!site) return { site: null, menu: [], products: [], services: [] };
 
     const [menu, products, services] = await Promise.all([

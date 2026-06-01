@@ -1,11 +1,14 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { motion } from "framer-motion";
-import { ArrowRight, ExternalLink, LogOut, Sparkles, FileText, Globe } from "lucide-react";
+import { ArrowRight, ExternalLink, Eye, LogOut, Sparkles, FileText, Globe, Rocket } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { getStripeEnvironment } from "@/lib/stripe";
 import { Button } from "@/components/ui/button";
+import { listMyFolliaSites } from "@/lib/follia-account.functions";
+
 
 export const Route = createFileRoute("/account")({
   head: () => ({
@@ -37,11 +40,33 @@ interface Purchase {
   created_at: string;
 }
 
+type FolliaSite = {
+  id: string;
+  subdomain: string;
+  custom_domain: string | null;
+  business_type: string;
+  business_data: { name?: string } & Record<string, unknown>;
+  status: string;
+  plan: string | null;
+  has_full_assistance: boolean;
+  created_at: string;
+};
+
+const SITE_STATUS_LABEL: Record<string, string> = {
+  draft: "Bozza",
+  awaiting_payment: "In attesa di pagamento",
+  in_review: "In revisione",
+  live: "Online",
+  suspended: "Sospeso",
+};
+
 function AccountPage() {
   const { user, loading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
+  const fetchSites = useServerFn(listMyFolliaSites);
   const [subs, setSubs] = useState<Subscription[]>([]);
   const [purchases, setPurchases] = useState<Purchase[]>([]);
+  const [folliaSites, setFolliaSites] = useState<FolliaSite[]>([]);
   const [loading, setLoading] = useState(true);
   const [portalLoading, setPortalLoading] = useState(false);
 
@@ -54,7 +79,7 @@ function AccountPage() {
   useEffect(() => {
     if (!user) return;
     const load = async () => {
-      const [{ data: s }, { data: p }] = await Promise.all([
+      const [{ data: s }, { data: p }, sitesRes] = await Promise.all([
         supabase
           .from("subscriptions")
           .select("*")
@@ -65,13 +90,16 @@ function AccountPage() {
           .select("*")
           .eq("user_id", user.id)
           .order("created_at", { ascending: false }),
+        fetchSites().catch(() => ({ sites: [] as FolliaSite[] })),
       ]);
       setSubs((s as Subscription[]) || []);
       setPurchases((p as Purchase[]) || []);
+      setFolliaSites(((sitesRes as { sites: FolliaSite[] }).sites) || []);
       setLoading(false);
     };
     load();
-  }, [user]);
+  }, [user, fetchSites]);
+
 
   const openPortal = async () => {
     setPortalLoading(true);
@@ -196,6 +224,75 @@ function AccountPage() {
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.03 }}
+              className="rounded-3xl border border-border bg-surface-elevated p-8 mb-6"
+            >
+              <div className="flex items-center gap-2 mb-1">
+                <Globe className="size-5 text-amber" />
+                <h2 className="text-xl font-display font-semibold">I tuoi siti Foll.IA</h2>
+              </div>
+              <p className="text-sm text-muted-foreground mb-6">
+                Anteprima gratuita prima della pubblicazione. Quando sei pronto, clicca su Pubblica per andare online.
+              </p>
+
+              {folliaSites.length === 0 ? (
+                <div className="text-center py-6">
+                  <p className="text-muted-foreground mb-4">Non hai ancora un sito Foll.IA.</p>
+                  <Link to="/follia">
+                    <Button variant="amber">Crea il tuo sito <ArrowRight className="size-4" /></Button>
+                  </Link>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {folliaSites.slice(0, 3).map((s) => {
+                    const siteName = s.business_data?.name || s.subdomain;
+                    const isDraft = s.status === "draft";
+                    const isLive = s.status === "live";
+                    return (
+                      <div
+                        key={s.id}
+                        className="rounded-2xl border border-border bg-background/40 p-5"
+                      >
+                        <div className="flex items-start justify-between gap-4 flex-wrap">
+                          <div className="flex-1 min-w-[200px]">
+                            <p className={`text-[10px] font-display tracking-[0.3em] uppercase mb-2 ${isLive ? "text-emerald-500" : "text-amber"}`}>
+                              {SITE_STATUS_LABEL[s.status] || s.status}
+                            </p>
+                            <h3 className="font-display font-semibold text-lg mb-1">{siteName}</h3>
+                            <p className="text-xs text-muted-foreground">
+                              {s.custom_domain || `${s.subdomain}.deskinc.app`}
+                            </p>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            <a href={`/s/${s.subdomain}?preview=1`} target="_blank" rel="noreferrer">
+                              <Button variant="outline" size="sm"><Eye className="size-4" /> Anteprima gratis</Button>
+                            </a>
+                            {isDraft && (
+                              <Link to="/account/sites/$siteId" params={{ siteId: s.id }}>
+                                <Button variant="amber" size="sm"><Rocket className="size-4" /> Pubblica</Button>
+                              </Link>
+                            )}
+                            <Link to="/account/sites/$siteId" params={{ siteId: s.id }}>
+                              <Button variant="ghost" size="sm">Gestisci <ArrowRight className="size-4" /></Button>
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                  {folliaSites.length > 3 && (
+                    <Link to="/account/sites" className="block text-sm text-amber hover:underline pt-2">
+                      Vedi tutti i siti ({folliaSites.length}) →
+                    </Link>
+                  )}
+                </div>
+              )}
+            </motion.div>
+
+            <motion.div
+
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.05 }}
               className="rounded-3xl border border-border bg-surface-elevated p-8 mb-6"
             >
@@ -245,21 +342,6 @@ function AccountPage() {
                       Ottimizza i tuoi articoli per Google e per le AI generative.
                       Meta description, slug, permalink e idee ALT incluse. 3 articoli
                       gratis al mese, poi piani da 4,99€.
-                    </p>
-                  </div>
-                  <ArrowRight className="size-5 text-muted-foreground group-hover:text-amber group-hover:translate-x-0.5 transition" />
-                </div>
-              </Link>
-              <Link
-                to="/account/sites"
-                className="group block rounded-2xl border border-border bg-background/40 p-5 hover:border-amber/50 transition-all mt-3"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1">
-                    <p className="text-[10px] font-display tracking-[0.3em] text-amber uppercase mb-2">Tool · Foll.IA</p>
-                    <h3 className="font-display font-semibold text-lg mb-1 flex items-center gap-2"><Globe className="size-4" /> I miei siti Foll.IA</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Genera, pubblica e gestisci il tuo sito vetrina locale con AI. Dashboard, ticket e modifiche manuali.
                     </p>
                   </div>
                   <ArrowRight className="size-5 text-muted-foreground group-hover:text-amber group-hover:translate-x-0.5 transition" />

@@ -1,10 +1,16 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { getPublicFolliaSite } from "@/lib/follia-public.functions";
-import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { MapPin, Phone, Mail, Clock, Eye } from "lucide-react";
+import { z } from "zod";
+
+const searchSchema = z.object({
+  preview: z.union([z.literal("1"), z.literal("true"), z.boolean()]).optional(),
+});
 
 export const Route = createFileRoute("/s/$subdomain")({
+  validateSearch: (s) => searchSchema.parse(s),
   component: PublicSitePage,
 });
 
@@ -14,16 +20,19 @@ type Site = {
   business_type: string;
   business_data: { name?: string; primary_color?: string; secondary_color?: string; generated?: any };
   config: { show_map?: boolean; opening_hours?: string; address?: string; phone?: string; email?: string };
+  status?: string;
 };
 
 function PublicSitePage() {
   const { subdomain } = Route.useParams();
+  const search = Route.useSearch();
+  const isPreview = search.preview === true || search.preview === "1" || search.preview === "true";
   const fetchSite = useServerFn(getPublicFolliaSite);
   const [data, setData] = useState<{ site: Site | null; menu: any[]; products: any[]; services: any[] } | null>(null);
 
   useEffect(() => {
-    fetchSite({ data: { subdomain } }).then((r) => setData(r as any));
-  }, [fetchSite, subdomain]);
+    fetchSite({ data: { subdomain, preview: isPreview } }).then((r) => setData(r as any));
+  }, [fetchSite, subdomain, isPreview]);
 
   if (!data) return <div className="min-h-screen flex items-center justify-center text-muted-foreground">Caricamento...</div>;
   if (!data.site) return <div className="min-h-screen flex items-center justify-center text-muted-foreground">Sito non trovato o non ancora pubblicato.</div>;
@@ -32,9 +41,18 @@ function PublicSitePage() {
   const gen = site.business_data?.generated || {};
   const name = site.business_data?.name || site.subdomain;
   const primary = site.business_data?.primary_color || "#6d28d9";
+  const showPreviewBanner = isPreview && site.status !== "live";
 
   return (
     <div className="min-h-screen bg-background" style={{ ["--site-primary" as any]: primary }}>
+      {showPreviewBanner && (
+        <div className="sticky top-0 z-50 bg-amber text-amber-foreground px-5 py-3 text-sm flex flex-wrap items-center justify-center gap-3">
+          <Eye className="size-4" />
+          <span><strong>Anteprima gratuita</strong> — questo sito non è ancora pubblicato.</span>
+          <a href="/account/sites" className="underline font-medium">Vai alla dashboard per pubblicarlo →</a>
+        </div>
+      )}
+
       <section className="py-20 lg:py-32 px-5 lg:px-8 text-center" style={{ background: `linear-gradient(135deg, ${primary}15, transparent)` }}>
         <div className="max-w-3xl mx-auto">
           <p className="text-xs font-display tracking-[0.3em] uppercase mb-4" style={{ color: primary }}>{name}</p>
