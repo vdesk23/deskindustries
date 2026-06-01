@@ -119,7 +119,7 @@ export const updateMyFolliaSite = createServerFn({ method: "POST" })
     if (data.config) {
       patch.config = { ...(existing.config as Record<string, unknown>), ...data.config };
     }
-    const { error } = await supabase.from("follia_sites").update(patch).eq("id", data.siteId);
+    const { error } = await supabase.from("follia_sites").update(patch as never).eq("id", data.siteId);
     if (error) throw new Error(error.message);
     return { ok: true as const };
   });
