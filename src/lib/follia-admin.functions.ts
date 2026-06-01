@@ -52,7 +52,7 @@ export const adminListSites = createServerFn({ method: "POST" })
     let q = admin
       .from("follia_sites")
       .select(
-        "id, subdomain, custom_domain, business_type, business_data, lead_email, status, plan, has_full_assistance, user_id, claimed_at, created_at",
+        "id, subdomain, custom_domain, business_type, business_data, lead_email, status, request_status, plan, has_full_assistance, published_url, user_id, claimed_at, created_at",
       )
       .order("created_at", { ascending: false });
 
