@@ -91,6 +91,9 @@ export const adminGetSite = createServerFn({ method: "POST" })
     ]);
 
     let ownerEmail: string | null = null;
+    let ownerName: string | null = null;
+    let purchases: any[] = [];
+    let subscriptions: any[] = [];
     if (site.user_id) {
       const { data: profile } = await admin
         .from("profiles")
@@ -98,17 +101,33 @@ export const adminGetSite = createServerFn({ method: "POST" })
         .eq("user_id", site.user_id)
         .maybeSingle();
       ownerEmail = profile?.email || null;
+      ownerName = profile?.full_name || null;
+      const { data: pur } = await admin
+        .from("purchases")
+        .select("id, stripe_session_id, amount_total, currency, mode, price_id, environment, created_at")
+        .eq("user_id", site.user_id)
+        .order("created_at", { ascending: false });
+      purchases = pur || [];
+      const { data: sub } = await admin
+        .from("subscriptions")
+        .select("id, stripe_subscription_id, status, price_id, current_period_end, cancel_at_period_end, environment, created_at")
+        .eq("user_id", site.user_id)
+        .order("created_at", { ascending: false });
+      subscriptions = sub || [];
     }
 
     return {
       site,
       ownerEmail,
+      ownerName,
       menu: menu.data || [],
       products: products.data || [],
       services: services.data || [],
       tickets: tickets.data || [],
       bookings: bookings.data || [],
       appointments: appointments.data || [],
+      purchases,
+      subscriptions,
     };
   });
 
