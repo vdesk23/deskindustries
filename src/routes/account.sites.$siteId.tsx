@@ -172,10 +172,18 @@ function SiteDetailPage() {
               {site.custom_domain || `${site.subdomain}.deskinc.app`}
             </p>
           </div>
-          <a href={publicUrl} target="_blank" rel="noreferrer">
-            <Button variant="outline"><ExternalLink className="size-4" /> Apri preview</Button>
-          </a>
+          <div className="flex gap-2 flex-wrap">
+            <a href={previewUrl} target="_blank" rel="noreferrer">
+              <Button variant="outline"><Eye className="size-4" /> Anteprima gratis</Button>
+            </a>
+            {isLive && (
+              <a href={publicUrl} target="_blank" rel="noreferrer">
+                <Button variant="amber"><ExternalLink className="size-4" /> Apri sito pubblico</Button>
+              </a>
+            )}
+          </div>
         </div>
+
 
         {/* CTA pagamento per draft */}
         {isDraft && (
