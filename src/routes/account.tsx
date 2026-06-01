@@ -8,6 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { getStripeEnvironment } from "@/lib/stripe";
 import { Button } from "@/components/ui/button";
 import { listMyFolliaSites } from "@/lib/follia-account.functions";
+import { checkIsAdmin } from "@/lib/follia-admin.functions";
 
 
 export const Route = createFileRoute("/account")({
