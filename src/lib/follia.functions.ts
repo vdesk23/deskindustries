@@ -155,11 +155,16 @@ export const createFolliaDraft = createServerFn({ method: "POST" })
       return { ok: false as const, error: "Questo sottodominio è già in uso." };
     }
 
+    const prompt = buildLovablePrompt(data);
     const businessData = {
       name: data.businessName,
       city: data.city,
       primary_color: data.primaryColor,
       secondary_color: data.secondaryColor,
+      description: data.description,
+      services: data.services,
+      notes: data.notes,
+      lovable_prompt: prompt,
     };
     const config = {
       opening_hours: data.openingHours,
@@ -188,7 +193,6 @@ export const createFolliaDraft = createServerFn({ method: "POST" })
     }
 
     // Fire-and-forget emails (don't block submit on email failure)
-    const prompt = buildLovablePrompt(data);
     const adminUrl = `${APP_BASE_URL}/admin/sites/${site.id}`;
     const accountUrl = `${APP_BASE_URL}/auth?mode=signup&email=${encodeURIComponent(data.email)}&redirect=${encodeURIComponent("/account")}`;
 

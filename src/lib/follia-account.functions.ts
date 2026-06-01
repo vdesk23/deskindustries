@@ -46,7 +46,7 @@ export const getMyFolliaSite = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => z.object({ siteId: z.string().uuid() }).parse(input))
   .handler(async ({ context, data }) => {
-    const { supabase } = context;
+    const { supabase, userId } = context;
     const { data: site, error } = await supabase
       .from("follia_sites")
       .select("id, subdomain, custom_domain, business_type, business_data, config, status, request_status, plan, has_full_assistance, published_url, created_at, lead_email")
@@ -61,38 +61,65 @@ export const getMyFolliaSite = createServerFn({ method: "POST" })
       .eq("site_id", data.siteId)
       .order("created_at", { ascending: false });
 
-    return { site, tickets: tickets || [] };
+    // Billing for current user (RLS-scoped)
+    const { data: purchases } = await supabase
+      .from("purchases")
+      .select("id, amount_total, currency, mode, price_id, environment, created_at")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
+    const { data: subscriptions } = await supabase
+      .from("subscriptions")
+      .select("id, status, price_id, current_period_end, cancel_at_period_end, environment, created_at")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
+
+    return { site, tickets: tickets || [], purchases: purchases || [], subscriptions: subscriptions || [] };
   });
 
-const configSchema = z.object({
+const fullUpdateSchema = z.object({
   siteId: z.string().uuid(),
-  config: z.object({
-    show_map: z.boolean().optional(),
-    opening_hours: z.string().max(500).optional(),
-    address: z.string().max(200).optional(),
-    phone: z.string().max(40).optional(),
-    email: z.string().email().max(255).optional(),
-  }),
+  business_data: z
+    .object({
+      name: z.string().trim().min(1).max(120).optional(),
+      city: z.string().trim().max(80).optional(),
+      primary_color: z.string().regex(/^#[0-9a-fA-F]{6}$/).optional(),
+      secondary_color: z.string().regex(/^#[0-9a-fA-F]{6}$/).optional(),
+      description: z.string().trim().max(800).optional(),
+      services: z.string().trim().max(500).optional(),
+      notes: z.string().trim().max(800).optional(),
+    })
+    .optional(),
+  config: z
+    .object({
+      show_map: z.boolean().optional(),
+      opening_hours: z.string().max(500).optional(),
+      address: z.string().max(200).optional(),
+      phone: z.string().max(40).optional(),
+      email: z.string().email().max(255).optional(),
+    })
+    .optional(),
 });
 
-export const updateMyFolliaSiteConfig = createServerFn({ method: "POST" })
+export const updateMyFolliaSite = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: unknown) => configSchema.parse(input))
+  .inputValidator((input: unknown) => fullUpdateSchema.parse(input))
   .handler(async ({ context, data }) => {
     const { supabase } = context;
     const { data: existing, error: readErr } = await supabase
       .from("follia_sites")
-      .select("config, status, user_id")
+      .select("business_data, config, user_id")
       .eq("id", data.siteId)
       .maybeSingle();
     if (readErr || !existing) throw new Error("Sito non trovato");
     if (existing.user_id !== context.userId) throw new Error("Forbidden");
-
-    const merged = { ...(existing.config as Record<string, unknown>), ...data.config };
-    const { error } = await supabase
-      .from("follia_sites")
-      .update({ config: merged })
-      .eq("id", data.siteId);
+    const patch: Record<string, unknown> = { updated_at: new Date().toISOString() };
+    if (data.business_data) {
+      patch.business_data = { ...(existing.business_data as Record<string, unknown>), ...data.business_data };
+    }
+    if (data.config) {
+      patch.config = { ...(existing.config as Record<string, unknown>), ...data.config };
+    }
+    const { error } = await supabase.from("follia_sites").update(patch as never).eq("id", data.siteId);
     if (error) throw new Error(error.message);
     return { ok: true as const };
   });
