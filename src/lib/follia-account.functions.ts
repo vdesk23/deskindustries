@@ -65,10 +65,11 @@ export const updateMyFolliaSiteConfig = createServerFn({ method: "POST" })
     const { supabase } = context;
     const { data: existing, error: readErr } = await supabase
       .from("follia_sites")
-      .select("config, status")
+      .select("config, status, user_id")
       .eq("id", data.siteId)
       .maybeSingle();
     if (readErr || !existing) throw new Error("Sito non trovato");
+    if (existing.user_id !== context.userId) throw new Error("Forbidden");
 
     const merged = { ...(existing.config as Record<string, unknown>), ...data.config };
     const { error } = await supabase
