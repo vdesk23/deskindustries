@@ -36,6 +36,7 @@ import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/em
 import { Route as ApiPublicLeadSubmitRouteImport } from './routes/api/public/lead-submit'
 import { Route as ApiPublicFolliaPreviewEmailRouteImport } from './routes/api/public/follia-preview-email'
 import { Route as ApiPublicContentPlanSubmitRouteImport } from './routes/api/public/content-plan-submit'
+import { Route as AdminSitesSiteIdRouteImport } from './routes/admin.sites.$siteId'
 import { Route as AccountSitesSiteIdRouteImport } from './routes/account.sites.$siteId'
 import { Route as LovableEmailTransactionalSendTicketStaffRouteImport } from './routes/lovable/email/transactional/send-ticket-staff'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
@@ -180,6 +181,11 @@ const ApiPublicContentPlanSubmitRoute =
     path: '/api/public/content-plan-submit',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AdminSitesSiteIdRoute = AdminSitesSiteIdRouteImport.update({
+  id: '/$siteId',
+  path: '/$siteId',
+  getParentRoute: () => AdminSitesRoute,
+} as any)
 const AccountSitesSiteIdRoute = AccountSitesSiteIdRouteImport.update({
   id: '/$siteId',
   path: '/$siteId',
@@ -231,7 +237,7 @@ export interface FileRoutesByFullPath {
   '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/account/sites': typeof AccountSitesRouteWithChildren
-  '/admin/sites': typeof AdminSitesRoute
+  '/admin/sites': typeof AdminSitesRouteWithChildren
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/s/$subdomain': typeof SSubdomainRoute
@@ -241,6 +247,7 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexRoute
   '/settori/': typeof SettoriIndexRoute
   '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
+  '/admin/sites/$siteId': typeof AdminSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
@@ -265,7 +272,7 @@ export interface FileRoutesByTo {
   '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/account/sites': typeof AccountSitesRouteWithChildren
-  '/admin/sites': typeof AdminSitesRoute
+  '/admin/sites': typeof AdminSitesRouteWithChildren
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/s/$subdomain': typeof SSubdomainRoute
@@ -275,6 +282,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/settori': typeof SettoriIndexRoute
   '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
+  '/admin/sites/$siteId': typeof AdminSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
@@ -301,7 +309,7 @@ export interface FileRoutesById {
   '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/account/sites': typeof AccountSitesRouteWithChildren
-  '/admin/sites': typeof AdminSitesRoute
+  '/admin/sites': typeof AdminSitesRouteWithChildren
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/s/$subdomain': typeof SSubdomainRoute
@@ -311,6 +319,7 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/settori/': typeof SettoriIndexRoute
   '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
+  '/admin/sites/$siteId': typeof AdminSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
@@ -348,6 +357,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/settori/'
     | '/account/sites/$siteId'
+    | '/admin/sites/$siteId'
     | '/api/public/content-plan-submit'
     | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
@@ -382,6 +392,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/settori'
     | '/account/sites/$siteId'
+    | '/admin/sites/$siteId'
     | '/api/public/content-plan-submit'
     | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
@@ -417,6 +428,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/settori/'
     | '/account/sites/$siteId'
+    | '/admin/sites/$siteId'
     | '/api/public/content-plan-submit'
     | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
@@ -650,6 +662,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicContentPlanSubmitRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/sites/$siteId': {
+      id: '/admin/sites/$siteId'
+      path: '/$siteId'
+      fullPath: '/admin/sites/$siteId'
+      preLoaderRoute: typeof AdminSitesSiteIdRouteImport
+      parentRoute: typeof AdminSitesRoute
+    }
     '/account/sites/$siteId': {
       id: '/account/sites/$siteId'
       path: '/$siteId'
@@ -720,13 +739,25 @@ const AccountRouteChildren: AccountRouteChildren = {
 const AccountRouteWithChildren =
   AccountRoute._addFileChildren(AccountRouteChildren)
 
+interface AdminSitesRouteChildren {
+  AdminSitesSiteIdRoute: typeof AdminSitesSiteIdRoute
+}
+
+const AdminSitesRouteChildren: AdminSitesRouteChildren = {
+  AdminSitesSiteIdRoute: AdminSitesSiteIdRoute,
+}
+
+const AdminSitesRouteWithChildren = AdminSitesRoute._addFileChildren(
+  AdminSitesRouteChildren,
+)
+
 interface AdminRouteChildren {
-  AdminSitesRoute: typeof AdminSitesRoute
+  AdminSitesRoute: typeof AdminSitesRouteWithChildren
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
-  AdminSitesRoute: AdminSitesRoute,
+  AdminSitesRoute: AdminSitesRouteWithChildren,
   AdminIndexRoute: AdminIndexRoute,
 }
 
