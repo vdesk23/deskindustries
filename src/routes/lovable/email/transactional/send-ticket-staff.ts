@@ -15,7 +15,7 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 async function enqueue(
-  admin: ReturnType<typeof createClient>,
+  admin: any,
   templateName: string,
   to: string,
   templateData: Record<string, unknown>,
