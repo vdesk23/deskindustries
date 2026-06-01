@@ -82,7 +82,7 @@ function AccountPage() {
   useEffect(() => {
     if (!user) return;
     const load = async () => {
-      const [{ data: s }, { data: p }, sitesRes] = await Promise.all([
+      const [{ data: s }, { data: p }, sitesRes, adminRes] = await Promise.all([
         supabase
           .from("subscriptions")
           .select("*")
@@ -94,14 +94,16 @@ function AccountPage() {
           .eq("user_id", user.id)
           .order("created_at", { ascending: false }),
         fetchSites().catch(() => ({ sites: [] as FolliaSite[] })),
+        checkAdmin().catch(() => ({ isAdmin: false })),
       ]);
       setSubs((s as Subscription[]) || []);
       setPurchases((p as Purchase[]) || []);
       setFolliaSites(((sitesRes as { sites: FolliaSite[] }).sites) || []);
+      setIsAdmin(!!(adminRes as { isAdmin: boolean }).isAdmin);
       setLoading(false);
     };
     load();
-  }, [user, fetchSites]);
+  }, [user, fetchSites, checkAdmin]);
 
 
   const openPortal = async () => {
