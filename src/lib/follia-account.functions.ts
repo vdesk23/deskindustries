@@ -154,7 +154,7 @@ const ticketV2Schema = z.object({
 const STAFF_EMAILS = ["master@deskindustries.com", "web@deskindustries.com"];
 const APP_BASE_URL = "https://deskindustries.com";
 
-function getAdminClient() {
+function getAdminClient(): any {
   const url = process.env.SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key) throw new Error("Supabase admin not configured");
