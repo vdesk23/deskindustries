@@ -137,6 +137,36 @@ async function handleCheckoutCompleted(session: any, env: StripeEnv) {
     if (siteErr) console.error("Could not update follia_site", siteErr);
   }
 
+  // Foll.IA: ticket payment completion
+  const folliaTicketId = session.metadata?.folliaTicketId;
+  if (folliaTicketId) {
+    const { data: t } = await supabase
+      .from("follia_tickets")
+      .update({
+        status: "open",
+        paid_at: new Date().toISOString(),
+        stripe_session_id: session.id,
+      })
+      .eq("id", folliaTicketId)
+      .select("id, site_id, subject, category, attachments, customer_email, user_id")
+      .maybeSingle();
+    if (t) {
+      try {
+        await fetch(`${APP_URL}/lovable/email/transactional/send-ticket-staff`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")}`,
+          },
+          body: JSON.stringify({ ticketId: folliaTicketId }),
+        });
+      } catch (e) {
+        console.error("Failed to trigger staff email after ticket payment", e);
+      }
+    }
+  }
+
+
 
   // Send welcome email if user does not yet exist
   if (!existingUser) {
