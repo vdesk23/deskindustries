@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, Sparkles, Store, UtensilsCrossed, Scissors, Briefcase, Building2, Loader2, Globe, Wand2, MapPin } from "lucide-react";
+import { ArrowRight, CheckCircle2, Sparkles, Store, UtensilsCrossed, Scissors, Briefcase, Building2, Loader2, Globe, Wand2, MapPin, AlertTriangle } from "lucide-react";
 import { createFolliaDraft, checkFolliaSubdomain, prefillFolliaFromUrls } from "@/lib/follia.functions";
+
 
 export const Route = createFileRoute("/follia")({
   component: FolliaLanding,
@@ -37,6 +38,7 @@ function FolliaLanding() {
   const [error, setError] = useState<string | null>(null);
   const [subStatus, setSubStatus] = useState<{ checking: boolean; available?: boolean; reason?: string }>({ checking: false });
   const [createdSiteId, setCreatedSiteId] = useState<string | null>(null);
+  const stepSectionRef = useRef<HTMLDivElement | null>(null);
 
   // Step "prefill"
   const [prefillUrls, setPrefillUrls] = useState({ oldSiteUrl: "", inspirationUrl: "", gmbUrl: "" });
@@ -44,6 +46,13 @@ function FolliaLanding() {
   const [prefillError, setPrefillError] = useState<string | null>(null);
   const [prefillSources, setPrefillSources] = useState<Array<{ url: string; kind: string; ok: boolean; error?: string }>>([]);
   const [prefilledFields, setPrefilledFields] = useState<Set<string>>(new Set());
+  const [prefillAttempted, setPrefillAttempted] = useState(false);
+
+  useEffect(() => {
+    if (step !== "intro" && stepSectionRef.current) {
+      stepSectionRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [step]);
 
   const [form, setForm] = useState({
     businessType: "" as BusinessTypeId | "",
@@ -102,10 +111,12 @@ function FolliaLanding() {
     setPrefillError(null);
     const hasAny = prefillUrls.oldSiteUrl || prefillUrls.inspirationUrl || prefillUrls.gmbUrl;
     if (!hasAny) {
+      setPrefillAttempted(false);
       setStep("form");
       return;
     }
     setPrefillLoading(true);
+    setPrefillAttempted(true);
     try {
       const res = await prefill({ data: prefillUrls });
       setPrefillSources(res.sources || []);
@@ -169,6 +180,8 @@ function FolliaLanding() {
       setPrefillLoading(false);
     }
   }
+
+  const gmbIsShortlink = /^(https?:\/\/)?(share\.google|goo\.gl\/maps|maps\.app\.goo\.gl)\//i.test(prefillUrls.gmbUrl.trim());
 
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -241,7 +254,7 @@ function FolliaLanding() {
       )}
 
       {step === "prefill" && (
-        <section className="max-w-2xl mx-auto px-6 py-12 md:py-16">
+        <section ref={stepSectionRef} className="max-w-2xl mx-auto px-6 py-12 md:py-16 scroll-mt-20">
           <div className="rounded-2xl border border-border/40 bg-surface-elevated p-6 md:p-10">
             <div className="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-full bg-amber/10 text-amber border border-amber/30 mb-5">
               <Wand2 className="w-3.5 h-3.5" /> Compila per me (opzionale)
@@ -272,10 +285,16 @@ function FolliaLanding() {
                 icon={MapPin}
                 label="Link del tuo profilo Google My Business"
                 hint="Indirizzo, telefono, orari dalla tua scheda Google Maps."
-                placeholder="https://maps.google.com/?cid=…  oppure  https://g.co/kgs/…"
+                placeholder="https://www.google.com/maps/place/…"
                 value={prefillUrls.gmbUrl}
                 onChange={(v) => setPrefillUrls((p) => ({ ...p, gmbUrl: v }))}
               />
+              {gmbIsShortlink && (
+                <div className="rounded-lg border border-amber/30 bg-amber/5 px-3 py-2 text-xs text-amber flex items-start gap-2">
+                  <AlertTriangle className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
+                  <span>I link condivisi (share.google, maps.app.goo.gl) non sono leggibili in automatico. Apri la scheda su Google Maps da browser desktop e copia l'URL completo (quello che inizia con <code>https://www.google.com/maps/place/…</code>).</span>
+                </div>
+              )}
             </div>
 
             {prefillError && <p className="text-sm text-destructive mt-4">{prefillError}</p>}
@@ -283,7 +302,7 @@ function FolliaLanding() {
             <div className="flex flex-col sm:flex-row gap-3 justify-between items-center pt-6 mt-6 border-t border-border/40">
               <button
                 type="button"
-                onClick={() => { setPrefillUrls({ oldSiteUrl: "", inspirationUrl: "", gmbUrl: "" }); setStep("form"); }}
+                onClick={() => { setPrefillUrls({ oldSiteUrl: "", inspirationUrl: "", gmbUrl: "" }); setPrefillAttempted(false); setStep("form"); }}
                 className="text-sm text-muted-foreground hover:text-foreground"
               >
                 Salto, compilo a mano
@@ -302,8 +321,8 @@ function FolliaLanding() {
       )}
 
       {step === "form" && (
-        <section className="max-w-3xl mx-auto px-6 py-12">
-          {prefilledFields.size > 0 && (
+        <section ref={stepSectionRef} className="max-w-3xl mx-auto px-6 py-12 scroll-mt-20">
+          {prefilledFields.size > 0 ? (
             <div className="mb-5 rounded-xl border border-amber/30 bg-amber/5 p-4 flex items-start gap-3">
               <Wand2 className="w-4 h-4 text-amber mt-0.5 flex-shrink-0" />
               <div className="text-sm">
@@ -313,7 +332,17 @@ function FolliaLanding() {
                 </p>
               </div>
             </div>
-          )}
+          ) : prefillAttempted ? (
+            <div className="mb-5 rounded-xl border border-destructive/30 bg-destructive/5 p-4 flex items-start gap-3">
+              <AlertTriangle className="w-4 h-4 text-destructive mt-0.5 flex-shrink-0" />
+              <div className="text-sm">
+                <p className="font-medium">Non sono riuscito a estrarre nulla dai tuoi link.</p>
+                <p className="text-muted-foreground text-xs mt-0.5">
+                  Probabilmente erano shortlink di Google Maps, pagine caricate via JavaScript o protette. Nessun problema: compila i campi qui sotto a mano, ci vogliono due minuti.
+                </p>
+              </div>
+            </div>
+          ) : null}
           <form onSubmit={onSubmit} className="space-y-8 rounded-2xl border border-border/40 bg-surface-elevated p-6 md:p-10">
             <div>
               <h2 className="font-display text-2xl font-bold mb-2">Che tipo di attività hai?</h2>
@@ -400,7 +429,7 @@ function FolliaLanding() {
       )}
 
       {step === "success" && (
-        <section className="max-w-2xl mx-auto px-6 py-20 text-center">
+        <section ref={stepSectionRef} className="max-w-2xl mx-auto px-6 py-20 text-center scroll-mt-20">
           <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="inline-flex w-16 h-16 rounded-full bg-emerald-500/10 text-emerald-400 items-center justify-center mb-6">
             <CheckCircle2 className="w-8 h-8" />
           </motion.div>

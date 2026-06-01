@@ -382,3 +382,34 @@ export const uploadTicketAttachment = createServerFn({ method: "POST" })
     if (error || !signed) throw new Error(error?.message || "Impossibile creare URL di upload");
     return { path, token: signed.token, signedUrl: signed.signedUrl };
   });
+
+// Claim a Follia site after signup/login when the user arrives via the
+// email preview link. We trust the siteId because it was emailed to the
+// lead_email; if it's still unclaimed, assign to the current user.
+export const claimFolliaSite = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) => z.object({ siteId: z.string().uuid() }).parse(input))
+  .handler(async ({ context, data }) => {
+    const { userId } = context;
+    const admin = getAdminClient();
+    const { data: site, error: selErr } = await admin
+      .from("follia_sites")
+      .select("id, user_id")
+      .eq("id", data.siteId)
+      .maybeSingle();
+    if (selErr) throw new Error(selErr.message);
+    if (!site) return { ok: false as const, reason: "not_found" as const };
+    if (site.user_id && site.user_id !== userId) {
+      return { ok: false as const, reason: "owned_by_other" as const };
+    }
+    if (site.user_id === userId) {
+      return { ok: true as const, alreadyClaimed: true };
+    }
+    const { error: updErr } = await admin
+      .from("follia_sites")
+      .update({ user_id: userId, claimed_at: new Date().toISOString() })
+      .eq("id", data.siteId)
+      .is("user_id", null);
+    if (updErr) throw new Error(updErr.message);
+    return { ok: true as const, alreadyClaimed: false };
+  });
