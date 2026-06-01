@@ -65,10 +65,11 @@ export const updateMyFolliaSiteConfig = createServerFn({ method: "POST" })
     const { supabase } = context;
     const { data: existing, error: readErr } = await supabase
       .from("follia_sites")
-      .select("config, status")
+      .select("config, status, user_id")
       .eq("id", data.siteId)
       .maybeSingle();
     if (readErr || !existing) throw new Error("Sito non trovato");
+    if (existing.user_id !== context.userId) throw new Error("Forbidden");
 
     const merged = { ...(existing.config as Record<string, unknown>), ...data.config };
     const { error } = await supabase
@@ -91,6 +92,16 @@ export const createFolliaTicket = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => ticketSchema.parse(input))
   .handler(async ({ context, data }) => {
     const { supabase, userId } = context;
+
+    // Verify site ownership before creating ticket
+    const { data: site, error: siteErr } = await supabase
+      .from("follia_sites")
+      .select("id, user_id")
+      .eq("id", data.siteId)
+      .maybeSingle();
+    if (siteErr || !site) throw new Error("Sito non trovato");
+    if (site.user_id !== userId) throw new Error("Non sei il proprietario di questo sito");
+
 
     // rate-limit: 5 / 30gg
     const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();

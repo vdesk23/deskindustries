@@ -7,7 +7,10 @@ const supabase = createClient(
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
 );
 
-const APP_URL = "https://id-preview--665af6d8-e1ef-4a8b-9a76-5fea17beea52.lovable.app";
+const APP_URL =
+  Deno.env.get("APP_URL") ||
+  Deno.env.get("PUBLIC_APP_URL") ||
+  "https://deskindustries.com";
 
 serve(async (req) => {
   if (req.method !== "POST") return new Response("Method not allowed", { status: 405 });
