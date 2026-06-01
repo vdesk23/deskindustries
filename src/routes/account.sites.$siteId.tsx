@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, ExternalLink, Rocket, MessagesSquare, Settings, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, ExternalLink, Eye, Rocket, MessagesSquare, Settings, CheckCircle2 } from "lucide-react";
 import { useStripeCheckout } from "@/hooks/useStripeCheckout";
 import { AssistanceFab } from "@/components/follia/AssistanceFab";
 import { toast } from "sonner";
