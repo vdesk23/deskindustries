@@ -1,6 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { createClient } from "@supabase/supabase-js";
+import { TEMPLATES } from "@/lib/email-templates/registry";
+import { render } from "@react-email/components";
+import * as React from "react";
 
 const RESERVED_SUBDOMAINS = new Set([
   "www", "api", "app", "admin", "account", "auth", "login", "signup",
@@ -11,6 +14,14 @@ const RESERVED_SUBDOMAINS = new Set([
 ]);
 
 const businessTypes = ["restaurant", "retail_shop", "barbershop_salon", "professional", "other"] as const;
+
+const BUSINESS_TYPE_LABELS: Record<string, string> = {
+  restaurant: "ristorante / bar",
+  retail_shop: "negozio al dettaglio (vetrina)",
+  barbershop_salon: "barbiere / salone",
+  professional: "studio professionale",
+  other: "altra attività locale",
+};
 
 const draftSchema = z.object({
   businessName: z.string().trim().min(2).max(80),
@@ -28,87 +39,75 @@ const draftSchema = z.object({
   notes: z.string().trim().max(800).optional().default(""),
 });
 
-const SYSTEM_PROMPT = `Sei un copywriter italiano specializzato in landing page locali. Ricevi i dati grezzi di un'attività e produci i contenuti di un sito vetrina elegante e persuasivo, ottimizzato SEO local-business.
+const STAFF_EMAILS = ["master@deskindustries.com", "web@deskindustries.com"];
+const APP_BASE_URL = "https://deskindustries.com";
 
-Restituisci SOLO JSON valido con questa struttura:
-{
-  "hero_title": string (max 60 caratteri, accattivante, con nome dell'attività),
-  "hero_subtitle": string (max 130 caratteri, beneficio principale),
-  "hero_cta": string (es. "Prenota un tavolo", max 24 caratteri),
-  "about_title": string (max 50 caratteri),
-  "about_body": string (200-400 caratteri, racconta l'attività in modo caldo),
-  "features": [{ "icon": "sparkles"|"star"|"heart"|"award"|"clock"|"map", "title": string (max 40), "description": string (max 120) }] (esattamente 3 elementi),
-  "services_intro": string (max 200 caratteri, introduce la lista di servizi/prodotti/menù),
-  "seo_meta_title": string (max 60 caratteri, con keyword locale),
-  "seo_meta_description": string (max 155 caratteri),
-  "seed_items": [{ "name": string, "description": string (max 120), "price_display": string }] (3-6 voci di esempio coerenti col tipo di attività: piatti se ristorante, prodotti se negozio, servizi se salone/professional)
+function getAdmin(): any {
+  const url = process.env.SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) throw new Error("Supabase admin not configured");
+  return createClient(url, key);
 }
 
-Tono: caldo, professionale, italiano corretto, senza emoji nei titoli. Mai inventare dati di contatto.`;
+async function enqueueEmail(args: {
+  templateName: string;
+  to: string;
+  templateData: Record<string, unknown>;
+  idempotencyKey: string;
+}) {
+  const tpl = TEMPLATES[args.templateName];
+  if (!tpl) throw new Error(`Template ${args.templateName} not found`);
+  const element = React.createElement(tpl.component, args.templateData as Record<string, unknown>);
+  const html = await render(element);
+  const plainText = await render(element, { plainText: true });
+  const subject = typeof tpl.subject === "function" ? tpl.subject(args.templateData as Record<string, unknown>) : tpl.subject;
 
-async function generateContent(payload: z.infer<typeof draftSchema>): Promise<Record<string, unknown>> {
-  const lovableKey = process.env.LOVABLE_API_KEY;
-  if (!lovableKey) throw new Error("LOVABLE_API_KEY missing");
-
-  const businessTypeLabel: Record<string, string> = {
-    restaurant: "ristorante",
-    retail_shop: "negozio al dettaglio (vetrina, non e-commerce)",
-    barbershop_salon: "barbiere / salone di bellezza",
-    professional: "studio professionale",
-    other: "altra attività locale",
-  };
-
-  const userPrompt = `Tipo attività: ${businessTypeLabel[payload.businessType]}
-Nome: ${payload.businessName}
-Città: ${payload.city || "non specificata"}
-Indirizzo: ${payload.address || "non specificato"}
-Telefono: ${payload.phone || "non specificato"}
-Descrizione fornita dal cliente: ${payload.description || "—"}
-Servizi/prodotti chiave: ${payload.services || "—"}
-Orari indicativi: ${payload.openingHours || "—"}
-Note: ${payload.notes || "—"}`;
-
-  const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${lovableKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "google/gemini-2.5-flash",
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        { role: "user", content: userPrompt },
-      ],
-      response_format: { type: "json_object" },
-    }),
+  const admin = getAdmin();
+  const messageId = crypto.randomUUID();
+  await admin.from("email_send_log").insert({
+    message_id: messageId,
+    template_name: args.templateName,
+    recipient_email: args.to,
+    status: "pending",
   });
-  if (!res.ok) {
-    const txt = await res.text();
-    console.error("AI gateway error", res.status, txt);
-    throw new Error("AI generation failed");
-  }
-  const json = await res.json();
-  const content = json?.choices?.[0]?.message?.content;
-  if (!content) throw new Error("Empty AI response");
-  return JSON.parse(content);
+  const { error } = await admin.rpc("enqueue_email", {
+    queue_name: "transactional_emails",
+    payload: {
+      message_id: messageId,
+      to: args.to,
+      from: "Foll.IA <noreply@deskindustries.com>",
+      sender_domain: "notify.deskindustries.com",
+      subject,
+      html,
+      text: plainText,
+      purpose: "transactional",
+      label: args.templateName,
+      idempotency_key: args.idempotencyKey,
+      queued_at: new Date().toISOString(),
+    },
+  });
+  if (error) console.error("enqueue_email failed", error);
 }
 
-async function sendPreviewEmail(email: string, businessName: string, siteId: string, baseUrl: string) {
-  try {
-    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    if (!serviceKey) return;
-    const previewUrl = `${baseUrl}/auth?mode=signup&redirect=${encodeURIComponent(`/account/sites/${siteId}`)}&email=${encodeURIComponent(email)}`;
-    await fetch(`${baseUrl}/api/public/follia-preview-email`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${serviceKey}`,
-      },
-      body: JSON.stringify({ email, businessName, previewUrl, siteId }),
-    });
-  } catch (e) {
-    console.error("Failed to enqueue preview email", e);
-  }
+function buildLovablePrompt(d: z.infer<typeof draftSchema>): string {
+  const typeLabel = BUSINESS_TYPE_LABELS[d.businessType] || d.businessType;
+  const lines: string[] = [];
+  lines.push(`Crea un sito vetrina monopagina per "${d.businessName}", un ${typeLabel}${d.city ? ` con sede a ${d.city}` : ""}.`);
+  if (d.description) lines.push(`\nIdentità dell'attività: ${d.description}`);
+  if (d.services) lines.push(`\nServizi / prodotti / piatti principali: ${d.services}`);
+  const contatti: string[] = [];
+  if (d.address) contatti.push(`indirizzo: ${d.address}`);
+  if (d.phone) contatti.push(`telefono: ${d.phone}`);
+  if (d.email) contatti.push(`email: ${d.email}`);
+  if (d.openingHours) contatti.push(`orari: ${d.openingHours}`);
+  if (contatti.length) lines.push(`\nContatti / informazioni utili: ${contatti.join(" · ")}`);
+  lines.push(`\nPalette colori: primario ${d.primaryColor}, secondario ${d.secondaryColor}.`);
+  if (d.notes) lines.push(`\nNote del cliente: ${d.notes}`);
+  lines.push(`\nStruttura desiderata: hero con headline + sottotitolo + CTA, sezione "Chi siamo", sezione servizi/prodotti/menù, sezione contatti con mappa e orari, footer.`);
+  lines.push(`Tono di voce italiano, caldo e professionale. SEO local-business ottimizzato. Mobile-first.`);
+  lines.push(`Sottodominio richiesto: ${d.subdomain}.deskinc.app`);
+  return lines.join("\n");
 }
-
 
 export const createFolliaDraft = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => draftSchema.parse(input))
@@ -117,10 +116,7 @@ export const createFolliaDraft = createServerFn({ method: "POST" })
       return { ok: false as const, error: "Questo sottodominio è riservato, scegline un altro." };
     }
 
-    const supabase = createClient(
-      process.env.SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    );
+    const supabase = getAdmin();
 
     const { data: existing } = await supabase
       .from("follia_sites")
@@ -131,23 +127,13 @@ export const createFolliaDraft = createServerFn({ method: "POST" })
       return { ok: false as const, error: "Questo sottodominio è già in uso." };
     }
 
-    let generated: Record<string, unknown>;
-    try {
-      generated = await generateContent(data);
-    } catch (e) {
-      console.error(e);
-      return { ok: false as const, error: "Generazione contenuti non riuscita. Riprova tra poco." };
-    }
-
     const businessData = {
       name: data.businessName,
       city: data.city,
       primary_color: data.primaryColor,
       secondary_color: data.secondaryColor,
-      generated,
     };
     const config = {
-      show_map: true,
       opening_hours: data.openingHours,
       address: data.address,
       phone: data.phone,
@@ -163,56 +149,62 @@ export const createFolliaDraft = createServerFn({ method: "POST" })
         business_data: businessData,
         config,
         status: "draft",
+        request_status: "new",
       })
       .select("id")
       .single();
 
     if (insertErr || !site) {
       console.error("Insert error", insertErr);
-      return { ok: false as const, error: "Impossibile salvare il sito. Riprova." };
+      return { ok: false as const, error: "Impossibile salvare la richiesta. Riprova." };
     }
 
-    // seed items based on type
-    const seedItems = (generated.seed_items as Array<{ name: string; description: string; price_display: string }>) || [];
-    if (data.businessType === "restaurant" && seedItems.length) {
-      await supabase.from("follia_menu_items").insert(
-        seedItems.map((it, i) => ({
-          site_id: site.id,
-          category: "Menù",
-          name: it.name,
-          description: it.description,
-          price_cents: null,
-          position: i,
-        })),
-      );
-    } else if (data.businessType === "retail_shop" && seedItems.length) {
-      await supabase.from("follia_products").insert(
-        seedItems.map((it, i) => ({
-          site_id: site.id,
-          name: it.name,
-          description: it.description,
-          price_display: it.price_display,
-          position: i,
-        })),
-      );
-    } else if ((data.businessType === "barbershop_salon" || data.businessType === "professional") && seedItems.length) {
-      await supabase.from("follia_services").insert(
-        seedItems.map((it, i) => ({
-          site_id: site.id,
-          name: it.name,
-          description: it.description,
-          price_cents: null,
-          position: i,
-        })),
-      );
-    }
+    // Fire-and-forget emails (don't block submit on email failure)
+    const prompt = buildLovablePrompt(data);
+    const adminUrl = `${APP_BASE_URL}/admin/sites/${site.id}`;
+    const accountUrl = `${APP_BASE_URL}/auth?mode=signup&email=${encodeURIComponent(data.email)}&redirect=${encodeURIComponent("/account")}`;
 
-    // fire-and-forget email
-    const origin = process.env.PUBLIC_SITE_URL || "https://deskindustries.com";
-    sendPreviewEmail(data.email, data.businessName, site.id, origin).catch(() => {});
+    (async () => {
+      try {
+        for (const staff of STAFF_EMAILS) {
+          await enqueueEmail({
+            templateName: "follia-new-request-staff",
+            to: staff,
+            idempotencyKey: `follia-request-${site.id}-${staff}`,
+            templateData: {
+              businessName: data.businessName,
+              businessType: BUSINESS_TYPE_LABELS[data.businessType] || data.businessType,
+              subdomain: data.subdomain,
+              email: data.email,
+              city: data.city,
+              address: data.address,
+              phone: data.phone,
+              description: data.description,
+              services: data.services,
+              openingHours: data.openingHours,
+              primaryColor: data.primaryColor,
+              secondaryColor: data.secondaryColor,
+              notes: data.notes,
+              prompt,
+              adminUrl,
+            },
+          });
+        }
+        await enqueueEmail({
+          templateName: "follia-request-received",
+          to: data.email,
+          idempotencyKey: `follia-request-customer-${site.id}`,
+          templateData: { businessName: data.businessName, accountUrl },
+        });
+      } catch (e) {
+        console.error("Failed to enqueue follia request emails", e);
+      }
+    })();
 
     return { ok: true as const, siteId: site.id };
   });
+
+
 
 export const checkFolliaSubdomain = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) =>
