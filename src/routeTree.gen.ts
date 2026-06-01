@@ -27,7 +27,6 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ToolsPianoContenutiRouteImport } from './routes/tools.piano-contenuti'
 import { Route as ToolsOttimizzatoreSeoRouteImport } from './routes/tools.ottimizzatore-seo'
 import { Route as SettoriSlugRouteImport } from './routes/settori.$slug'
-import { Route as SSubdomainRouteImport } from './routes/s.$subdomain'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
 import { Route as AdminTicketsRouteImport } from './routes/admin.tickets'
@@ -133,11 +132,6 @@ const ToolsOttimizzatoreSeoRoute = ToolsOttimizzatoreSeoRouteImport.update({
 const SettoriSlugRoute = SettoriSlugRouteImport.update({
   id: '/settori/$slug',
   path: '/settori/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SSubdomainRoute = SSubdomainRouteImport.update({
-  id: '/s/$subdomain',
-  path: '/s/$subdomain',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
@@ -247,7 +241,6 @@ export interface FileRoutesByFullPath {
   '/admin/tickets': typeof AdminTicketsRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
-  '/s/$subdomain': typeof SSubdomainRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
@@ -283,7 +276,6 @@ export interface FileRoutesByTo {
   '/admin/tickets': typeof AdminTicketsRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
-  '/s/$subdomain': typeof SSubdomainRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
@@ -321,7 +313,6 @@ export interface FileRoutesById {
   '/admin/tickets': typeof AdminTicketsRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
-  '/s/$subdomain': typeof SSubdomainRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
@@ -360,7 +351,6 @@ export interface FileRouteTypes {
     | '/admin/tickets'
     | '/checkout/return'
     | '/email/unsubscribe'
-    | '/s/$subdomain'
     | '/settori/$slug'
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
@@ -396,7 +386,6 @@ export interface FileRouteTypes {
     | '/admin/tickets'
     | '/checkout/return'
     | '/email/unsubscribe'
-    | '/s/$subdomain'
     | '/settori/$slug'
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
@@ -433,7 +422,6 @@ export interface FileRouteTypes {
     | '/admin/tickets'
     | '/checkout/return'
     | '/email/unsubscribe'
-    | '/s/$subdomain'
     | '/settori/$slug'
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
@@ -468,7 +456,6 @@ export interface RootRouteChildren {
   UnsubscribeRoute: typeof UnsubscribeRoute
   CheckoutReturnRoute: typeof CheckoutReturnRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
-  SSubdomainRoute: typeof SSubdomainRoute
   SettoriSlugRoute: typeof SettoriSlugRoute
   ToolsOttimizzatoreSeoRoute: typeof ToolsOttimizzatoreSeoRoute
   ToolsPianoContenutiRoute: typeof ToolsPianoContenutiRoute
@@ -609,13 +596,6 @@ declare module '@tanstack/react-router' {
       path: '/settori/$slug'
       fullPath: '/settori/$slug'
       preLoaderRoute: typeof SettoriSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/s/$subdomain': {
-      id: '/s/$subdomain'
-      path: '/s/$subdomain'
-      fullPath: '/s/$subdomain'
-      preLoaderRoute: typeof SSubdomainRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/email/unsubscribe': {
@@ -800,7 +780,6 @@ const rootRouteChildren: RootRouteChildren = {
   UnsubscribeRoute: UnsubscribeRoute,
   CheckoutReturnRoute: CheckoutReturnRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
-  SSubdomainRoute: SSubdomainRoute,
   SettoriSlugRoute: SettoriSlugRoute,
   ToolsOttimizzatoreSeoRoute: ToolsOttimizzatoreSeoRoute,
   ToolsPianoContenutiRoute: ToolsPianoContenutiRoute,
@@ -818,3 +797,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
