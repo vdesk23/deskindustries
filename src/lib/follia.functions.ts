@@ -193,7 +193,6 @@ export const createFolliaDraft = createServerFn({ method: "POST" })
     }
 
     // Fire-and-forget emails (don't block submit on email failure)
-    const prompt = buildLovablePrompt(data);
     const adminUrl = `${APP_BASE_URL}/admin/sites/${site.id}`;
     const accountUrl = `${APP_BASE_URL}/auth?mode=signup&email=${encodeURIComponent(data.email)}&redirect=${encodeURIComponent("/account")}`;
 
