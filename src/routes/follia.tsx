@@ -429,7 +429,7 @@ function FolliaLanding() {
       )}
 
       {step === "success" && (
-        <section className="max-w-2xl mx-auto px-6 py-20 text-center">
+        <section ref={stepSectionRef} className="max-w-2xl mx-auto px-6 py-20 text-center scroll-mt-20">
           <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="inline-flex w-16 h-16 rounded-full bg-emerald-500/10 text-emerald-400 items-center justify-center mb-6">
             <CheckCircle2 className="w-8 h-8" />
           </motion.div>
