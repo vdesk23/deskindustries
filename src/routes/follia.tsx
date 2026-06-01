@@ -200,11 +200,34 @@ function FolliaLanding() {
 
   const gmbIsShortlink = /^(https?:\/\/)?(share\.google|goo\.gl\/maps|maps\.app\.goo\.gl)\//i.test(prefillUrls.gmbUrl.trim());
 
+  const hasExistingSite = existingSites.length > 0;
+  const firstSite = existingSites[0];
+
   return (
     <main className="min-h-screen bg-background text-foreground">
+      {hasExistingSite && firstSite && (
+        <div className="border-b border-amber/40 bg-amber/10">
+          <div className="max-w-5xl mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-3 text-sm">
+            <div className="flex items-center gap-2">
+              <Rocket className="w-4 h-4 text-amber" />
+              <span>
+                Hai già un sito Foll.IA: <strong>{firstSite.business_data?.name || firstSite.subdomain}</strong>
+              </span>
+            </div>
+            <Link
+              to="/account/sites/$siteId"
+              params={{ siteId: firstSite.id }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-amber text-amber-foreground font-medium hover:opacity-90 transition"
+            >
+              Vai al mio sito <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      )}
       <section className="relative overflow-hidden border-b border-border/40">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(245,158,11,0.12),transparent_55%)]" />
         <div className="relative max-w-5xl mx-auto px-6 py-20 md:py-28">
+
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <div className="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-full bg-amber/10 text-amber border border-amber/30 mb-6">
               <Sparkles className="w-3.5 h-3.5" /> Powered by IA · Generazione gratuita
