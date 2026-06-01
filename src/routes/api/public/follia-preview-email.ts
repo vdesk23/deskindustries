@@ -31,11 +31,21 @@ export const Route = createFileRoute("/api/public/follia-preview-email")({
         if (!supabaseUrl || !supabaseServiceKey) {
           return Response.json({ error: "Server configuration error" }, { status: 500 });
         }
+        // Restrict to service-role callers only. This endpoint is invoked
+        // server-side from createFolliaDraft using the service role key —
+        // it must not be reachable by anonymous clients (anyone could
+        // otherwise abuse our mail infrastructure to spam arbitrary
+        // recipients or craft phishing emails with controlled previewUrl).
+        const authHeader = request.headers.get("authorization")?.replace("Bearer ", "").trim();
+        if (!authHeader || authHeader !== supabaseServiceKey) {
+          return Response.json({ error: "Unauthorized" }, { status: 401 });
+        }
         let body: unknown;
         try { body = await request.json(); } catch { return Response.json({ error: "Invalid JSON" }, { status: 400 }); }
         const parsed = bodySchema.safeParse(body);
         if (!parsed.success) return Response.json({ error: "Validation failed" }, { status: 400 });
         const data = parsed.data;
+
 
         const supabase: any = createClient(supabaseUrl, supabaseServiceKey);
         const template = TEMPLATES["follia-preview-ready"];

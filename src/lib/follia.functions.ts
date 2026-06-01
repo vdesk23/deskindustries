@@ -93,16 +93,22 @@ Note: ${payload.notes || "—"}`;
 
 async function sendPreviewEmail(email: string, businessName: string, siteId: string, baseUrl: string) {
   try {
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!serviceKey) return;
     const previewUrl = `${baseUrl}/auth?mode=signup&redirect=${encodeURIComponent(`/account/sites/${siteId}`)}&email=${encodeURIComponent(email)}`;
     await fetch(`${baseUrl}/api/public/follia-preview-email`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${serviceKey}`,
+      },
       body: JSON.stringify({ email, businessName, previewUrl, siteId }),
     });
   } catch (e) {
     console.error("Failed to enqueue preview email", e);
   }
 }
+
 
 export const createFolliaDraft = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => draftSchema.parse(input))
@@ -238,13 +244,44 @@ const prefillSchema = z.object({
   gmbUrl: z.string().trim().max(500).url().optional().or(z.literal("")),
 });
 
+function isBlockedHost(host: string): boolean {
+  const h = host.toLowerCase();
+  if (h === "localhost" || h === "ip6-localhost" || h === "ip6-loopback") return true;
+  if (h.endsWith(".localhost") || h.endsWith(".local") || h.endsWith(".internal")) return true;
+  // IPv4 literal
+  const m = h.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/);
+  if (m) {
+    const [a, b] = [parseInt(m[1], 10), parseInt(m[2], 10)];
+    if (a === 10) return true;
+    if (a === 127) return true;
+    if (a === 0) return true;
+    if (a === 169 && b === 254) return true; // link-local incl. AWS IMDS
+    if (a === 172 && b >= 16 && b <= 31) return true;
+    if (a === 192 && b === 168) return true;
+    if (a === 100 && b >= 64 && b <= 127) return true; // CGNAT
+    if (a >= 224) return true; // multicast / reserved
+  }
+  // IPv6 literals — block loopback, link-local, ULA, and any v6
+  if (h.includes(":")) {
+    if (h === "::1" || h.startsWith("fe80:") || h.startsWith("fc") || h.startsWith("fd")) return true;
+    // Be conservative: block all bare IPv6 literals (we never need them for prefill targets)
+    return true;
+  }
+  return false;
+}
+
 async function fetchTextFromUrl(url: string, maxChars = 30000): Promise<{ ok: boolean; text?: string; title?: string; error?: string }> {
+  let parsed: URL;
   try {
-    const u = new URL(url);
-    if (!/^https?:$/.test(u.protocol)) return { ok: false, error: "protocol" };
+    parsed = new URL(url);
+    if (!/^https?:$/.test(parsed.protocol)) return { ok: false, error: "protocol" };
+    if (isBlockedHost(parsed.hostname)) return { ok: false, error: "blocked_host" };
+    // Only allow standard web ports to avoid hitting internal admin ports
+    if (parsed.port && parsed.port !== "80" && parsed.port !== "443") return { ok: false, error: "blocked_port" };
   } catch {
     return { ok: false, error: "invalid_url" };
   }
+
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), 6500);
   try {
