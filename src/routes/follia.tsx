@@ -35,8 +35,22 @@ function FolliaLanding() {
   const submit = useServerFn(createFolliaDraft);
   const checkSub = useServerFn(checkFolliaSubdomain);
   const prefill = useServerFn(prefillFolliaFromUrls);
+  const fetchSites = useServerFn(listMyFolliaSites);
+  const { user } = useAuth();
+  const [existingSites, setExistingSites] = useState<Array<{ id: string; subdomain: string; status: string; business_data: { name?: string } }>>([]);
+
+  useEffect(() => {
+    if (!user) {
+      setExistingSites([]);
+      return;
+    }
+    fetchSites()
+      .then((r) => setExistingSites((r.sites as typeof existingSites) || []))
+      .catch(() => setExistingSites([]));
+  }, [user, fetchSites]);
 
   const [step, setStep] = useState<"intro" | "prefill" | "form" | "success">("intro");
+
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [subStatus, setSubStatus] = useState<{ checking: boolean; available?: boolean; reason?: string }>({ checking: false });
