@@ -155,11 +155,16 @@ export const createFolliaDraft = createServerFn({ method: "POST" })
       return { ok: false as const, error: "Questo sottodominio è già in uso." };
     }
 
+    const prompt = buildLovablePrompt(data);
     const businessData = {
       name: data.businessName,
       city: data.city,
       primary_color: data.primaryColor,
       secondary_color: data.secondaryColor,
+      description: data.description,
+      services: data.services,
+      notes: data.notes,
+      lovable_prompt: prompt,
     };
     const config = {
       opening_hours: data.openingHours,
