@@ -5,6 +5,8 @@ import { ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { useAuth } from "@/hooks/useAuth";
+import { useServerFn } from "@tanstack/react-start";
+import { claimFolliaSite } from "@/lib/follia-account.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,6 +15,7 @@ export const Route = createFileRoute("/auth")({
   validateSearch: (search: Record<string, unknown>) => ({
     redirect: (search.redirect as string) || "/account",
     mode: (search.mode as "login" | "signup") || "login",
+    email: (search.email as string) || "",
   }),
   head: () => ({
     meta: [
@@ -24,12 +27,19 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
+// Extract a Follia site UUID from a redirect like "/account/sites/<uuid>"
+function extractFolliaSiteId(redirect: string): string | null {
+  const m = redirect.match(/^\/account\/sites\/([0-9a-f-]{36})(?:[/?#]|$)/i);
+  return m ? m[1] : null;
+}
+
 function AuthPage() {
   const search = Route.useSearch();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const claimSite = useServerFn(claimFolliaSite);
   const [mode, setMode] = useState<"login" | "signup">(search.mode);
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(search.email || "");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
@@ -37,8 +47,16 @@ function AuthPage() {
   const [info, setInfo] = useState("");
 
   useEffect(() => {
-    if (user) navigate({ to: search.redirect, replace: true });
-  }, [user, navigate, search.redirect]);
+    if (!user) return;
+    const siteId = extractFolliaSiteId(search.redirect);
+    if (siteId) {
+      claimSite({ data: { siteId } })
+        .catch(() => {})
+        .finally(() => navigate({ to: search.redirect, replace: true }));
+    } else {
+      navigate({ to: search.redirect, replace: true });
+    }
+  }, [user, navigate, search.redirect, claimSite]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
