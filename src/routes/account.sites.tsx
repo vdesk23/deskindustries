@@ -29,11 +29,11 @@ type Site = {
 };
 
 const STATUS_LABEL: Record<string, string> = {
-  draft: "Bozza",
-  awaiting_payment: "In attesa di pagamento",
-  in_review: "In revisione",
+  new: "Richiesta ricevuta",
+  in_progress: "In lavorazione",
+  awaiting_payment: "Pronto per pagamento",
   live: "Online",
-  suspended: "Sospeso",
+  archived: "Archiviato",
 };
 
 function SitesListPage() {
