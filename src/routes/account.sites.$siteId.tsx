@@ -173,13 +173,22 @@ function SiteDetailPage() {
             </p>
           </div>
           <div className="flex gap-2 flex-wrap">
-            <a href={previewUrl} target="_blank" rel="noreferrer">
-              <Button variant="outline"><Eye className="size-4" /> Anteprima gratis</Button>
-            </a>
-            {isLive && (
-              <a href={publicUrl} target="_blank" rel="noreferrer">
-                <Button variant="amber"><ExternalLink className="size-4" /> Apri sito pubblico</Button>
+            <Button asChild variant="outline">
+              <a href={previewUrl} target="_blank" rel="noreferrer">
+                <Eye className="size-4" /> Anteprima
               </a>
+            </Button>
+            {isLive && (
+              <Button asChild variant="amber">
+                <a href={publicUrl} target="_blank" rel="noreferrer">
+                  <ExternalLink className="size-4" /> Apri sito pubblico
+                </a>
+              </Button>
+            )}
+            {isLive && (
+              <Button variant="outline" onClick={openPortal} disabled={portalLoading}>
+                {portalLoading ? "Apertura..." : "Gestisci abbonamento"} <ExternalLink className="size-4" />
+              </Button>
             )}
           </div>
         </div>
