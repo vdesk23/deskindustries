@@ -362,8 +362,11 @@ export type Database = {
           custom_domain: string | null
           has_full_assistance: boolean
           id: string
+          internal_notes: string | null
           lead_email: string
           plan: Database["public"]["Enums"]["follia_plan"] | null
+          published_url: string | null
+          request_status: Database["public"]["Enums"]["follia_request_status"]
           status: Database["public"]["Enums"]["follia_site_status"]
           stripe_customer_id: string | null
           stripe_subscription_id: string | null
@@ -380,8 +383,11 @@ export type Database = {
           custom_domain?: string | null
           has_full_assistance?: boolean
           id?: string
+          internal_notes?: string | null
           lead_email: string
           plan?: Database["public"]["Enums"]["follia_plan"] | null
+          published_url?: string | null
+          request_status?: Database["public"]["Enums"]["follia_request_status"]
           status?: Database["public"]["Enums"]["follia_site_status"]
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
@@ -398,8 +404,11 @@ export type Database = {
           custom_domain?: string | null
           has_full_assistance?: boolean
           id?: string
+          internal_notes?: string | null
           lead_email?: string
           plan?: Database["public"]["Enums"]["follia_plan"] | null
+          published_url?: string | null
+          request_status?: Database["public"]["Enums"]["follia_request_status"]
           status?: Database["public"]["Enums"]["follia_site_status"]
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
@@ -928,6 +937,12 @@ export type Database = {
         | "live"
         | "cancelled"
       follia_plan: "basic_19" | "with_setup_297"
+      follia_request_status:
+        | "new"
+        | "in_progress"
+        | "awaiting_payment"
+        | "live"
+        | "archived"
       follia_site_status:
         | "draft"
         | "awaiting_payment"
@@ -1092,6 +1107,13 @@ export const Constants = {
         "cancelled",
       ],
       follia_plan: ["basic_19", "with_setup_297"],
+      follia_request_status: [
+        "new",
+        "in_progress",
+        "awaiting_payment",
+        "live",
+        "archived",
+      ],
       follia_site_status: [
         "draft",
         "awaiting_payment",
