@@ -44,20 +44,21 @@ export const Route = createFileRoute("/lovable/email/transactional/send")({
           )
         }
 
-        // Verify the caller has a valid Supabase auth token.
-        // In TanStack, there is no Supabase gateway — we validate the JWT ourselves.
+        // Restrict to service-role callers only. Any authenticated end-user
+        // token would otherwise let customers send templated emails to
+        // arbitrary recipients using our infrastructure, damaging sender
+        // reputation and enabling spam.
         const authHeader = request.headers.get('Authorization')
         if (!authHeader?.startsWith('Bearer ')) {
           return Response.json({ error: 'Unauthorized' }, { status: 401 })
         }
 
         const token = authHeader.slice('Bearer '.length).trim()
-        const supabase = createClient(supabaseUrl, supabaseServiceKey)
-        const { data: { user }, error: authError } = await supabase.auth.getUser(token)
-
-        if (authError || !user) {
+        if (token !== supabaseServiceKey) {
           return Response.json({ error: 'Unauthorized' }, { status: 401 })
         }
+        const supabase = createClient(supabaseUrl, supabaseServiceKey)
+
 
         // Parse request body
         let templateName: string
