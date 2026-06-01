@@ -42,7 +42,7 @@ export const adminListSites = createServerFn({ method: "POST" })
     z
       .object({
         search: z.string().max(200).optional(),
-        status: z.string().max(40).optional(),
+        requestStatus: z.enum(["new", "in_progress", "awaiting_payment", "live", "archived"]).optional(),
         claimed: z.enum(["all", "yes", "no"]).default("all"),
       })
       .parse(input ?? {}),
@@ -56,7 +56,7 @@ export const adminListSites = createServerFn({ method: "POST" })
       )
       .order("created_at", { ascending: false });
 
-    if (data.status) q = q.eq("status", data.status);
+    if (data.requestStatus) q = q.eq("request_status", data.requestStatus);
     if (data.claimed === "yes") q = q.not("user_id", "is", null);
     if (data.claimed === "no") q = q.is("user_id", null);
     if (data.search) {
@@ -227,11 +227,12 @@ export const adminStats = createServerFn({ method: "GET" })
       const { count } = await q;
       return count || 0;
     };
-    const [total, live, draft, review, unclaimed, openTickets] = await Promise.all([
+    const [total, newReq, inProgress, awaitingPayment, live, unclaimed, openTickets] = await Promise.all([
       counts(),
-      counts((q) => q.eq("status", "live")),
-      counts((q) => q.eq("status", "draft")),
-      counts((q) => q.eq("status", "in_review")),
+      counts((q) => q.eq("request_status", "new")),
+      counts((q) => q.eq("request_status", "in_progress")),
+      counts((q) => q.eq("request_status", "awaiting_payment")),
+      counts((q) => q.eq("request_status", "live")),
       counts((q) => q.is("user_id", null)),
       (async () => {
         const { count } = await admin
@@ -241,7 +242,7 @@ export const adminStats = createServerFn({ method: "GET" })
         return count || 0;
       })(),
     ]);
-    return { total, live, draft, review, unclaimed, openTickets };
+    return { total, newReq, inProgress, awaitingPayment, live, unclaimed, openTickets };
   });
 
 export const adminListTickets = createServerFn({ method: "GET" })

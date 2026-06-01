@@ -39,14 +39,15 @@ function AdminSitesList() {
   const [sites, setSites] = useState<Site[]>([]);
   const [search, setSearch] = useState("");
   const [claimed, setClaimed] = useState<"all" | "yes" | "no">("all");
+  const [requestStatus, setRequestStatus] = useState<"" | "new" | "in_progress" | "awaiting_payment" | "live" | "archived">("");
   const [loading, setLoading] = useState(true);
 
   const load = useCallback(() => {
     setLoading(true);
-    list({ data: { search: search || undefined, claimed } })
+    list({ data: { search: search || undefined, claimed, ...(requestStatus ? { requestStatus } : {}) } })
       .then((r) => setSites(r.sites as Site[]))
       .finally(() => setLoading(false));
-  }, [list, search, claimed]);
+  }, [list, search, claimed, requestStatus]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -71,6 +72,10 @@ function AdminSitesList() {
           placeholder="Cerca per subdomain, email, dominio…"
           className="flex-1 min-w-[200px] rounded-md border border-border bg-background px-3 py-2 text-sm"
         />
+        <select value={requestStatus} onChange={(e) => setRequestStatus(e.target.value as typeof requestStatus)} className="rounded-md border border-border bg-background px-3 py-2 text-sm">
+          <option value="">Tutti gli stati</option>
+          {Object.entries(STATUS_LABEL).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+        </select>
         <select value={claimed} onChange={(e) => setClaimed(e.target.value as any)} className="rounded-md border border-border bg-background px-3 py-2 text-sm">
           <option value="all">Tutti</option>
           <option value="yes">Reclamati</option>
