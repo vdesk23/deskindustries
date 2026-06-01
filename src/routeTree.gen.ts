@@ -30,6 +30,7 @@ import { Route as SettoriSlugRouteImport } from './routes/settori.$slug'
 import { Route as SSubdomainRouteImport } from './routes/s.$subdomain'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
+import { Route as AdminSitesRouteImport } from './routes/admin.sites'
 import { Route as AccountSitesRouteImport } from './routes/account.sites'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicLeadSubmitRouteImport } from './routes/api/public/lead-submit'
@@ -147,6 +148,11 @@ const CheckoutReturnRoute = CheckoutReturnRouteImport.update({
   path: '/checkout/return',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminSitesRoute = AdminSitesRouteImport.update({
+  id: '/sites',
+  path: '/sites',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AccountSitesRoute = AccountSitesRouteImport.update({
   id: '/sites',
   path: '/sites',
@@ -225,6 +231,7 @@ export interface FileRoutesByFullPath {
   '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/account/sites': typeof AccountSitesRouteWithChildren
+  '/admin/sites': typeof AdminSitesRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/s/$subdomain': typeof SSubdomainRoute
@@ -258,6 +265,7 @@ export interface FileRoutesByTo {
   '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/account/sites': typeof AccountSitesRouteWithChildren
+  '/admin/sites': typeof AdminSitesRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/s/$subdomain': typeof SSubdomainRoute
@@ -293,6 +301,7 @@ export interface FileRoutesById {
   '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/account/sites': typeof AccountSitesRouteWithChildren
+  '/admin/sites': typeof AdminSitesRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/s/$subdomain': typeof SSubdomainRoute
@@ -329,6 +338,7 @@ export interface FileRouteTypes {
     | '/termini'
     | '/unsubscribe'
     | '/account/sites'
+    | '/admin/sites'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/s/$subdomain'
@@ -362,6 +372,7 @@ export interface FileRouteTypes {
     | '/termini'
     | '/unsubscribe'
     | '/account/sites'
+    | '/admin/sites'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/s/$subdomain'
@@ -396,6 +407,7 @@ export interface FileRouteTypes {
     | '/termini'
     | '/unsubscribe'
     | '/account/sites'
+    | '/admin/sites'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/s/$subdomain'
@@ -596,6 +608,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckoutReturnRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/sites': {
+      id: '/admin/sites'
+      path: '/sites'
+      fullPath: '/admin/sites'
+      preLoaderRoute: typeof AdminSitesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/account/sites': {
       id: '/account/sites'
       path: '/sites'
@@ -702,10 +721,12 @@ const AccountRouteWithChildren =
   AccountRoute._addFileChildren(AccountRouteChildren)
 
 interface AdminRouteChildren {
+  AdminSitesRoute: typeof AdminSitesRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminSitesRoute: AdminSitesRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
