@@ -200,7 +200,7 @@ serve(async (req) => {
     );
   } catch (e) {
     console.error("optimize-seo-article error:", e);
-    return jsonError((e as Error).message || "Errore interno", 500);
+    return jsonError("Errore interno", 500);
   }
 
   function jsonError(message: string, status: number) {
