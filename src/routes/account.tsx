@@ -151,9 +151,16 @@ function AccountPage() {
             </h1>
             <p className="mt-2 text-sm text-muted-foreground">{user.email}</p>
           </div>
-          <Button variant="ghost" size="sm" onClick={signOut}>
-            <LogOut className="size-4" /> Esci
-          </Button>
+          <div className="flex items-center gap-2">
+            {isAdmin && (
+              <Link to="/admin">
+                <Button variant="outline" size="sm">Admin</Button>
+              </Link>
+            )}
+            <Button variant="ghost" size="sm" onClick={signOut}>
+              <LogOut className="size-4" /> Esci
+            </Button>
+          </div>
         </div>
 
         {loading ? (
