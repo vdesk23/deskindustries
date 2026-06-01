@@ -49,6 +49,32 @@ function getAdmin(): any {
   return createClient(url, key);
 }
 
+function generateToken(): string {
+  const bytes = new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes).map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function getUnsubscribeToken(admin: any, email: string): Promise<string> {
+  const normalized = email.toLowerCase();
+  const { data: existing } = await admin
+    .from("email_unsubscribe_tokens")
+    .select("token, used_at")
+    .eq("email", normalized)
+    .maybeSingle();
+  if (existing && !existing.used_at) return existing.token;
+  const token = generateToken();
+  await admin
+    .from("email_unsubscribe_tokens")
+    .upsert({ token, email: normalized }, { onConflict: "email", ignoreDuplicates: true });
+  const { data: stored } = await admin
+    .from("email_unsubscribe_tokens")
+    .select("token")
+    .eq("email", normalized)
+    .maybeSingle();
+  return stored?.token ?? token;
+}
+
 async function enqueueEmail(args: {
   templateName: string;
   to: string;
@@ -64,6 +90,7 @@ async function enqueueEmail(args: {
 
   const admin = getAdmin();
   const messageId = crypto.randomUUID();
+  const unsubscribeToken = await getUnsubscribeToken(admin, args.to);
   await admin.from("email_send_log").insert({
     message_id: messageId,
     template_name: args.templateName,
@@ -75,14 +102,15 @@ async function enqueueEmail(args: {
     payload: {
       message_id: messageId,
       to: args.to,
-      from: "Foll.IA <noreply@deskindustries.com>",
-      sender_domain: "notify.deskindustries.com",
+      from: "Foll.IA <noreply@deskindustries.it>",
+      sender_domain: "notify.deskindustries.it",
       subject,
       html,
       text: plainText,
       purpose: "transactional",
       label: args.templateName,
       idempotency_key: args.idempotencyKey,
+      unsubscribe_token: unsubscribeToken,
       queued_at: new Date().toISOString(),
     },
   });
