@@ -250,9 +250,9 @@ function AccountPage() {
               {folliaSites.length === 0 ? (
                 <div className="text-center py-6">
                   <p className="text-muted-foreground mb-4">Non hai ancora un sito Foll.IA.</p>
-                  <Link to="/follia">
-                    <Button variant="amber">Crea il tuo sito <ArrowRight className="size-4" /></Button>
-                  </Link>
+                  <Button asChild variant="amber">
+                    <Link to="/follia">Crea il tuo sito <ArrowRight className="size-4" /></Link>
+                  </Button>
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -276,17 +276,30 @@ function AccountPage() {
                             </p>
                           </div>
                           <div className="flex flex-wrap gap-2">
-                            <a href={`/s/${s.subdomain}?preview=1`} target="_blank" rel="noreferrer">
-                              <Button variant="outline" size="sm"><Eye className="size-4" /> Anteprima gratis</Button>
-                            </a>
-                            {isDraft && (
-                              <Link to="/account/sites/$siteId" params={{ siteId: s.id }}>
-                                <Button variant="amber" size="sm"><Rocket className="size-4" /> Pubblica</Button>
-                              </Link>
+                            <Button asChild variant="outline" size="sm">
+                              <a href={`/s/${s.subdomain}?preview=1`} target="_blank" rel="noreferrer">
+                                <Eye className="size-4" /> Anteprima
+                              </a>
+                            </Button>
+                            {isLive && (
+                              <Button asChild variant="outline" size="sm">
+                                <a href={`/s/${s.subdomain}`} target="_blank" rel="noreferrer">
+                                  <ExternalLink className="size-4" /> Apri sito
+                                </a>
+                              </Button>
                             )}
-                            <Link to="/account/sites/$siteId" params={{ siteId: s.id }}>
-                              <Button variant="ghost" size="sm">Gestisci <ArrowRight className="size-4" /></Button>
-                            </Link>
+                            {isDraft && (
+                              <Button asChild variant="amber" size="sm">
+                                <Link to="/account/sites/$siteId" params={{ siteId: s.id }}>
+                                  <Rocket className="size-4" /> Pubblica
+                                </Link>
+                              </Button>
+                            )}
+                            <Button asChild variant="ghost" size="sm">
+                              <Link to="/account/sites/$siteId" params={{ siteId: s.id }}>
+                                Gestisci <ArrowRight className="size-4" />
+                              </Link>
+                            </Button>
                           </div>
                         </div>
                       </div>
