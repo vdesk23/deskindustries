@@ -48,42 +48,39 @@ export const getMyFolliaSite = createServerFn({ method: "POST" })
   .handler(async ({ context, data }) => {
     const { supabase, userId } = context;
     const siteSelect = "id, subdomain, custom_domain, business_type, business_data, config, status, request_status, plan, has_full_assistance, published_url, created_at, lead_email, user_id";
-    let { data: site, error } = await supabase
-      .from("follia_sites")
-      .select(siteSelect)
-      .eq("id", data.siteId)
-      .maybeSingle();
-    if (error) throw new Error(error.message);
-    let canUseAdminReads = false;
-    if (!site) {
-      const admin = getAdminClient();
-      const [{ data: profile }, { data: role }, { data: adminSite }] = await Promise.all([
-        admin.from("profiles").select("email").eq("user_id", userId).maybeSingle(),
-        admin.from("user_roles").select("role").eq("user_id", userId).eq("role", "admin").maybeSingle(),
-        admin.from("follia_sites").select(siteSelect).eq("id", data.siteId).maybeSingle(),
-      ]);
-      const isAdmin = !!role;
-      const email = (profile?.email || context.claims?.email || "").toLowerCase().trim();
-      if (adminSite && isAdmin) {
-        site = adminSite;
-        canUseAdminReads = true;
-      } else if (adminSite && email && !adminSite.user_id && String(adminSite.lead_email).toLowerCase() === email) {
-        await admin
-          .from("follia_sites")
-          .update({ user_id: userId, claimed_at: new Date().toISOString() })
-          .eq("id", data.siteId)
-          .is("user_id", null);
 
-        const retry = await supabase
-          .from("follia_sites")
-          .select(siteSelect)
-          .eq("id", data.siteId)
-          .maybeSingle();
-        if (retry.error) throw new Error(retry.error.message);
-        site = retry.data;
-      }
-    }
+    // Usa sempre l'admin client per leggere il sito, poi autorizza in codice.
+    // Questo evita problemi di RLS quando l'utente è admin oppure sta
+    // rivendicando il sito tramite lead_email.
+    const admin = getAdminClient();
+    const [{ data: site, error: siteErr }, { data: profile }, { data: role }] = await Promise.all([
+      admin.from("follia_sites").select(siteSelect).eq("id", data.siteId).maybeSingle(),
+      admin.from("profiles").select("email").eq("user_id", userId).maybeSingle(),
+      admin.from("user_roles").select("role").eq("user_id", userId).eq("role", "admin").maybeSingle(),
+    ]);
+    if (siteErr) throw new Error(siteErr.message);
     if (!site) throw new Error("Sito non trovato");
+
+    const isAdmin = !!role;
+    const email = (profile?.email || context.claims?.email || "").toLowerCase().trim();
+    const isOwner = site.user_id === userId;
+    const canClaim = !site.user_id && email && String(site.lead_email).toLowerCase() === email;
+
+    if (!isAdmin && !isOwner && !canClaim) {
+      throw new Error("Non autorizzato a visualizzare questo sito");
+    }
+
+    if (canClaim) {
+      await admin
+        .from("follia_sites")
+        .update({ user_id: userId, claimed_at: new Date().toISOString() })
+        .eq("id", data.siteId)
+        .is("user_id", null);
+      site.user_id = userId;
+    }
+
+    const canUseAdminReads = isAdmin || !isOwner;
+
 
     const reader = canUseAdminReads ? getAdminClient() : supabase;
     const billingUserId = (site as { user_id?: string | null }).user_id || userId;
