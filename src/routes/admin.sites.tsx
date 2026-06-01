@@ -109,9 +109,11 @@ function AdminSitesList() {
                     </p>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    <a href={`/s/${s.subdomain}?preview=1`} target="_blank" rel="noreferrer">
-                      <Button variant="outline" size="sm"><Eye className="size-4" /> Anteprima</Button>
-                    </a>
+                    <Button asChild variant="outline" size="sm">
+                      <a href={`/s/${s.subdomain}?preview=1`} target="_blank" rel="noreferrer">
+                        <Eye className="size-4" /> Anteprima
+                      </a>
+                    </Button>
                     <Button variant="outline" size="sm" onClick={() => togglePublish(s)}>
                       <Rocket className="size-4" /> {s.status === "live" ? "Depubblica" : "Pubblica"}
                     </Button>
@@ -120,9 +122,11 @@ function AdminSitesList() {
                         <UserPlus className="size-4" /> Assegna
                       </Button>
                     )}
-                    <Link to="/admin/sites/$siteId" params={{ siteId: s.id }}>
-                      <Button variant="ghost" size="sm">Gestisci <ArrowRight className="size-4" /></Button>
-                    </Link>
+                    <Button asChild variant="ghost" size="sm">
+                      <Link to="/admin/sites/$siteId" params={{ siteId: s.id }}>
+                        Gestisci <ArrowRight className="size-4" />
+                      </Link>
+                    </Button>
                     <Button variant="ghost" size="sm" onClick={() => handleDelete(s.id)}>
                       <Trash2 className="size-4 text-destructive" />
                     </Button>

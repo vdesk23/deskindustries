@@ -15,6 +15,8 @@ import { Label } from "@/components/ui/label";
 import { ArrowLeft, ExternalLink, Eye, Rocket, MessagesSquare, Settings, CheckCircle2 } from "lucide-react";
 import { useStripeCheckout } from "@/hooks/useStripeCheckout";
 import { AssistanceFab } from "@/components/follia/AssistanceFab";
+import { supabase } from "@/integrations/supabase/client";
+import { getStripeEnvironment } from "@/lib/stripe";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/account/sites/$siteId")({
@@ -68,6 +70,23 @@ function SiteDetailPage() {
   const [submittingTicket, setSubmittingTicket] = useState(false);
 
   const { openCheckout, checkoutElement, isOpen, closeCheckout } = useStripeCheckout();
+
+  const [portalLoading, setPortalLoading] = useState(false);
+
+  const openPortal = async () => {
+    setPortalLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("create-portal-session", {
+        body: { returnUrl: `${window.location.origin}/account/sites/${siteId}`, environment: getStripeEnvironment() },
+      });
+      if (error || !data?.url) throw new Error(error?.message || "Errore portale");
+      window.open(data.url, "_blank");
+    } catch (e) {
+      toast.error((e as Error).message);
+    } finally {
+      setPortalLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -173,13 +192,22 @@ function SiteDetailPage() {
             </p>
           </div>
           <div className="flex gap-2 flex-wrap">
-            <a href={previewUrl} target="_blank" rel="noreferrer">
-              <Button variant="outline"><Eye className="size-4" /> Anteprima gratis</Button>
-            </a>
-            {isLive && (
-              <a href={publicUrl} target="_blank" rel="noreferrer">
-                <Button variant="amber"><ExternalLink className="size-4" /> Apri sito pubblico</Button>
+            <Button asChild variant="outline">
+              <a href={previewUrl} target="_blank" rel="noreferrer">
+                <Eye className="size-4" /> Anteprima
               </a>
+            </Button>
+            {isLive && (
+              <Button asChild variant="amber">
+                <a href={publicUrl} target="_blank" rel="noreferrer">
+                  <ExternalLink className="size-4" /> Apri sito pubblico
+                </a>
+              </Button>
+            )}
+            {isLive && (
+              <Button variant="outline" onClick={openPortal} disabled={portalLoading}>
+                {portalLoading ? "Apertura..." : "Gestisci abbonamento"} <ExternalLink className="size-4" />
+              </Button>
             )}
           </div>
         </div>
