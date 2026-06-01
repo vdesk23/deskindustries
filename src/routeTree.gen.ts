@@ -27,7 +27,6 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ToolsPianoContenutiRouteImport } from './routes/tools.piano-contenuti'
 import { Route as ToolsOttimizzatoreSeoRouteImport } from './routes/tools.ottimizzatore-seo'
 import { Route as SettoriSlugRouteImport } from './routes/settori.$slug'
-import { Route as SSubdomainRouteImport } from './routes/s.$subdomain'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
 import { Route as AdminTicketsRouteImport } from './routes/admin.tickets'
@@ -35,7 +34,6 @@ import { Route as AdminSitesRouteImport } from './routes/admin.sites'
 import { Route as AccountSitesRouteImport } from './routes/account.sites'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicLeadSubmitRouteImport } from './routes/api/public/lead-submit'
-import { Route as ApiPublicFolliaPreviewEmailRouteImport } from './routes/api/public/follia-preview-email'
 import { Route as ApiPublicContentPlanSubmitRouteImport } from './routes/api/public/content-plan-submit'
 import { Route as AdminSitesSiteIdRouteImport } from './routes/admin.sites.$siteId'
 import { Route as AccountSitesSiteIdRouteImport } from './routes/account.sites.$siteId'
@@ -135,11 +133,6 @@ const SettoriSlugRoute = SettoriSlugRouteImport.update({
   path: '/settori/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SSubdomainRoute = SSubdomainRouteImport.update({
-  id: '/s/$subdomain',
-  path: '/s/$subdomain',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
   id: '/email/unsubscribe',
   path: '/email/unsubscribe',
@@ -175,12 +168,6 @@ const ApiPublicLeadSubmitRoute = ApiPublicLeadSubmitRouteImport.update({
   path: '/api/public/lead-submit',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicFolliaPreviewEmailRoute =
-  ApiPublicFolliaPreviewEmailRouteImport.update({
-    id: '/api/public/follia-preview-email',
-    path: '/api/public/follia-preview-email',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const ApiPublicContentPlanSubmitRoute =
   ApiPublicContentPlanSubmitRouteImport.update({
     id: '/api/public/content-plan-submit',
@@ -247,7 +234,6 @@ export interface FileRoutesByFullPath {
   '/admin/tickets': typeof AdminTicketsRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
-  '/s/$subdomain': typeof SSubdomainRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
@@ -256,7 +242,6 @@ export interface FileRoutesByFullPath {
   '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
   '/admin/sites/$siteId': typeof AdminSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
-  '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
@@ -283,7 +268,6 @@ export interface FileRoutesByTo {
   '/admin/tickets': typeof AdminTicketsRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
-  '/s/$subdomain': typeof SSubdomainRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
@@ -292,7 +276,6 @@ export interface FileRoutesByTo {
   '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
   '/admin/sites/$siteId': typeof AdminSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
-  '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
@@ -321,7 +304,6 @@ export interface FileRoutesById {
   '/admin/tickets': typeof AdminTicketsRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
-  '/s/$subdomain': typeof SSubdomainRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
@@ -330,7 +312,6 @@ export interface FileRoutesById {
   '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
   '/admin/sites/$siteId': typeof AdminSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
-  '/api/public/follia-preview-email': typeof ApiPublicFolliaPreviewEmailRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
@@ -360,7 +341,6 @@ export interface FileRouteTypes {
     | '/admin/tickets'
     | '/checkout/return'
     | '/email/unsubscribe'
-    | '/s/$subdomain'
     | '/settori/$slug'
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
@@ -369,7 +349,6 @@ export interface FileRouteTypes {
     | '/account/sites/$siteId'
     | '/admin/sites/$siteId'
     | '/api/public/content-plan-submit'
-    | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
     | '/account/tickets/$ticketId/pay'
@@ -396,7 +375,6 @@ export interface FileRouteTypes {
     | '/admin/tickets'
     | '/checkout/return'
     | '/email/unsubscribe'
-    | '/s/$subdomain'
     | '/settori/$slug'
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
@@ -405,7 +383,6 @@ export interface FileRouteTypes {
     | '/account/sites/$siteId'
     | '/admin/sites/$siteId'
     | '/api/public/content-plan-submit'
-    | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
     | '/account/tickets/$ticketId/pay'
@@ -433,7 +410,6 @@ export interface FileRouteTypes {
     | '/admin/tickets'
     | '/checkout/return'
     | '/email/unsubscribe'
-    | '/s/$subdomain'
     | '/settori/$slug'
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
@@ -442,7 +418,6 @@ export interface FileRouteTypes {
     | '/account/sites/$siteId'
     | '/admin/sites/$siteId'
     | '/api/public/content-plan-submit'
-    | '/api/public/follia-preview-email'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
     | '/account/tickets/$ticketId/pay'
@@ -468,13 +443,11 @@ export interface RootRouteChildren {
   UnsubscribeRoute: typeof UnsubscribeRoute
   CheckoutReturnRoute: typeof CheckoutReturnRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
-  SSubdomainRoute: typeof SSubdomainRoute
   SettoriSlugRoute: typeof SettoriSlugRoute
   ToolsOttimizzatoreSeoRoute: typeof ToolsOttimizzatoreSeoRoute
   ToolsPianoContenutiRoute: typeof ToolsPianoContenutiRoute
   SettoriIndexRoute: typeof SettoriIndexRoute
   ApiPublicContentPlanSubmitRoute: typeof ApiPublicContentPlanSubmitRoute
-  ApiPublicFolliaPreviewEmailRoute: typeof ApiPublicFolliaPreviewEmailRoute
   ApiPublicLeadSubmitRoute: typeof ApiPublicLeadSubmitRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
@@ -611,13 +584,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettoriSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/s/$subdomain': {
-      id: '/s/$subdomain'
-      path: '/s/$subdomain'
-      fullPath: '/s/$subdomain'
-      preLoaderRoute: typeof SSubdomainRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/email/unsubscribe': {
       id: '/email/unsubscribe'
       path: '/email/unsubscribe'
@@ -665,13 +631,6 @@ declare module '@tanstack/react-router' {
       path: '/api/public/lead-submit'
       fullPath: '/api/public/lead-submit'
       preLoaderRoute: typeof ApiPublicLeadSubmitRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/public/follia-preview-email': {
-      id: '/api/public/follia-preview-email'
-      path: '/api/public/follia-preview-email'
-      fullPath: '/api/public/follia-preview-email'
-      preLoaderRoute: typeof ApiPublicFolliaPreviewEmailRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/content-plan-submit': {
@@ -800,13 +759,11 @@ const rootRouteChildren: RootRouteChildren = {
   UnsubscribeRoute: UnsubscribeRoute,
   CheckoutReturnRoute: CheckoutReturnRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
-  SSubdomainRoute: SSubdomainRoute,
   SettoriSlugRoute: SettoriSlugRoute,
   ToolsOttimizzatoreSeoRoute: ToolsOttimizzatoreSeoRoute,
   ToolsPianoContenutiRoute: ToolsPianoContenutiRoute,
   SettoriIndexRoute: SettoriIndexRoute,
   ApiPublicContentPlanSubmitRoute: ApiPublicContentPlanSubmitRoute,
-  ApiPublicFolliaPreviewEmailRoute: ApiPublicFolliaPreviewEmailRoute,
   ApiPublicLeadSubmitRoute: ApiPublicLeadSubmitRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,

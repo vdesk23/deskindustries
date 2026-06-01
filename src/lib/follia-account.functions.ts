@@ -36,7 +36,7 @@ export const listMyFolliaSites = createServerFn({ method: "GET" })
 
     const { data, error } = await supabase
       .from("follia_sites")
-      .select("id, subdomain, custom_domain, business_type, business_data, status, plan, has_full_assistance, created_at")
+      .select("id, subdomain, custom_domain, business_type, business_data, status, request_status, plan, has_full_assistance, published_url, created_at")
       .order("created_at", { ascending: false });
     if (error) throw new Error(error.message);
     return { sites: data || [] };
@@ -49,26 +49,19 @@ export const getMyFolliaSite = createServerFn({ method: "POST" })
     const { supabase } = context;
     const { data: site, error } = await supabase
       .from("follia_sites")
-      .select("*")
+      .select("id, subdomain, custom_domain, business_type, business_data, config, status, request_status, plan, has_full_assistance, published_url, created_at, lead_email")
       .eq("id", data.siteId)
       .maybeSingle();
     if (error) throw new Error(error.message);
     if (!site) throw new Error("Sito non trovato");
 
-    const [menu, products, services, tickets] = await Promise.all([
-      supabase.from("follia_menu_items").select("*").eq("site_id", data.siteId).order("position"),
-      supabase.from("follia_products").select("*").eq("site_id", data.siteId).order("position"),
-      supabase.from("follia_services").select("*").eq("site_id", data.siteId).order("position"),
-      supabase.from("follia_tickets").select("*").eq("site_id", data.siteId).order("created_at", { ascending: false }),
-    ]);
+    const { data: tickets } = await supabase
+      .from("follia_tickets")
+      .select("id, subject, status, category, created_at")
+      .eq("site_id", data.siteId)
+      .order("created_at", { ascending: false });
 
-    return {
-      site,
-      menu: menu.data || [],
-      products: products.data || [],
-      services: services.data || [],
-      tickets: tickets.data || [],
-    };
+    return { site, tickets: tickets || [] };
   });
 
 const configSchema = z.object({

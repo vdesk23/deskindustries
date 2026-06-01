@@ -52,7 +52,7 @@ export const adminListSites = createServerFn({ method: "POST" })
     let q = admin
       .from("follia_sites")
       .select(
-        "id, subdomain, custom_domain, business_type, business_data, lead_email, status, plan, has_full_assistance, user_id, claimed_at, created_at",
+        "id, subdomain, custom_domain, business_type, business_data, lead_email, status, request_status, plan, has_full_assistance, published_url, user_id, claimed_at, created_at",
       )
       .order("created_at", { ascending: false });
 
@@ -117,6 +117,7 @@ const updatePatchSchema = z.object({
   patch: z
     .object({
       status: z.enum(["draft", "awaiting_payment", "in_review", "live", "suspended"]).optional(),
+      request_status: z.enum(["new", "in_progress", "awaiting_payment", "live", "archived"]).optional(),
       plan: z.string().max(40).nullable().optional(),
       has_full_assistance: z.boolean().optional(),
       subdomain: z
@@ -126,6 +127,8 @@ const updatePatchSchema = z.object({
         .regex(/^[a-z0-9-]+$/)
         .optional(),
       custom_domain: z.string().max(255).nullable().optional(),
+      published_url: z.string().url().max(500).nullable().optional(),
+      internal_notes: z.string().max(4000).nullable().optional(),
       business_data: z.record(z.string(), z.unknown()).optional(),
       config: z.record(z.string(), z.unknown()).optional(),
     })
@@ -140,6 +143,29 @@ export const adminUpdateSite = createServerFn({ method: "POST" })
     const { error } = await admin
       .from("follia_sites")
       .update({ ...data.patch, updated_at: new Date().toISOString() })
+      .eq("id", data.siteId);
+    if (error) throw new Error(error.message);
+    return { ok: true as const };
+  });
+
+export const adminMarkAwaitingPayment = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) =>
+    z.object({
+      siteId: z.string().uuid(),
+      plan: z.enum(["basic", "with_setup"]),
+    }).parse(input),
+  )
+  .handler(async ({ context, data }) => {
+    const admin = await assertAdmin(context.userId);
+    const planValue = data.plan === "with_setup" ? "with_setup_297" : "basic_19";
+    const { error } = await admin
+      .from("follia_sites")
+      .update({
+        request_status: "awaiting_payment",
+        plan: planValue,
+        updated_at: new Date().toISOString(),
+      })
       .eq("id", data.siteId);
     if (error) throw new Error(error.message);
     return { ok: true as const };
