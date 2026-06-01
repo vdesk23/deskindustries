@@ -473,13 +473,14 @@ function FolliaLanding() {
           <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="inline-flex w-16 h-16 rounded-full bg-emerald-500/10 text-emerald-400 items-center justify-center mb-6">
             <CheckCircle2 className="w-8 h-8" />
           </motion.div>
-          <h2 className="font-display text-3xl font-bold mb-3">Il tuo sito è pronto in anteprima</h2>
+          <h2 className="font-display text-3xl font-bold mb-3">Richiesta inviata ✓</h2>
           <p className="text-muted-foreground mb-8">
-            Abbiamo mandato un link a <strong>{form.email}</strong>. Crea il tuo account per vederlo, modificarlo e pubblicarlo.
+            Abbiamo ricevuto i tuoi dati e li abbiamo girati al team. Riceverai una conferma su <strong>{form.email}</strong>.
+            Ti contatteremo non appena il sito sarà pronto e disponibile per il pagamento. Crea il tuo account per seguire l'avanzamento e aprire ticket.
           </p>
           <Link
             to="/auth"
-            search={{ mode: "signup", redirect: createdSiteId ? `/account/sites/${createdSiteId}` : "/account", email: form.email } as any}
+            search={{ mode: "signup", redirect: "/account", email: form.email } as any}
             className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-amber text-amber-foreground font-semibold hover:opacity-90 transition"
           >
             Crea il mio account <ArrowRight className="w-4 h-4" />
