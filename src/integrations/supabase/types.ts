@@ -893,6 +893,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_follia_site_live: { Args: { _site_id: string }; Returns: boolean }
       move_to_dlq: {
         Args: {
           dlq_name: string
