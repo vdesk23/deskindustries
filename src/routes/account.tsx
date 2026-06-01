@@ -65,6 +65,8 @@ function AccountPage() {
   const { user, loading: authLoading, signOut } = useAuth();
   const navigate = useNavigate();
   const fetchSites = useServerFn(listMyFolliaSites);
+  const checkAdmin = useServerFn(checkIsAdmin);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [subs, setSubs] = useState<Subscription[]>([]);
   const [purchases, setPurchases] = useState<Purchase[]>([]);
   const [folliaSites, setFolliaSites] = useState<FolliaSite[]>([]);
