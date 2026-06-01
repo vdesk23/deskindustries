@@ -98,8 +98,10 @@ function SiteDetailPage() {
   }
 
   const name = site.business_data?.name || site.subdomain;
+  const previewUrl = `/s/${site.subdomain}?preview=1`;
   const publicUrl = `/s/${site.subdomain}`;
   const isLive = site.status === "live";
+
   const isInReview = site.status === "in_review";
   const isDraft = site.status === "draft";
   const canEditRequests = site.plan === "with_setup_297" && (isInReview || isLive);
