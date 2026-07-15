@@ -17,3 +17,7 @@ verify_jwt = false
 
 [functions.seo-quota]
 verify_jwt = false
+
+[functions.publish-post]
+verify_jwt = false
+
