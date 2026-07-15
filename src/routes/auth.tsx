@@ -11,11 +11,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+type AuthSearch = {
+  redirect: string;
+  mode: "login" | "signup";
+  email?: string;
+};
+
 export const Route = createFileRoute("/auth")({
-  validateSearch: (search: Record<string, unknown>) => ({
+  validateSearch: (search: Record<string, unknown>): AuthSearch => ({
     redirect: (search.redirect as string) || "/account",
     mode: (search.mode as "login" | "signup") || "login",
-    email: (search.email as string) || "",
+    email: (search.email as string) || undefined,
   }),
   head: () => ({
     meta: [
