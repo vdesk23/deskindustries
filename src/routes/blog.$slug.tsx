@@ -10,11 +10,12 @@ export const Route = createFileRoute("/blog/$slug")({
     if (!post) throw notFound();
     return post;
   },
-  head: ({ loaderData }) => {
+  head: ({ loaderData, params }) => {
     if (!loaderData) {
       return { meta: [{ title: "Articolo non trovato — Desk Industries" }, { name: "robots", content: "noindex" }] };
     }
     const desc = loaderData.excerpt ?? `${loaderData.title} — Desk Industries`;
+    const url = `https://deskindustries.lovable.app/blog/${params.slug}`;
     return {
       meta: [
         { title: `${loaderData.title} — Blog Desk Industries` },
@@ -22,12 +23,34 @@ export const Route = createFileRoute("/blog/$slug")({
         { property: "og:title", content: loaderData.title },
         { property: "og:description", content: desc },
         { property: "og:type", content: "article" },
+        { property: "og:url", content: url },
         ...(loaderData.cover_url
           ? [
               { property: "og:image", content: loaderData.cover_url },
               { name: "twitter:image", content: loaderData.cover_url },
             ]
           : []),
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: loaderData.title,
+            description: desc,
+            image: loaderData.cover_url ?? undefined,
+            author: { "@type": "Person", name: loaderData.author_name ?? "Desk Industries" },
+            publisher: {
+              "@type": "Organization",
+              name: "Desk Industries",
+            },
+            datePublished: loaderData.published_at ?? undefined,
+            dateModified: loaderData.updated_at ?? loaderData.published_at ?? undefined,
+            mainEntityOfPage: url,
+          }),
+        },
       ],
     };
   },
