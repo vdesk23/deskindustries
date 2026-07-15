@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/metodo-coco")({
   head: () => ({
     meta: [
-      { title: "Il Metodo COCO — Costruire Online per Cementificare Offline | Desk Industries" },
+      { title: "Metodo COCO — Desk Industries" },
       {
         name: "description",
         content:
@@ -18,6 +18,7 @@ export const Route = createFileRoute("/metodo-coco")({
         content: "Quattro fasi pensate per attività locali con una saracinesca da alzare ogni mattina.",
       },
     ],
+    links: [{ rel: "canonical", href: "https://deskindustries.lovable.app/metodo-coco" }],
   }),
   component: MetodoPage,
 });
