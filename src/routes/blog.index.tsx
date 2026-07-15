@@ -9,7 +9,7 @@ const postsQO = queryOptions({
   queryFn: () => listPublishedPosts(),
 });
 
-export const Route = createFileRoute("/blog")({
+export const Route = createFileRoute("/blog/")({
   loader: ({ context }) => context.queryClient.ensureQueryData(postsQO),
   head: () => ({
     meta: [
