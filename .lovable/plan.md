@@ -1,76 +1,84 @@
-# Pivot Foll.IA → Richieste progetto + email staff
 
-## Obiettivo
-Foll.IA non genera/mostra più siti dentro l'app. Il form raccoglie i dati, invia un'email a `master@deskindustries.com` e `web@deskindustries.com` con un prompt pronto da incollare in un nuovo progetto Lovable, e crea una "richiesta" nel database. Il pagamento avviene in un secondo momento dall'area cliente, su un link generato dall'admin. Il cliente vede lo stato della richiesta, il sito online (quando pubblicato) e può aprire ticket.
+# Desk Industries — Riprogettazione totale
 
-## Cosa cambia per l'utente
+Trasformo il sito da "agenzia locale con metodo COCO" a **vetrina del gruppo Desk Industries**: holding di digitalizzazione con team di agenti AI + specialisti, progetti interni (Arkeo, Magnus, Foll.IA) e servizi su misura per PMI.
 
-**Cliente (form pubblico Foll.IA → form attuale ma senza preview):**
-- Compila il form e riceve email di conferma.
-- Vede nella sua dashboard: stato richiesta (`In lavorazione` / `Pronto per pagamento` / `Online`), link al sito pubblicato (quando disponibile), ticket di assistenza, fatture/abbonamento.
-- **Niente più** anteprima `/s/...`, niente più editor menu/prodotti/servizi/orari.
+## 1. Fix build bloccante
 
-**Staff (admin):**
-- Riceve email immediata con tutti i dati + prompt pronto.
-- In `/admin` vede ogni cliente con: stato richiesta, link sito pubblicato (campo editabile), stato fatturazione (abbonamento Stripe attivo/scaduto), ticket aperti.
-- Può: cambiare stato, incollare URL del sito pubblicato, generare link di pagamento per il cliente, rispondere ai ticket.
+`src/styles.css` importa Google Fonts via URL — Lightning CSS non lo supporta e la build fallisce. Sposto i `<link>` font in `src/routes/__root.tsx` (`head.links`) e rimuovo l'`@import` remoto dal CSS. Sistemo anche il type error residuo su `/auth` (params `email` mancante).
 
-## Cosa viene rimosso
-- Route pubblica `/s/$subdomain` (file `src/routes/s.$subdomain.tsx`) e relativa server function `getPublicFolliaSite`.
-- Editor sito lato cliente `src/routes/account.sites.$siteId.tsx` (sostituito da pagina sola-lettura "dettaglio richiesta").
-- Editor sito lato admin `src/routes/admin.sites.$siteId.tsx` ridotto a: stato + URL pubblicato + note interne (niente più business_data/config JSON).
-- Le tabelle `follia_menu_items`, `follia_products`, `follia_services`, `follia_appointments`, `follia_table_bookings` NON vengono cancellate ora (dati irreversibili) ma non vengono più scritte né lette. Le togliamo in un secondo step quando confermi.
+## 2. Nuova homepage / landing lead-gen
 
-## Cosa viene aggiunto
+Palette **dark + amber** mantenuta. Struttura:
 
-### Database (migrazione)
-Su `follia_sites` aggiungiamo:
-- `published_url` (text, nullable) — URL del nuovo progetto Lovable creato dallo staff.
-- `internal_notes` (text, nullable) — note interne admin.
-- `request_status` enum: `new` | `in_progress` | `awaiting_payment` | `live` | `archived` (sostituisce l'uso confuso di `status` per i 3 stati che servono adesso).
-- Indici su `request_status`, `lead_email`.
+- **Hero 3D interattivo** (React Three Fiber): scena con particelle/mesh mouse-reactive che rappresenta la "rete di agenti AI". Headline: *"Digitalizziamo le PMI con team umani e agenti AI"*. CTA primaria → form lead inline; secondaria → progetti.
+- **Manifesto gruppo**: 3 blocchi (Servizi PMI · Magnus Agency · Arkeo) con hover 3D leggero.
+- **Vetrina progetti/case study** (grid animata con parallax): Foll.IA, altri progetti Arkeo, lavori Magnus.
+- **Expertise**: griglia di competenze (No-code, AI agents, Marketing, Automazioni, SEO, Web).
+- **Sezione team AI + umano**: card con orb 3D che pulsa per ogni "agente".
+- **Form lead-gen inline** (nome, email, azienda, esigenza, budget range) → salvato in tabella `lead_requests` esistente + mail admin.
+- **CTA finale** verso blog / contatti.
 
-RLS: invariate (cliente vede solo le sue, admin via `supabaseAdmin`).
+Animazioni: R3F per hero e orb agenti; Framer Motion per scroll reveal, parallax, magnetic buttons.
 
-### Email allo staff (transactional)
-Nuovo template `follia-new-request-staff.tsx` inviato a `master@deskindustries.com` e `web@deskindustries.com` al submit del form, contenente:
-- Tutti i campi del form (nome attività, settore, contatti, descrizione, ecc.).
-- Un **prompt pronto** generato dal backend tipo:
-  > "Crea un sito web per [nome] nel settore [settore]. Identità: [descrizione]. Servizi: [...]. Palette suggerita: [...]. CTA principale: [...]"
-- Link diretto alla scheda richiesta in `/admin/sites/$siteId`.
+## 3. Sezione Blog (CMS su Lovable Cloud)
 
-Email di conferma al cliente (template già esistente `follia-preview-ready` viene riadattato in `follia-request-received`).
+**Rotte pubbliche**:
+- `/blog` — lista articoli con filtri per categoria (Case study / News / Insight)
+- `/blog/$slug` — articolo singolo, hero image, contenuto MDX/markdown, meta SEO per-articolo, og:image dall'hero
 
-### Pagamento (flusso "dopo")
-- Lo staff dalla scheda admin clicca "Genera link pagamento" → la richiesta passa a `awaiting_payment`.
-- Il cliente vede nella sua dashboard un bottone "Procedi al pagamento" che apre Stripe Embedded Checkout (priceId del piano scelto dall'admin: `basic` o `with_setup`).
-- Il webhook `payments-webhook` esistente aggiorna `follia_sites.stripe_subscription_id` e porta lo stato a `live` quando lo staff incolla `published_url`.
+**Rotte admin** (sotto `_authenticated` + check `has_role admin`):
+- `/admin/blog` — lista + nuovo articolo
+- `/admin/blog/$id` — editor markdown con preview, upload cover, gestione slug/categoria/tags/published
 
-### Tasti dashboard (fix bug attuale)
-- Cliente: un solo bottone contestuale → "Visita sito online" (se `published_url` presente) **oppure** "Procedi al pagamento" (se `awaiting_payment`) **oppure** "In lavorazione" disabilitato.
-- Admin: "Apri scheda" + (contestuale) "Genera link pagamento" / "Pubblica URL" / "Archivia".
-- "Anteprima" e "Pubblica" come pulsanti separati spariscono.
+**Schema DB nuovo** (`blog_posts`):
+- id, slug (unique), title, excerpt, cover_url, content_md, category, tags[], author_name, published, published_at, created_at, updated_at
+- RLS: SELECT pubblico solo where `published = true`; admin full access via `has_role`
+- GRANT anon SELECT (solo pubblicati), authenticated + service_role
+- Bucket storage `blog-covers` pubblico per le immagini
 
-## Dettaglio tecnico (per l'agent in build mode)
+Server functions: `listPublishedPosts`, `getPostBySlug` (pubblico, publishable client); `listAllPosts`, `upsertPost`, `deletePost`, `uploadCover` (admin, `requireSupabaseAuth` + role check).
 
-**File modificati**
-- `src/routes/follia.tsx` (form): al submit chiama nuova server fn `submitFolliaRequest` che (1) inserisce in `follia_sites` con `request_status='new'`, (2) invia email staff + email conferma cliente, (3) ritorna conferma.
-- `src/lib/follia.functions.ts`: nuova `submitFolliaRequest` (sostituisce flusso preview-generation), rimuove generazione `business_data.generated`.
-- `src/lib/follia-account.functions.ts`: ritorna solo i campi necessari (status, published_url, plan, subscription).
-- `src/lib/follia-admin.functions.ts`: nuove fn `adminUpdateRequest(siteId, {request_status, published_url, internal_notes, plan})`, `adminGeneratePaymentLink(siteId, plan)`.
-- `src/routes/account.tsx` + `account.sites.tsx`: lista sola-lettura con bottoni contestuali.
-- `src/routes/account.sites.$siteId.tsx`: pagina sola-lettura "Dettaglio richiesta" + checkout Stripe se `awaiting_payment`.
-- `src/routes/admin.sites.tsx` + `admin.sites.$siteId.tsx`: form con `request_status`, `published_url`, `internal_notes`, `plan`, bottone "Genera link pagamento".
-- Rimossi: `src/routes/s.$subdomain.tsx`, `src/lib/follia-public.functions.ts`.
-- Email: nuovo template `follia-new-request-staff.tsx` + `follia-request-received.tsx` registrati in `email-templates/registry.ts`. Invio via `sendTransactionalEmail` (auth con service role da server fn).
+## 4. Navigazione & pagine da archiviare
 
-**Email infra**: già presente (`email_send_log`, queue pgmq, cron). Aggiungo solo i 2 template.
+Nuova nav: **Gruppo · Progetti · Servizi · Blog · Contatti**.
 
-**Sicurezza/RLS**: nessuna RLS nuova; lo staff scrive sempre via `supabaseAdmin` dentro server fn protette da `has_role(auth.uid(),'admin')`.
+- Rimuovo dalla nav: Metodo COCO, Pacchetti, Settori.
+- I file rotta restano nel repo ma non linkati (evito rotture di link condivisi); posso eliminarli se preferisci.
+- `/progetti` riscritto come showcase gruppo (Arkeo, Magnus, Foll.IA).
+- `/chi-siamo` aggiornato al nuovo posizionamento (gruppo, team AI+umano).
+- Mantengo intatti: area account/admin Foll.IA, tools, checkout, privacy/termini, sistema email.
 
-## Cosa NON facciamo in questo step
-- Non cancelliamo i dati nelle tabelle menu/prodotti/servizi (lo facciamo dopo conferma).
-- Non automatizziamo la creazione di un progetto Lovable (Lovable non espone API per crearlo da terzi); lo staff lo crea a mano col prompt ricevuto via email.
-- Non tocchiamo il piano Stripe / prezzi esistenti.
+## 5. Design directions
 
-Confermi? Una volta approvato passo in build mode e procedo.
+Prima di scrivere il codice della home, catturo l'attuale hero via Playwright e genero **3 direzioni renderizzate** con R3F/motion (locked su palette amber + typography attuale). Tu scegli, io implemento la scelta 1:1.
+
+---
+
+## Sezione tecnica
+
+- **Fix CSS**: rimuovere `@import url("https://fonts.googleapis.com/...")` da `src/styles.css`. Aggiungere in `__root.tsx` `links`: preconnect googleapis/gstatic + stylesheet Space Grotesk + Inter.
+- **Three.js**: `bun add three @react-three/fiber @react-three/drei`. Hero scene lazy-loaded via `<ClientOnly>` + `React.lazy` per non appesantire il bundle SSR e non rompere `window`-less runtime.
+- **Blog**: MDX inline non necessario — uso `react-markdown` + `remark-gfm` + `rehype-highlight` per rendering. `bun add react-markdown remark-gfm rehype-highlight`.
+- **Editor admin**: textarea markdown con preview live split (nessun editor pesante — evito problemi SSR).
+- **Migrazione**: nuova migration per `blog_posts` + policies + GRANT + bucket `blog-covers` (public) + policy storage per admin upload.
+- **Server fns blog** in `src/lib/blog.functions.ts`; publishable client per read pubblici (SSR-safe nei loader di `/blog` e `/blog/$slug`), `requireSupabaseAuth` + `has_role('admin')` per write.
+- **Route architecture**: `/blog/$slug` head() con title/description/og:image dinamici dal post.
+- **Type fix `/auth`**: allineare `search` schema oppure aggiornare i call sites che passano solo `redirect + mode` a includere `email: ""`.
+
+## Cosa NON tocco in questo giro
+
+Sistema email, Foll.IA (account/admin/ticket/billing), Stripe/checkout, tools SEO & content plan, autenticazione, cookie banner. Vengono solo delinkati dalla nav se non parte del nuovo posizionamento.
+
+## Ordine di esecuzione
+
+1. Fix build (fonts + type error `/auth`)
+2. Migration `blog_posts` + storage bucket
+3. Server functions blog + rotte pubbliche `/blog` e `/blog/$slug`
+4. Rotte admin `/admin/blog` + editor
+5. Cattura hero attuale + `design--create_directions` → scelta utente
+6. Implementazione nuova homepage (hero R3F, sezioni, form lead)
+7. Nav aggiornata + `/chi-siamo` e `/progetti` riscritti
+8. QA visivo con Playwright su home + blog
+
+Confermi e procedo?
