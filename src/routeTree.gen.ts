@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as TerminiRouteImport } from './routes/termini'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ProgettiRouteImport } from './routes/progetti'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PacchettiRouteImport } from './routes/pacchetti'
@@ -55,6 +56,11 @@ const UnsubscribeRoute = UnsubscribeRouteImport.update({
 const TerminiRoute = TerminiRouteImport.update({
   id: '/termini',
   path: '/termini',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProgettiRoute = ProgettiRouteImport.update({
@@ -251,6 +257,7 @@ export interface FileRoutesByFullPath {
   '/pacchetti': typeof PacchettiRoute
   '/privacy': typeof PrivacyRoute
   '/progetti': typeof ProgettiRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/account/sites': typeof AccountSitesRouteWithChildren
@@ -289,6 +296,7 @@ export interface FileRoutesByTo {
   '/pacchetti': typeof PacchettiRoute
   '/privacy': typeof PrivacyRoute
   '/progetti': typeof ProgettiRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/account/sites': typeof AccountSitesRouteWithChildren
@@ -329,6 +337,7 @@ export interface FileRoutesById {
   '/pacchetti': typeof PacchettiRoute
   '/privacy': typeof PrivacyRoute
   '/progetti': typeof ProgettiRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/termini': typeof TerminiRoute
   '/unsubscribe': typeof UnsubscribeRoute
   '/account/sites': typeof AccountSitesRouteWithChildren
@@ -370,6 +379,7 @@ export interface FileRouteTypes {
     | '/pacchetti'
     | '/privacy'
     | '/progetti'
+    | '/sitemap.xml'
     | '/termini'
     | '/unsubscribe'
     | '/account/sites'
@@ -408,6 +418,7 @@ export interface FileRouteTypes {
     | '/pacchetti'
     | '/privacy'
     | '/progetti'
+    | '/sitemap.xml'
     | '/termini'
     | '/unsubscribe'
     | '/account/sites'
@@ -447,6 +458,7 @@ export interface FileRouteTypes {
     | '/pacchetti'
     | '/privacy'
     | '/progetti'
+    | '/sitemap.xml'
     | '/termini'
     | '/unsubscribe'
     | '/account/sites'
@@ -487,6 +499,7 @@ export interface RootRouteChildren {
   PacchettiRoute: typeof PacchettiRoute
   PrivacyRoute: typeof PrivacyRoute
   ProgettiRoute: typeof ProgettiRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TerminiRoute: typeof TerminiRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
   BlogSlugRoute: typeof BlogSlugRoute
@@ -520,6 +533,13 @@ declare module '@tanstack/react-router' {
       path: '/termini'
       fullPath: '/termini'
       preLoaderRoute: typeof TerminiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/progetti': {
@@ -837,6 +857,7 @@ const rootRouteChildren: RootRouteChildren = {
   PacchettiRoute: PacchettiRoute,
   PrivacyRoute: PrivacyRoute,
   ProgettiRoute: ProgettiRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TerminiRoute: TerminiRoute,
   UnsubscribeRoute: UnsubscribeRoute,
   BlogSlugRoute: BlogSlugRoute,
