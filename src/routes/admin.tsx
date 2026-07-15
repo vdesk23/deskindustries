@@ -57,6 +57,7 @@ function AdminLayout() {
             <Link to="/admin" activeOptions={{ exact: true }} className="hover:text-amber [&.active]:text-amber [&.active]:font-semibold">Dashboard</Link>
             <Link to="/admin/sites" className="hover:text-amber [&.active]:text-amber [&.active]:font-semibold">Siti Foll.IA</Link>
             <Link to="/admin/tickets" className="hover:text-amber [&.active]:text-amber [&.active]:font-semibold">Ticket</Link>
+            <Link to="/admin/blog" className="hover:text-amber [&.active]:text-amber [&.active]:font-semibold">Blog</Link>
           </nav>
         </div>
         <Outlet />

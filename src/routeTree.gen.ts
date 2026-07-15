@@ -23,19 +23,23 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettoriIndexRouteImport } from './routes/settori.index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ToolsPianoContenutiRouteImport } from './routes/tools.piano-contenuti'
 import { Route as ToolsOttimizzatoreSeoRouteImport } from './routes/tools.ottimizzatore-seo'
 import { Route as SettoriSlugRouteImport } from './routes/settori.$slug'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AdminTicketsRouteImport } from './routes/admin.tickets'
 import { Route as AdminSitesRouteImport } from './routes/admin.sites'
 import { Route as AccountSitesRouteImport } from './routes/account.sites'
+import { Route as AdminBlogIndexRouteImport } from './routes/admin.blog.index'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicLeadSubmitRouteImport } from './routes/api/public/lead-submit'
 import { Route as ApiPublicContentPlanSubmitRouteImport } from './routes/api/public/content-plan-submit'
 import { Route as AdminSitesSiteIdRouteImport } from './routes/admin.sites.$siteId'
+import { Route as AdminBlogIdRouteImport } from './routes/admin.blog.$id'
 import { Route as AccountSitesSiteIdRouteImport } from './routes/account.sites.$siteId'
 import { Route as LovableEmailTransactionalSendTicketStaffRouteImport } from './routes/lovable/email/transactional/send-ticket-staff'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
@@ -113,6 +117,11 @@ const SettoriIndexRoute = SettoriIndexRouteImport.update({
   path: '/settori/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -143,6 +152,11 @@ const CheckoutReturnRoute = CheckoutReturnRouteImport.update({
   path: '/checkout/return',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminTicketsRoute = AdminTicketsRouteImport.update({
   id: '/tickets',
   path: '/tickets',
@@ -157,6 +171,11 @@ const AccountSitesRoute = AccountSitesRouteImport.update({
   id: '/sites',
   path: '/sites',
   getParentRoute: () => AccountRoute,
+} as any)
+const AdminBlogIndexRoute = AdminBlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   id: '/lovable/email/suppression',
@@ -178,6 +197,11 @@ const AdminSitesSiteIdRoute = AdminSitesSiteIdRouteImport.update({
   id: '/$siteId',
   path: '/$siteId',
   getParentRoute: () => AdminSitesRoute,
+} as any)
+const AdminBlogIdRoute = AdminBlogIdRouteImport.update({
+  id: '/blog/$id',
+  path: '/blog/$id',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AccountSitesSiteIdRoute = AccountSitesSiteIdRouteImport.update({
   id: '/$siteId',
@@ -232,18 +256,22 @@ export interface FileRoutesByFullPath {
   '/account/sites': typeof AccountSitesRouteWithChildren
   '/admin/sites': typeof AdminSitesRouteWithChildren
   '/admin/tickets': typeof AdminTicketsRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/admin/': typeof AdminIndexRoute
+  '/blog/': typeof BlogIndexRoute
   '/settori/': typeof SettoriIndexRoute
   '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
+  '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/sites/$siteId': typeof AdminSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/admin/blog/': typeof AdminBlogIndexRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -266,18 +294,22 @@ export interface FileRoutesByTo {
   '/account/sites': typeof AccountSitesRouteWithChildren
   '/admin/sites': typeof AdminSitesRouteWithChildren
   '/admin/tickets': typeof AdminTicketsRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/admin': typeof AdminIndexRoute
+  '/blog': typeof BlogIndexRoute
   '/settori': typeof SettoriIndexRoute
   '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
+  '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/sites/$siteId': typeof AdminSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/admin/blog': typeof AdminBlogIndexRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -302,18 +334,22 @@ export interface FileRoutesById {
   '/account/sites': typeof AccountSitesRouteWithChildren
   '/admin/sites': typeof AdminSitesRouteWithChildren
   '/admin/tickets': typeof AdminTicketsRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/checkout/return': typeof CheckoutReturnRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/admin/': typeof AdminIndexRoute
+  '/blog/': typeof BlogIndexRoute
   '/settori/': typeof SettoriIndexRoute
   '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
+  '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/sites/$siteId': typeof AdminSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/admin/blog/': typeof AdminBlogIndexRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -339,18 +375,22 @@ export interface FileRouteTypes {
     | '/account/sites'
     | '/admin/sites'
     | '/admin/tickets'
+    | '/blog/$slug'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/settori/$slug'
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
     | '/admin/'
+    | '/blog/'
     | '/settori/'
     | '/account/sites/$siteId'
+    | '/admin/blog/$id'
     | '/admin/sites/$siteId'
     | '/api/public/content-plan-submit'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
+    | '/admin/blog/'
     | '/account/tickets/$ticketId/pay'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
@@ -373,18 +413,22 @@ export interface FileRouteTypes {
     | '/account/sites'
     | '/admin/sites'
     | '/admin/tickets'
+    | '/blog/$slug'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/settori/$slug'
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
     | '/admin'
+    | '/blog'
     | '/settori'
     | '/account/sites/$siteId'
+    | '/admin/blog/$id'
     | '/admin/sites/$siteId'
     | '/api/public/content-plan-submit'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
+    | '/admin/blog'
     | '/account/tickets/$ticketId/pay'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
@@ -408,18 +452,22 @@ export interface FileRouteTypes {
     | '/account/sites'
     | '/admin/sites'
     | '/admin/tickets'
+    | '/blog/$slug'
     | '/checkout/return'
     | '/email/unsubscribe'
     | '/settori/$slug'
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
     | '/admin/'
+    | '/blog/'
     | '/settori/'
     | '/account/sites/$siteId'
+    | '/admin/blog/$id'
     | '/admin/sites/$siteId'
     | '/api/public/content-plan-submit'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
+    | '/admin/blog/'
     | '/account/tickets/$ticketId/pay'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
@@ -441,11 +489,13 @@ export interface RootRouteChildren {
   ProgettiRoute: typeof ProgettiRoute
   TerminiRoute: typeof TerminiRoute
   UnsubscribeRoute: typeof UnsubscribeRoute
+  BlogSlugRoute: typeof BlogSlugRoute
   CheckoutReturnRoute: typeof CheckoutReturnRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   SettoriSlugRoute: typeof SettoriSlugRoute
   ToolsOttimizzatoreSeoRoute: typeof ToolsOttimizzatoreSeoRoute
   ToolsPianoContenutiRoute: typeof ToolsPianoContenutiRoute
+  BlogIndexRoute: typeof BlogIndexRoute
   SettoriIndexRoute: typeof SettoriIndexRoute
   ApiPublicContentPlanSubmitRoute: typeof ApiPublicContentPlanSubmitRoute
   ApiPublicLeadSubmitRoute: typeof ApiPublicLeadSubmitRoute
@@ -556,6 +606,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettoriIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/': {
       id: '/admin/'
       path: '/'
@@ -598,6 +655,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckoutReturnRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/tickets': {
       id: '/admin/tickets'
       path: '/tickets'
@@ -618,6 +682,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/account/sites'
       preLoaderRoute: typeof AccountSitesRouteImport
       parentRoute: typeof AccountRoute
+    }
+    '/admin/blog/': {
+      id: '/admin/blog/'
+      path: '/blog'
+      fullPath: '/admin/blog/'
+      preLoaderRoute: typeof AdminBlogIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/lovable/email/suppression': {
       id: '/lovable/email/suppression'
@@ -646,6 +717,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/sites/$siteId'
       preLoaderRoute: typeof AdminSitesSiteIdRouteImport
       parentRoute: typeof AdminSitesRoute
+    }
+    '/admin/blog/$id': {
+      id: '/admin/blog/$id'
+      path: '/blog/$id'
+      fullPath: '/admin/blog/$id'
+      preLoaderRoute: typeof AdminBlogIdRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/account/sites/$siteId': {
       id: '/account/sites/$siteId'
@@ -733,12 +811,16 @@ interface AdminRouteChildren {
   AdminSitesRoute: typeof AdminSitesRouteWithChildren
   AdminTicketsRoute: typeof AdminTicketsRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminBlogIdRoute: typeof AdminBlogIdRoute
+  AdminBlogIndexRoute: typeof AdminBlogIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminSitesRoute: AdminSitesRouteWithChildren,
   AdminTicketsRoute: AdminTicketsRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminBlogIdRoute: AdminBlogIdRoute,
+  AdminBlogIndexRoute: AdminBlogIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
@@ -757,11 +839,13 @@ const rootRouteChildren: RootRouteChildren = {
   ProgettiRoute: ProgettiRoute,
   TerminiRoute: TerminiRoute,
   UnsubscribeRoute: UnsubscribeRoute,
+  BlogSlugRoute: BlogSlugRoute,
   CheckoutReturnRoute: CheckoutReturnRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   SettoriSlugRoute: SettoriSlugRoute,
   ToolsOttimizzatoreSeoRoute: ToolsOttimizzatoreSeoRoute,
   ToolsPianoContenutiRoute: ToolsPianoContenutiRoute,
+  BlogIndexRoute: BlogIndexRoute,
   SettoriIndexRoute: SettoriIndexRoute,
   ApiPublicContentPlanSubmitRoute: ApiPublicContentPlanSubmitRoute,
   ApiPublicLeadSubmitRoute: ApiPublicLeadSubmitRoute,
@@ -775,13 +859,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

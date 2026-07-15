@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 
 const NAV = [
-  { to: "/metodo-coco", label: "Metodo COCO" },
-  { to: "/pacchetti", label: "Servizi COCO" },
-  { to: "/settori", label: "Settori" },
   { to: "/progetti", label: "Progetti" },
-  { to: "/chi-siamo", label: "Chi siamo" },
+  { to: "/chi-siamo", label: "Il gruppo" },
+  { to: "/pacchetti", label: "Servizi" },
+  { to: "/blog", label: "Blog" },
+  { to: "/contatti", label: "Contatti" },
 ] as const;
 
 export function Header() {
