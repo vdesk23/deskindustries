@@ -34,10 +34,12 @@ import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AdminTicketsRouteImport } from './routes/admin.tickets'
 import { Route as AdminSitesRouteImport } from './routes/admin.sites'
 import { Route as AccountSitesRouteImport } from './routes/account.sites'
+import { Route as AdminBlogIndexRouteImport } from './routes/admin.blog.index'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicLeadSubmitRouteImport } from './routes/api/public/lead-submit'
 import { Route as ApiPublicContentPlanSubmitRouteImport } from './routes/api/public/content-plan-submit'
 import { Route as AdminSitesSiteIdRouteImport } from './routes/admin.sites.$siteId'
+import { Route as AdminBlogIdRouteImport } from './routes/admin.blog.$id'
 import { Route as AccountSitesSiteIdRouteImport } from './routes/account.sites.$siteId'
 import { Route as LovableEmailTransactionalSendTicketStaffRouteImport } from './routes/lovable/email/transactional/send-ticket-staff'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
@@ -170,6 +172,11 @@ const AccountSitesRoute = AccountSitesRouteImport.update({
   path: '/sites',
   getParentRoute: () => AccountRoute,
 } as any)
+const AdminBlogIndexRoute = AdminBlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   id: '/lovable/email/suppression',
   path: '/lovable/email/suppression',
@@ -190,6 +197,11 @@ const AdminSitesSiteIdRoute = AdminSitesSiteIdRouteImport.update({
   id: '/$siteId',
   path: '/$siteId',
   getParentRoute: () => AdminSitesRoute,
+} as any)
+const AdminBlogIdRoute = AdminBlogIdRouteImport.update({
+  id: '/blog/$id',
+  path: '/blog/$id',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AccountSitesSiteIdRoute = AccountSitesSiteIdRouteImport.update({
   id: '/$siteId',
@@ -254,10 +266,12 @@ export interface FileRoutesByFullPath {
   '/blog/': typeof BlogIndexRoute
   '/settori/': typeof SettoriIndexRoute
   '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
+  '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/sites/$siteId': typeof AdminSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/admin/blog/': typeof AdminBlogIndexRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -290,10 +304,12 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogIndexRoute
   '/settori': typeof SettoriIndexRoute
   '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
+  '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/sites/$siteId': typeof AdminSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/admin/blog': typeof AdminBlogIndexRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -328,10 +344,12 @@ export interface FileRoutesById {
   '/blog/': typeof BlogIndexRoute
   '/settori/': typeof SettoriIndexRoute
   '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
+  '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/sites/$siteId': typeof AdminSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/admin/blog/': typeof AdminBlogIndexRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -367,10 +385,12 @@ export interface FileRouteTypes {
     | '/blog/'
     | '/settori/'
     | '/account/sites/$siteId'
+    | '/admin/blog/$id'
     | '/admin/sites/$siteId'
     | '/api/public/content-plan-submit'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
+    | '/admin/blog/'
     | '/account/tickets/$ticketId/pay'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
@@ -403,10 +423,12 @@ export interface FileRouteTypes {
     | '/blog'
     | '/settori'
     | '/account/sites/$siteId'
+    | '/admin/blog/$id'
     | '/admin/sites/$siteId'
     | '/api/public/content-plan-submit'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
+    | '/admin/blog'
     | '/account/tickets/$ticketId/pay'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
@@ -440,10 +462,12 @@ export interface FileRouteTypes {
     | '/blog/'
     | '/settori/'
     | '/account/sites/$siteId'
+    | '/admin/blog/$id'
     | '/admin/sites/$siteId'
     | '/api/public/content-plan-submit'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
+    | '/admin/blog/'
     | '/account/tickets/$ticketId/pay'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
@@ -659,6 +683,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountSitesRouteImport
       parentRoute: typeof AccountRoute
     }
+    '/admin/blog/': {
+      id: '/admin/blog/'
+      path: '/blog'
+      fullPath: '/admin/blog/'
+      preLoaderRoute: typeof AdminBlogIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/lovable/email/suppression': {
       id: '/lovable/email/suppression'
       path: '/lovable/email/suppression'
@@ -686,6 +717,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/sites/$siteId'
       preLoaderRoute: typeof AdminSitesSiteIdRouteImport
       parentRoute: typeof AdminSitesRoute
+    }
+    '/admin/blog/$id': {
+      id: '/admin/blog/$id'
+      path: '/blog/$id'
+      fullPath: '/admin/blog/$id'
+      preLoaderRoute: typeof AdminBlogIdRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/account/sites/$siteId': {
       id: '/account/sites/$siteId'
@@ -773,12 +811,16 @@ interface AdminRouteChildren {
   AdminSitesRoute: typeof AdminSitesRouteWithChildren
   AdminTicketsRoute: typeof AdminTicketsRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminBlogIdRoute: typeof AdminBlogIdRoute
+  AdminBlogIndexRoute: typeof AdminBlogIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminSitesRoute: AdminSitesRouteWithChildren,
   AdminTicketsRoute: AdminTicketsRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminBlogIdRoute: AdminBlogIdRoute,
+  AdminBlogIndexRoute: AdminBlogIndexRoute,
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
