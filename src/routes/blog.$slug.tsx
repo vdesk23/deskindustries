@@ -55,8 +55,7 @@ function formatDate(d: string | null) {
 }
 
 function BlogPostPage() {
-  const { slug } = Route.useParams();
-  const { data } = useSuspenseQuery(postQO(slug));
+  const data = Route.useLoaderData();
   if (!data) return null;
 
   return (

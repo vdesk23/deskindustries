@@ -41,7 +41,7 @@ function formatDate(d: string | null) {
 }
 
 function BlogIndexPage() {
-  const { data: posts } = useSuspenseQuery(postsQO);
+  const posts = Route.useLoaderData();
 
   return (
     <div className="mx-auto max-w-7xl px-5 lg:px-8 py-20 lg:py-28">
