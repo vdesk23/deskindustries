@@ -56,7 +56,7 @@ function BlogIndexPage() {
         </div>
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {posts.map((p, i) => (
+          {posts.map((p: any, i: number) => (
             <motion.article
               key={p.id}
               initial={{ opacity: 0, y: 24 }}
