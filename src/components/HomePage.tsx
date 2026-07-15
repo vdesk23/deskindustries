@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { lazy, Suspense, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -16,17 +15,8 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LeadForm } from "@/components/hero/LeadForm";
-
-const AgentsScene = lazy(() =>
-  import("@/components/hero/AgentsScene").then((m) => ({ default: m.AgentsScene })),
-);
-
-function ClientOnly({ children }: { children: React.ReactNode }) {
-  const [m, setM] = useState(false);
-  useEffect(() => setM(true), []);
-  if (!m) return null;
-  return <>{children}</>;
-}
+import { SceneBackground } from "@/components/layout/SceneBackground";
+import { Card3D } from "@/components/ui/Card3D";
 
 const PROJECTS = [
   {
@@ -77,102 +67,82 @@ const fadeUp = {
 export function HomePage() {
   return (
     <>
-      {/* HERO with 3D */}
+      <SceneBackground />
+
+      {/* HERO */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-hero pointer-events-none" />
-        <div className="absolute inset-0 grain pointer-events-none opacity-40" />
+        <div className="relative mx-auto max-w-5xl px-5 lg:px-8 pt-24 pb-24 lg:pt-36 lg:pb-40 text-center">
+          <motion.div
+            initial="hidden"
+            animate="show"
+            variants={fadeUp}
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-background/40 backdrop-blur-xl px-3 py-1.5 text-xs text-muted-foreground"
+          >
+            <span className="size-1.5 rounded-full bg-amber animate-pulse" />
+            Gruppo di digitalizzazione · AI-native
+          </motion.div>
 
-        <div className="relative mx-auto max-w-7xl px-5 lg:px-8 pt-16 pb-20 lg:pt-24 lg:pb-32">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* LEFT: copy + form */}
-            <div>
-              <motion.div
-                initial="hidden"
-                animate="show"
-                variants={fadeUp}
-                className="inline-flex items-center gap-2 rounded-full border border-border bg-surface-elevated/60 backdrop-blur px-3 py-1.5 text-xs text-muted-foreground"
-              >
-                <span className="size-1.5 rounded-full bg-amber animate-pulse" />
-                Gruppo di digitalizzazione · AI-native
-              </motion.div>
+          <motion.h1
+            custom={1}
+            initial="hidden"
+            animate="show"
+            variants={fadeUp}
+            className="mt-8 text-5xl sm:text-6xl lg:text-7xl font-display font-medium leading-[0.98] tracking-tight text-balance"
+          >
+            Digitalizziamo le PMI con{" "}
+            <span className="italic text-amber font-normal">team umani</span> e{" "}
+            <span className="italic text-amber font-normal">agenti AI</span>.
+          </motion.h1>
 
-              <motion.h1
-                custom={1}
-                initial="hidden"
-                animate="show"
-                variants={fadeUp}
-                className="mt-6 text-5xl sm:text-6xl lg:text-7xl font-display font-medium leading-[0.98] tracking-tight text-balance"
-              >
-                Digitalizziamo le PMI con{" "}
-                <span className="italic text-amber font-normal">team umani</span> e{" "}
-                <span className="italic text-amber font-normal">agenti AI</span>.
-              </motion.h1>
+          <motion.p
+            custom={2}
+            initial="hidden"
+            animate="show"
+            variants={fadeUp}
+            className="mt-6 text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto"
+          >
+            Desk Industries è un gruppo di specialisti e agenti AI che progettano soluzioni
+            digitali su misura. Marketing con <span className="text-foreground">Magnus</span>,
+            prodotti proprietari con <span className="text-foreground">Arkeo</span>.
+          </motion.p>
 
-              <motion.p
-                custom={2}
-                initial="hidden"
-                animate="show"
-                variants={fadeUp}
-                className="mt-6 text-lg text-muted-foreground leading-relaxed max-w-xl"
-              >
-                Desk Industries è un gruppo di specialisti e agenti AI che progettano soluzioni
-                digitali su misura. Marketing con <span className="text-foreground">Magnus</span>,
-                prodotti proprietari con <span className="text-foreground">Arkeo</span>.
-              </motion.p>
+          <motion.ul
+            custom={3}
+            initial="hidden"
+            animate="show"
+            variants={fadeUp}
+            className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-2xl mx-auto text-left"
+          >
+            {CAPABILITIES.map((c) => (
+              <li key={c} className="flex items-start gap-2 text-sm text-muted-foreground">
+                <Sparkles className="size-4 text-amber mt-0.5 shrink-0" />
+                {c}
+              </li>
+            ))}
+          </motion.ul>
 
-              <motion.ul
-                custom={3}
-                initial="hidden"
-                animate="show"
-                variants={fadeUp}
-                className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-xl"
-              >
-                {CAPABILITIES.map((c) => (
-                  <li key={c} className="flex items-start gap-2 text-sm text-muted-foreground">
-                    <Sparkles className="size-4 text-amber mt-0.5 shrink-0" />
-                    {c}
-                  </li>
-                ))}
-              </motion.ul>
-
-              <motion.div
-                custom={4}
-                initial="hidden"
-                animate="show"
-                variants={fadeUp}
-                className="mt-10 flex flex-wrap items-center gap-3"
-              >
-                <a href="#lead">
-                  <Button variant="hero" size="xl">
-                    Richiedi una consulenza <ArrowRight />
-                  </Button>
-                </a>
-                <Link to="/progetti">
-                  <Button variant="outline" size="xl">
-                    I nostri progetti
-                  </Button>
-                </Link>
-              </motion.div>
-            </div>
-
-            {/* RIGHT: 3D scene */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-              className="relative h-[420px] lg:h-[560px] rounded-3xl overflow-hidden border border-border bg-gradient-to-br from-surface-elevated to-background"
-            >
-              <ClientOnly>
-                <Suspense fallback={<div className="absolute inset-0 flex items-center justify-center text-muted-foreground text-sm">Caricamento scena...</div>}>
-                  <AgentsScene />
-                </Suspense>
-              </ClientOnly>
-              <div className="absolute bottom-4 left-4 right-4 flex justify-between text-xs text-muted-foreground pointer-events-none">
-                <span>Team AI · orchestrato</span>
-                <span>7 agenti attivi</span>
-              </div>
-            </motion.div>
-          </div>
+          <motion.div
+            custom={4}
+            initial="hidden"
+            animate="show"
+            variants={fadeUp}
+            className="mt-12 flex flex-wrap items-center justify-center gap-3"
+          >
+            <a href="#lead">
+              <Card3D className="rounded-full" intensity={12}>
+                <Button variant="hero" size="xl" className="rounded-full">
+                  Richiedi una consulenza <ArrowRight />
+                </Button>
+              </Card3D>
+            </a>
+            <Link to="/progetti">
+              <Card3D className="rounded-full" intensity={12}>
+                <Button variant="outline" size="xl" className="rounded-full backdrop-blur-xl bg-background/40">
+                  I nostri progetti
+                </Button>
+              </Card3D>
+            </Link>
+          </motion.div>
 
           {/* Stats */}
           <motion.div
@@ -180,7 +150,7 @@ export function HomePage() {
             whileInView="show"
             viewport={{ once: true }}
             variants={fadeUp}
-            className="mt-20 grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10"
+            className="mt-24 grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10 text-left"
           >
             {[
               { num: "40+", label: "PMI digitalizzate" },
@@ -198,7 +168,7 @@ export function HomePage() {
       </section>
 
       {/* IL GRUPPO */}
-      <section className="relative py-24 lg:py-32 border-t border-border bg-surface">
+      <section className="relative py-24 lg:py-32">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <div className="grid lg:grid-cols-12 gap-12 items-end mb-16">
             <div className="lg:col-span-7">
@@ -226,17 +196,18 @@ export function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-80px" }}
                 transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                className="group relative p-8 rounded-3xl bg-surface-elevated border border-border hover:border-amber transition-colors overflow-hidden"
               >
-                <div className={`absolute -top-16 -right-16 size-48 rounded-full bg-gradient-to-br ${p.accent} opacity-20 blur-3xl group-hover:opacity-40 transition-opacity`} />
-                <div className="relative">
-                  <p className="text-xs uppercase tracking-widest text-amber mb-4">{p.tag}</p>
-                  <h3 className="text-3xl font-display font-semibold mb-4">{p.name}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{p.desc}</p>
-                  <div className="mt-8 inline-flex items-center gap-1.5 text-sm text-foreground">
-                    Scopri <ArrowUpRight className="size-4 text-amber" />
+                <Card3D className="group h-full p-8 rounded-3xl bg-surface-elevated/50 backdrop-blur-xl border border-border overflow-hidden">
+                  <div className={`absolute -top-16 -right-16 size-48 rounded-full bg-gradient-to-br ${p.accent} opacity-30 blur-3xl`} />
+                  <div className="relative">
+                    <p className="text-xs uppercase tracking-widest text-amber mb-4">{p.tag}</p>
+                    <h3 className="text-3xl font-display font-semibold mb-4">{p.name}</h3>
+                    <p className="text-muted-foreground leading-relaxed">{p.desc}</p>
+                    <div className="mt-8 inline-flex items-center gap-1.5 text-sm text-foreground">
+                      Scopri <ArrowUpRight className="size-4 text-amber" />
+                    </div>
                   </div>
-                </div>
+                </Card3D>
               </motion.div>
             ))}
           </div>
@@ -244,7 +215,7 @@ export function HomePage() {
       </section>
 
       {/* EXPERTISE */}
-      <section className="relative py-24 lg:py-32 border-t border-border">
+      <section className="relative py-24 lg:py-32">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <div className="max-w-3xl mb-16">
             <p className="text-xs font-display tracking-[0.3em] text-amber uppercase mb-4">
@@ -264,13 +235,14 @@ export function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.06 }}
-                className="p-6 rounded-2xl border border-border bg-surface-elevated hover:border-amber/50 transition-colors"
               >
-                <div className="size-12 rounded-xl bg-amber-soft flex items-center justify-center mb-5">
-                  <Icon className="size-5 text-amber" />
-                </div>
-                <h3 className="font-display font-semibold text-lg mb-2">{label}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+                <Card3D intensity={6} className="p-6 rounded-2xl border border-border bg-surface-elevated/50 backdrop-blur-xl h-full">
+                  <div className="size-12 rounded-xl bg-amber-soft flex items-center justify-center mb-5">
+                    <Icon className="size-5 text-amber" />
+                  </div>
+                  <h3 className="font-display font-semibold text-lg mb-2">{label}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+                </Card3D>
               </motion.div>
             ))}
           </div>
@@ -278,8 +250,7 @@ export function HomePage() {
       </section>
 
       {/* LEAD FORM */}
-      <section id="lead" className="relative py-24 lg:py-32 border-t border-border bg-surface scroll-mt-24">
-        <div className="absolute inset-0 bg-gradient-hero opacity-60 pointer-events-none" />
+      <section id="lead" className="relative py-24 lg:py-32 scroll-mt-24">
         <div className="relative mx-auto max-w-6xl px-5 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
             <div>
@@ -313,13 +284,15 @@ export function HomePage() {
               </div>
             </div>
 
-            <LeadForm />
+            <Card3D intensity={5} className="rounded-3xl">
+              <LeadForm />
+            </Card3D>
           </div>
         </div>
       </section>
 
       {/* BLOG TEASER */}
-      <section className="relative py-24 lg:py-32 border-t border-border">
+      <section className="relative py-24 lg:py-32">
         <div className="mx-auto max-w-5xl px-5 lg:px-8 text-center">
           <p className="text-xs font-display tracking-[0.3em] text-amber uppercase mb-4">Blog</p>
           <h2 className="text-4xl lg:text-6xl font-display font-medium tracking-tight text-balance">
@@ -329,11 +302,13 @@ export function HomePage() {
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
             Progetti reali del gruppo e riflessioni su AI, digitalizzazione e strumenti no-code.
           </p>
-          <div className="mt-10">
+          <div className="mt-10 inline-block">
             <Link to="/blog">
-              <Button variant="outline" size="xl">
-                Vai al blog <ArrowUpRight />
-              </Button>
+              <Card3D className="rounded-full" intensity={12}>
+                <Button variant="outline" size="xl" className="rounded-full backdrop-blur-xl bg-background/40">
+                  Vai al blog <ArrowUpRight />
+                </Button>
+              </Card3D>
             </Link>
           </div>
         </div>
