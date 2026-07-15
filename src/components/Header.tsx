@@ -22,9 +22,9 @@ export function Header() {
       {/* Floating pill header — app-like, anchored to bottom */}
       <header className="fixed bottom-4 sm:bottom-6 inset-x-0 z-50 pointer-events-none flex justify-center px-3">
         <div className="pointer-events-auto flex items-center gap-2 rounded-full border border-border/70 bg-background/60 backdrop-blur-2xl shadow-elevated pl-3 pr-2 py-2 max-w-[min(960px,100%)]">
-          <Link to="/" className="shrink-0 pl-1 pr-2">
+          <div className="shrink-0 pl-1 pr-2">
             <Logo />
-          </Link>
+          </div>
 
           <nav className="hidden lg:flex items-center gap-0.5">
             {NAV.map((item) => (

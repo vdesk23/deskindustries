@@ -84,7 +84,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
 function RootComponent() {
   return (
     <AuthProvider>
-      <div className="min-h-screen flex flex-col bg-background text-foreground">
+      <div className="min-h-screen flex flex-col text-foreground relative">
         <PaymentTestModeBanner />
         <Header />
         <main className="flex-1 pb-28">
