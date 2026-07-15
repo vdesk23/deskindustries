@@ -1,16 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Calendar } from "lucide-react";
 import { listPublishedPosts } from "@/lib/blog.functions";
 
-const postsQO = queryOptions({
-  queryKey: ["blog", "list"],
-  queryFn: () => listPublishedPosts(),
-});
-
 export const Route = createFileRoute("/blog/")({
-  loader: ({ context }) => context.queryClient.ensureQueryData(postsQO),
+  loader: () => listPublishedPosts(),
   head: () => ({
     meta: [
       { title: "Blog — Desk Industries" },

@@ -1,19 +1,12 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { useSuspenseQuery, queryOptions } from "@tanstack/react-query";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { ArrowLeft, Calendar } from "lucide-react";
 import { getPostBySlug } from "@/lib/blog.functions";
 
-const postQO = (slug: string) =>
-  queryOptions({
-    queryKey: ["blog", "post", slug],
-    queryFn: () => getPostBySlug({ data: { slug } }),
-  });
-
 export const Route = createFileRoute("/blog/$slug")({
-  loader: async ({ params, context }) => {
-    const post = await context.queryClient.ensureQueryData(postQO(params.slug));
+  loader: async ({ params }) => {
+    const post = await getPostBySlug({ data: { slug: params.slug } });
     if (!post) throw notFound();
     return post;
   },
