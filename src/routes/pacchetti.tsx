@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/pacchetti")({
   head: () => ({
     meta: [
-      { title: "Servizi COCO — Web, Social e Coaching | Desk Industries" },
+      { title: "Servizi COCO — Desk Industries" },
       {
         name: "description",
         content:
@@ -16,6 +16,30 @@ export const Route = createFileRoute("/pacchetti")({
       {
         property: "og:description",
         content: "Aree servizio COCO per web, social e coaching digitale. Preventivi su richiesta.",
+      },
+    ],
+    links: [{ rel: "canonical", href: "https://deskindustries.lovable.app/pacchetti" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          name: "Servizi COCO",
+          provider: { "@type": "Organization", name: "Desk Industries" },
+          serviceType: "Digitalizzazione PMI",
+          areaServed: "IT",
+          hasOfferCatalog: {
+            "@type": "OfferCatalog",
+            name: "Aree COCO",
+            itemListElement: [
+              { "@type": "Offer", itemOffered: { "@type": "Service", name: "Coco Web" } },
+              { "@type": "Offer", itemOffered: { "@type": "Service", name: "Coco Social" } },
+              { "@type": "Offer", itemOffered: { "@type": "Service", name: "CoCoaching" } },
+              { "@type": "Offer", itemOffered: { "@type": "Service", name: "CoCoaching Executive" } },
+            ],
+          },
+        }),
       },
     ],
   }),

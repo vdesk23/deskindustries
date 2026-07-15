@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin
+Disallow: /account
+Disallow: /auth
+Disallow: /checkout/
+Disallow: /email/
+Disallow: /lovable/
+Disallow: /api/
+
+Sitemap: https://deskindustries.lovable.app/sitemap.xml

@@ -38,7 +38,7 @@ export const Route = createRootRoute({
       {
         name: "description",
         content:
-          "Desk Industries è un gruppo di digitalizzazione: team di agenti AI e specialisti che progettano soluzioni su misura per PMI. Marketing con Magnus, prodotti con Arkeo.",
+          "Gruppo di digitalizzazione per PMI: agenti AI e specialisti per marketing, prodotti proprietari (Arkeo) e automazioni no-code.",
       },
       { name: "author", content: "Desk Industries SRLS" },
       { property: "og:title", content: "Desk Industries — Gruppo di digitalizzazione per PMI" },
@@ -48,6 +48,7 @@ export const Route = createRootRoute({
           "Team di agenti AI + specialisti per digitalizzare la tua azienda. Marketing (Magnus), prodotti proprietari (Arkeo), automazioni no-code.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Desk Industries" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Desk Industries — Gruppo di digitalizzazione per PMI" },
       { name: "twitter:description", content: "Team di agenti AI + specialisti per digitalizzare la tua azienda." },
@@ -59,6 +60,32 @@ export const Route = createRootRoute({
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "https://deskindustries.lovable.app/#organization",
+              name: "Desk Industries",
+              legalName: "Desk Industries SRLS",
+              url: "https://deskindustries.lovable.app",
+              sameAs: ["https://www.deskindustries.com"],
+            },
+            {
+              "@type": "WebSite",
+              "@id": "https://deskindustries.lovable.app/#website",
+              url: "https://deskindustries.lovable.app",
+              name: "Desk Industries",
+              publisher: { "@id": "https://deskindustries.lovable.app/#organization" },
+              inLanguage: "it-IT",
+            },
+          ],
+        }),
       },
     ],
   }),

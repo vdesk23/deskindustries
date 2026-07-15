@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/chi-siamo")({
   head: () => ({
     meta: [
-      { title: "Chi siamo — Desk Industries, l'agenzia delle attività locali" },
+      { title: "Chi siamo — Desk Industries" },
       {
         name: "description",
         content:
@@ -18,6 +18,7 @@ export const Route = createFileRoute("/chi-siamo")({
         content: "L'agenzia che porta clienti reali nei negozi reali.",
       },
     ],
+    links: [{ rel: "canonical", href: "https://deskindustries.lovable.app/chi-siamo" }],
   }),
   component: ChiSiamoPage,
 });
