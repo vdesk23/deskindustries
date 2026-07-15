@@ -249,13 +249,32 @@ export const Route = createFileRoute("/settori/$slug")({
     if (!sector) throw notFound();
     return { sector };
   },
-  head: ({ loaderData }) => ({
+  head: ({ loaderData, params }) => ({
     meta: loaderData
       ? [
           { title: `Marketing per ${loaderData.sector.label} — Desk Industries` },
           { name: "description", content: loaderData.sector.tagline },
           { property: "og:title", content: `Marketing per ${loaderData.sector.label}` },
           { property: "og:description", content: loaderData.sector.tagline },
+        ]
+      : [],
+    links: loaderData
+      ? [{ rel: "canonical", href: `https://deskindustries.lovable.app/settori/${params.slug}` }]
+      : [],
+    scripts: loaderData
+      ? [
+          {
+            type: "application/ld+json",
+            children: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Service",
+              name: `Marketing per ${loaderData.sector.label}`,
+              description: loaderData.sector.tagline,
+              provider: { "@type": "Organization", name: "Desk Industries" },
+              areaServed: "IT",
+              url: `https://deskindustries.lovable.app/settori/${params.slug}`,
+            }),
+          },
         ]
       : [],
   }),
