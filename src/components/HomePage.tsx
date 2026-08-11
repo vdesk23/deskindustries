@@ -140,14 +140,14 @@ export function HomePage() {
             whileInView="show"
             viewport={{ once: true }}
             variants={fadeUp}
-            className="mt-24 grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10 place-items-center text-center"
+            className="mt-24 flex flex-wrap justify-center gap-6 lg:gap-10 text-center"
           >
             {[
               { num: "40+", label: "PMI digitalizzate" },
               { num: "3", label: "Brand del gruppo" },
               { num: "34M+", label: "Impression generate nel 2025" },
             ].map((s) => (
-              <div key={s.label} className="border-t-2 border-amber pt-4 px-2">
+              <div key={s.label} className="min-w-[160px] border-t-2 border-amber pt-4 px-6">
                 <div className="text-3xl lg:text-4xl font-display font-semibold">{s.num}</div>
                 <div className="mt-1 text-sm text-muted-foreground leading-snug">{s.label}</div>
               </div>
