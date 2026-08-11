@@ -260,7 +260,7 @@ export function HomePage() {
                 {[
                   { Icon: Rocket, t: "Prima call gratuita", d: "30 minuti di analisi, senza impegno." },
                   { Icon: Cpu, t: "Proposta AI-powered", d: "Un piano d'azione generato in 48h dal nostro team." },
-                  { Icon: Sparkles, t: "Start rapido", d: "Se firmiamo, si parte entro 7 giorni." },
+                  { Icon: Sparkles, t: "Start rapido", d: "Si firma e si parte entro 7 giorni." },
                 ].map(({ Icon, t, d }) => (
                   <div key={t} className="flex items-start gap-4">
                     <div className="size-10 rounded-lg bg-amber-soft flex items-center justify-center shrink-0">
