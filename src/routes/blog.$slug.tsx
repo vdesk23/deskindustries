@@ -1,3 +1,4 @@
+import { draftBeforeLoad, draftHead } from "@/lib/draft-route";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -5,6 +6,8 @@ import { ArrowLeft, Calendar } from "lucide-react";
 import { getPostBySlug } from "@/lib/blog.functions";
 
 export const Route = createFileRoute("/blog/$slug")({
+  beforeLoad: draftBeforeLoad,
+  head: () => draftHead,
   loader: async ({ params }) => {
     const post = await getPostBySlug({ data: { slug: params.slug } });
     if (!post) throw notFound();

@@ -1,3 +1,4 @@
+import { draftBeforeLoad, draftHead } from "@/lib/draft-route";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -33,6 +34,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/contatti")({
+  beforeLoad: draftBeforeLoad,
+  head: () => draftHead,
   head: () => ({
     meta: [
       { title: "Contatti — Richiedi una proposta su misura | Desk Industries" },

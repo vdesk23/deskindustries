@@ -1,3 +1,4 @@
+import { draftBeforeLoad, draftHead } from "@/lib/draft-route";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState, type ChangeEvent } from "react";
 import { motion } from "framer-motion";
@@ -38,6 +39,8 @@ import {
 } from "@/components/ui/accordion";
 
 export const Route = createFileRoute("/tools/piano-contenuti")({
+  beforeLoad: draftBeforeLoad,
+  head: () => draftHead,
   head: () => ({
     meta: [
       { title: "Tool · Piano Contenuti — Desk Industries" },
