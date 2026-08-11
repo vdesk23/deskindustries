@@ -147,7 +147,6 @@ export function HomePage() {
               { num: "40+", label: "PMI digitalizzate" },
               { num: "3", label: "Brand del gruppo" },
               { num: "34M+", label: "Impression generate nel 2025" },
-              { num: "∞", label: "Caffeina assorbita" },
             ].map((s) => (
               <div key={s.label} className="border-t-2 border-amber pt-4 px-2">
                 <div className="text-3xl lg:text-4xl font-display font-semibold">{s.num}</div>
