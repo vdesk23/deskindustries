@@ -20,7 +20,7 @@ import { Card3D } from "@/components/ui/Card3D";
 
 const PROJECTS = [
   {
-    name: "Foll.IA",
+    name: "Kerix",
     tag: "Prodotto Arkeo",
     desc: "Website builder AI per attività locali: siti generati da un form guidato.",
     accent: "from-amber to-amber/60",
