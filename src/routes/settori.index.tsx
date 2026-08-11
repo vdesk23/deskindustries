@@ -1,3 +1,4 @@
+import { draftBeforeLoad } from "@/lib/draft-route";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Scissors, Pizza, Dumbbell, Syringe, Flower2, BriefcaseBusiness, ArrowRight } from "lucide-react";
 
@@ -11,6 +12,7 @@ const SECTORS = [
 ] as const;
 
 export const Route = createFileRoute("/settori/")({
+  beforeLoad: draftBeforeLoad,
   head: () => ({
     meta: [
       { title: "Settori — Desk Industries" },

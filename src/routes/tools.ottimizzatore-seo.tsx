@@ -1,3 +1,4 @@
+import { draftBeforeLoad } from "@/lib/draft-route";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
@@ -36,6 +37,7 @@ import {
 } from "@/lib/seo-optimizer-pdf";
 
 export const Route = createFileRoute("/tools/ottimizzatore-seo")({
+  beforeLoad: draftBeforeLoad,
   head: () => ({
     meta: [
       { title: "Tool · Ottimizzatore SEO/AIO — Desk Industries" },
