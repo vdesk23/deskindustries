@@ -1,4 +1,4 @@
-import { draftBeforeLoad, draftHead } from "@/lib/draft-route";
+import { draftBeforeLoad } from "@/lib/draft-route";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowRight, Eye, Heart, Compass, Rocket } from "lucide-react";
@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/chi-siamo")({
   beforeLoad: draftBeforeLoad,
-  head: () => draftHead,
   head: () => ({
     meta: [
       { title: "Chi siamo — Desk Industries" },

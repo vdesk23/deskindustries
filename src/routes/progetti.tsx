@@ -1,4 +1,4 @@
-import { draftBeforeLoad, draftHead } from "@/lib/draft-route";
+import { draftBeforeLoad } from "@/lib/draft-route";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowRight, ArrowUpRight, Sparkles, Zap, Layers } from "lucide-react";
@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/progetti")({
   beforeLoad: draftBeforeLoad,
-  head: () => draftHead,
   head: () => ({
     meta: [
       { title: "I nostri progetti — Foll.IA e l'ecosistema Desk Industries" },

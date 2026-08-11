@@ -1,4 +1,4 @@
-import { draftBeforeLoad, draftHead } from "@/lib/draft-route";
+import { draftBeforeLoad } from "@/lib/draft-route";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import {
@@ -246,7 +246,6 @@ const SECTORS: Record<string, SectorData> = {
 
 export const Route = createFileRoute("/settori/$slug")({
   beforeLoad: draftBeforeLoad,
-  head: () => draftHead,
   loader: ({ params }) => {
     const sector = SECTORS[params.slug];
     if (!sector) throw notFound();

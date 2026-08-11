@@ -1,4 +1,4 @@
-import { draftBeforeLoad, draftHead } from "@/lib/draft-route";
+import { draftBeforeLoad } from "@/lib/draft-route";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useRef, useState } from "react";
@@ -12,7 +12,6 @@ import { useAuth } from "@/hooks/useAuth";
 
 export const Route = createFileRoute("/follia")({
   beforeLoad: draftBeforeLoad,
-  head: () => draftHead,
   component: FolliaLanding,
   head: () => ({
     meta: [

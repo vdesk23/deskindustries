@@ -1,4 +1,4 @@
-import { draftBeforeLoad, draftHead } from "@/lib/draft-route";
+import { draftBeforeLoad } from "@/lib/draft-route";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Calendar } from "lucide-react";
@@ -6,7 +6,6 @@ import { listPublishedPosts } from "@/lib/blog.functions";
 
 export const Route = createFileRoute("/blog/")({
   beforeLoad: draftBeforeLoad,
-  head: () => draftHead,
   loader: () => listPublishedPosts(),
   head: () => ({
     meta: [

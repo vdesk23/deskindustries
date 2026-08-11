@@ -1,4 +1,4 @@
-import { draftBeforeLoad, draftHead } from "@/lib/draft-route";
+import { draftBeforeLoad } from "@/lib/draft-route";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowRight, Hammer, Megaphone, Magnet, Heart, Check } from "lucide-react";
@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/metodo-coco")({
   beforeLoad: draftBeforeLoad,
-  head: () => draftHead,
   head: () => ({
     meta: [
       { title: "Metodo COCO — Desk Industries" },
