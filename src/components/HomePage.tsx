@@ -282,27 +282,6 @@ export function HomePage() {
       </section>
 
       {/* BLOG TEASER */}
-      <section className="relative py-24 lg:py-32">
-        <div className="mx-auto max-w-5xl px-5 lg:px-8 text-center">
-          <p className="text-xs font-display tracking-[0.3em] text-amber uppercase mb-4">Blog</p>
-          <h2 className="text-4xl lg:text-6xl font-display font-medium tracking-tight text-balance">
-            Case study, news,{" "}
-            <span className="italic text-amber font-normal">insight</span>.
-          </h2>
-          <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Progetti reali del gruppo e riflessioni su AI, digitalizzazione e strumenti no-code.
-          </p>
-          <div className="mt-10 inline-block">
-            <Link to="/blog">
-              <Card3D className="rounded-full" intensity={12}>
-                <Button variant="outline" size="xl" className="rounded-full backdrop-blur-xl bg-background/40">
-                  Vai al blog <ArrowUpRight />
-                </Button>
-              </Card3D>
-            </Link>
-          </div>
-        </div>
-      </section>
     </>
   );
 }
