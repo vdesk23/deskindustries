@@ -101,9 +101,7 @@ export function HomePage() {
             variants={fadeUp}
             className="mt-6 text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto"
           >
-            Desk Industries è un gruppo di specialisti e agenti AI che progettano soluzioni
-            digitali su misura. Marketing con <span className="text-foreground">Magnus</span>,
-            prodotti proprietari con <span className="text-foreground">Arkeo</span>.
+            Desk Industries è composto da un team ibrido di specialisti del marketing e agenti AI che progettano soluzioni digitali su misura. Mettiamo a disposizione le nostre competenze nella digitalizzazione di PMI e in parallelo testiamo nuove strategia sui nostri brand propretari.
           </motion.p>
 
           <motion.ul
