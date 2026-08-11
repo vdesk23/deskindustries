@@ -133,13 +133,6 @@ export function HomePage() {
                 </Button>
               </Card3D>
             </a>
-            <Link to="/progetti">
-              <Card3D className="rounded-full" intensity={12}>
-                <Button variant="outline" size="xl" className="rounded-full backdrop-blur-xl bg-background/40">
-                  I nostri progetti
-                </Button>
-              </Card3D>
-            </Link>
           </motion.div>
 
           {/* Stats */}
