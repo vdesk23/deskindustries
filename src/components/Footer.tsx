@@ -22,8 +22,8 @@ export function Footer() {
               <li>Desk Industries SRLS</li>
               <li>Sede legale: Via Emilio Nazzani 9, 00148 Roma (RM)</li>
               <li>
-                <a href="mailto:info@deskindustries.com" className="hover:text-foreground">
-                  info@deskindustries.com
+                <a href="mailto:master@deskindustries.com" className="hover:text-foreground">
+                  master@deskindustries.com
                 </a>
               </li>
               <li>PEC: deskindustriessrls@legalmail.it</li>
