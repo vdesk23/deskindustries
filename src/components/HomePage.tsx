@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { LeadForm } from "@/components/hero/LeadForm";
 import { SceneBackground } from "@/components/layout/SceneBackground";
 import { Card3D } from "@/components/ui/Card3D";
+import { GoogleReviews } from "@/components/GoogleReviews";
 
 const PROJECTS = [
   {
@@ -251,6 +252,10 @@ export function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* RECENSIONI GOOGLE */}
+      <GoogleReviews />
+
 
       {/* LEAD FORM */}
       <section id="lead" className="relative py-24 lg:py-32 scroll-mt-24">

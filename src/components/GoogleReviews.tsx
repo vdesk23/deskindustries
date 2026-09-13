@@ -73,7 +73,7 @@ function ReviewCard({ review, index }: { review: StaticGoogleReview; index: numb
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.03 }}
-      className="relative w-[340px] sm:w-[380px] shrink-0 p-7 rounded-3xl border border-border bg-background hover:border-amber/50 transition-colors"
+      className="relative w-[340px] sm:w-[380px] shrink-0 p-7 rounded-3xl border border-border bg-surface-elevated/60 backdrop-blur-xl hover:border-amber/50 transition-colors"
     >
       <Quote className="absolute top-5 right-5 size-8 text-amber/15" />
       <div className="flex items-center gap-3">
@@ -109,7 +109,7 @@ export function GoogleReviews() {
   const loop = [...reviews, ...reviews];
 
   return (
-    <section className="relative py-24 lg:py-32 border-t border-border bg-surface overflow-hidden">
+    <section className="relative py-24 lg:py-32 border-y border-border overflow-hidden">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <div className="grid lg:grid-cols-12 gap-10 items-end mb-14">
           <div className="lg:col-span-7">
