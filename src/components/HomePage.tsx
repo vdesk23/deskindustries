@@ -78,7 +78,7 @@ export function HomePage() {
             className="inline-flex items-center gap-2 rounded-full border border-border bg-background/40 backdrop-blur-xl px-3 py-1.5 text-xs text-muted-foreground"
           >
             <span className="size-1.5 rounded-full bg-amber animate-pulse" />
-            Gruppo di digitalizzazione · AI-native
+             Soluzioni Digitali, Impatto Reale.
           </motion.div>
 
           <motion.h1
