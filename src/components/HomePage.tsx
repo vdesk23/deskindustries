@@ -23,6 +23,7 @@ const PROJECTS = [
     tag: "BRAND",
     desc: "Suite di servizi digitali per l'automazione di farmacie",
     accent: "from-amber to-amber/60",
+    href: "https://www.bancoplus.it",
   },
   {
     name: "Magnus Agency",
@@ -174,14 +175,8 @@ export function HomePage() {
           </div>
 
           <div className="grid gap-6 lg:grid-cols-3">
-            {PROJECTS.map((p, i) => (
-              <motion.div
-                key={p.name}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              >
+            {PROJECTS.map((p, i) => {
+              const cardBody = (
                 <Card3D className="group h-full p-8 rounded-3xl bg-surface-elevated/50 backdrop-blur-xl border border-border overflow-hidden">
                   <div className={`absolute -top-16 -right-16 size-48 rounded-full bg-gradient-to-br ${p.accent} opacity-30 blur-3xl`} />
                   <div className="relative">
@@ -193,8 +188,31 @@ export function HomePage() {
                     </div>
                   </div>
                 </Card3D>
-              </motion.div>
-            ))}
+              );
+
+              return (
+                <motion.div
+                  key={p.name}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  {p.href ? (
+                    <a
+                      href={p.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-amber rounded-3xl"
+                    >
+                      {cardBody}
+                    </a>
+                  ) : (
+                    cardBody
+                  )}
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
