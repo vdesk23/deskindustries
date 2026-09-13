@@ -19,15 +19,15 @@ import { Card3D } from "@/components/ui/Card3D";
 
 const PROJECTS = [
   {
-    name: "Kerix",
-    tag: "Prodotto Arkeo",
-    desc: "Website builder AI per attività locali: siti generati da un form guidato.",
+    name: "BancoPlus",
+    tag: "BRAND",
+    desc: "Suite di servizi digitali per l'automazione di farmacie",
     accent: "from-amber to-amber/60",
   },
   {
     name: "Magnus Agency",
     tag: "Marketing",
-    desc: "Il braccio marketing del gruppo: contenuti, ads, brand strategy per PMI.",
+    desc: "Il braccio marketing del gruppo: contenuti, ads, brand strategy per MPMI.",
     accent: "from-purple-400 to-amber",
   },
   {
@@ -48,10 +48,10 @@ const EXPERTISE = [
 ];
 
 const CAPABILITIES = [
-  "Team ibrido umani + agenti AI",
-  "Progetti chiavi in mano in 4-6 settimane",
-  "Metodo iterativo con demo settimanali",
-  "Ownership del codice: nessun lock-in",
+  "Automatizza la raccolta di recensioni",
+  "Costi di sviluppo a consumo",
+  "Incassa ed emetti fatture in automatico",
+  "Proprietà del codice",
 ];
 
 const fadeUp = {
@@ -88,9 +88,7 @@ export function HomePage() {
             variants={fadeUp}
             className="mt-8 text-5xl sm:text-6xl lg:text-7xl font-display font-medium leading-[0.98] tracking-tight text-balance"
           >
-            Digitalizziamo le PMI con{" "}
-            <span className="italic text-amber font-normal">team umani</span> e{" "}
-            <span className="italic text-amber font-normal">agenti AI</span>.
+             Ti facciamo risparmiare tempo e risorse disegnando automazioni per la tua attività.
           </motion.h1>
 
           <motion.p
@@ -100,7 +98,7 @@ export function HomePage() {
             variants={fadeUp}
             className="mt-6 text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto"
           >
-            Desk Industries è composto da un team ibrido di specialisti del marketing e agenti AI che progettano soluzioni digitali su misura. Mettiamo a disposizione le nostre competenze nella digitalizzazione di PMI e in parallelo testiamo nuove strategia sui nostri brand propretari.
+             Desk Industries aiuta le MPMI nella transizione digitale costruendo e disegnando automazioni per incrementare: vendite, marketing, logistica, gestione del personale e delle attività ripetitive
           </motion.p>
 
           <motion.ul
@@ -143,9 +141,9 @@ export function HomePage() {
             className="mt-24 flex flex-wrap justify-center gap-6 lg:gap-10 text-center"
           >
             {[
-              { num: "40+", label: "PMI digitalizzate" },
-              { num: "3", label: "Brand del gruppo" },
-              { num: "34M+", label: "Impression generate nel 2025" },
+               { num: "40+", label: "MPMI digitalizzate" },
+               { num: "500+", label: "Flussi di automazione" },
+               { num: "4000+", label: "Ore risparmiate" },
             ].map((s) => (
               <div key={s.label} className="min-w-[160px] border-t-2 border-amber pt-4 px-6">
                 <div className="text-3xl lg:text-4xl font-display font-semibold">{s.num}</div>
@@ -165,14 +163,12 @@ export function HomePage() {
                 Il gruppo
               </p>
               <h2 className="text-4xl lg:text-6xl font-display font-medium tracking-tight text-balance">
-                Un ecosistema di brand,{" "}
-                <span className="italic text-amber font-normal">un solo obiettivo</span>.
+                 Digitalizza, Comunica, Scala.
               </h2>
             </div>
             <div className="lg:col-span-5">
               <p className="text-lg text-muted-foreground">
-                Desk Industries è la holding. Ogni brand copre una verticale specifica, così le PMI
-                accedono a competenze specialistiche senza cambiare interlocutore.
+                 Desk Industries racchiude un gruppo di aziende e brand interni ed esterni per la digitalizzazione a 360° della propria attività.
               </p>
             </div>
           </div>
