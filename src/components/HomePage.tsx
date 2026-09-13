@@ -88,7 +88,7 @@ export function HomePage() {
             variants={fadeUp}
             className="mt-8 text-5xl sm:text-6xl lg:text-7xl font-display font-medium leading-[0.98] tracking-tight text-balance"
           >
-             Ti facciamo risparmiare tempo e risorse disegnando automazioni per la tua attività.
+             Ti facciamo risparmiare <span className="italic text-amber">tempo</span> e <span className="italic text-amber">risorse</span> disegnando automazioni per la tua attività.
           </motion.h1>
 
           <motion.p
