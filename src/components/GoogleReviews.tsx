@@ -109,7 +109,7 @@ export function GoogleReviews() {
   const loop = [...reviews, ...reviews];
 
   return (
-    <section className="relative py-24 lg:py-32 border-t border-border bg-surface overflow-hidden">
+    <section className="relative py-24 lg:py-32 border-y border-border overflow-hidden">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <div className="grid lg:grid-cols-12 gap-10 items-end mb-14">
           <div className="lg:col-span-7">
