@@ -252,6 +252,10 @@ export function HomePage() {
         </div>
       </section>
 
+      {/* RECENSIONI GOOGLE */}
+      <GoogleReviews />
+
+
       {/* LEAD FORM */}
       <section id="lead" className="relative py-24 lg:py-32 scroll-mt-24">
         <div className="relative mx-auto max-w-6xl px-5 lg:px-8">
