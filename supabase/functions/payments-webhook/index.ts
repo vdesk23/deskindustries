@@ -134,12 +134,17 @@ async function handleCheckoutCompleted(session: any, env: StripeEnv) {
     await supabase.from("seo_optimizer_extra_credits").upsert(rows, { onConflict: "stripe_session_id" });
   }
 
-  // Foll.IA: activate site when metadata.folliaSiteId present
+  // Foll.IA: activate site when metadata.folliaSiteId present.
+  // The plan is derived from the prices actually purchased, not from metadata.
   const folliaSiteId = session.metadata?.folliaSiteId;
-  const folliaPlan = session.metadata?.folliaPlan; // 'basic' | 'with_setup'
-  if (folliaSiteId) {
-    const newStatus = folliaPlan === "with_setup" ? "in_review" : "live";
-    const planValue = folliaPlan === "with_setup" ? "with_setup_297" : "basic_19";
+  const hasSubscriptionPrice = purchasedKeys.has("follia_monthly_19");
+  const hasSetupFee = purchasedKeys.has("follia_setup_fee_297");
+  if (folliaSiteId && !hasSubscriptionPrice) {
+    console.error("Site activation refused: session did not include the Foll.IA subscription price", session.id);
+  }
+  if (folliaSiteId && hasSubscriptionPrice) {
+    const newStatus = hasSetupFee ? "in_review" : "live";
+    const planValue = hasSetupFee ? "with_setup_297" : "basic_19";
     const { error: siteErr } = await supabase
       .from("follia_sites")
       .update({
