@@ -216,10 +216,25 @@ export const Route = createFileRoute("/api/public/content-plan-submit")({
             const binary = Uint8Array.from(atob(data.pdfBase64), (c) =>
               c.charCodeAt(0),
             );
-            pdfFilename =
-              data.pdfFilename ||
-              `piano-contenuti_${submissionId}.pdf`;
-            const safeName = pdfFilename.replace(/[^\w.\-]+/g, "_");
+            const MAX_PDF_BYTES = 10 * 1024 * 1024;
+            const isPdf =
+              binary.byteLength > 4 &&
+              binary[0] === 0x25 &&
+              binary[1] === 0x50 &&
+              binary[2] === 0x44 &&
+              binary[3] === 0x46;
+            if (!isPdf || binary.byteLength > MAX_PDF_BYTES) {
+              return Response.json(
+                { error: "Invalid PDF file" },
+                { status: 400 },
+              );
+            }
+            const rawName =
+              data.pdfFilename || `piano-contenuti_${submissionId}.pdf`;
+            const safeName =
+              rawName.replace(/[^\w.\-]+/g, "_").replace(/\.[^.]*$/, "").slice(0, 80) +
+              ".pdf";
+            pdfFilename = safeName;
             const storagePath = `${new Date().toISOString().slice(0, 10)}/${submissionId}_${safeName}`;
             const { error: upErr } = await supabase.storage
               .from("content-plans")
