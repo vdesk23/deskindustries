@@ -160,7 +160,10 @@ async function handleCheckoutCompleted(session: any, env: StripeEnv) {
 
   // Foll.IA: ticket payment completion
   const folliaTicketId = session.metadata?.folliaTicketId;
-  if (folliaTicketId) {
+  if (folliaTicketId && !purchasedKeys.has("follia_ticket_50")) {
+    console.error("Ticket payment refused: session did not include the ticket price", session.id);
+  }
+  if (folliaTicketId && purchasedKeys.has("follia_ticket_50")) {
     const { data: t } = await supabase
       .from("follia_tickets")
       .update({
