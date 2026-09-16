@@ -93,6 +93,19 @@ async function handleCheckoutCompleted(session: any, env: StripeEnv) {
     }
   }
 
+  // Collect ALL purchased price lookup keys for this session. Entitlements are
+  // derived from what was actually paid, never from caller-supplied metadata.
+  const purchasedKeys = new Set<string>();
+  try {
+    const allItems = await stripe.checkout.sessions.listLineItems(session.id as string, { limit: 100 });
+    for (const li of allItems.data ?? []) {
+      const key = li?.price?.lookup_key || li?.price?.metadata?.lovable_external_id || li?.price?.id;
+      if (key) purchasedKeys.add(key as string);
+    }
+  } catch (e) {
+    console.error("Could not list session line items", e);
+  }
+
   // Record purchase
   await supabase.from("purchases").upsert(
     {
