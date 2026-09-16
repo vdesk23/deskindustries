@@ -163,6 +163,25 @@ export const deletePost = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+function isImageBytes(bytes: Uint8Array, contentType: string): boolean {
+  const starts = (sig: number[], offset = 0) =>
+    sig.every((b, i) => bytes[offset + i] === b);
+  switch (contentType) {
+    case "image/jpeg":
+      return starts([0xff, 0xd8, 0xff]);
+    case "image/png":
+      return starts([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+    case "image/gif":
+      return starts([0x47, 0x49, 0x46, 0x38]);
+    case "image/webp":
+      return starts([0x52, 0x49, 0x46, 0x46]) && starts([0x57, 0x45, 0x42, 0x50], 8);
+    case "image/avif":
+      return starts([0x66, 0x74, 0x79, 0x70], 4);
+    default:
+      return false;
+  }
+}
+
 export const uploadCoverImage = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { filename: string; contentBase64: string; contentType: string }) =>
