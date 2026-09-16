@@ -168,16 +168,30 @@ export const uploadCoverImage = createServerFn({ method: "POST" })
   .inputValidator((d: { filename: string; contentBase64: string; contentType: string }) =>
     z.object({
       filename: z.string().min(1).max(200),
-      contentBase64: z.string().min(1),
-      contentType: z.string().min(1).max(100),
+      contentBase64: z.string().min(1).max(8 * 1024 * 1024),
+      contentType: z.enum(["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"]),
     }).parse(d),
   )
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const bytes = Uint8Array.from(atob(data.contentBase64), (c) => c.charCodeAt(0));
-    const safeName = data.filename.replace(/[^a-zA-Z0-9._-]/g, "-");
-    const path = `${Date.now()}-${safeName}`;
+    const MAX_BYTES = 5 * 1024 * 1024;
+    if (bytes.byteLength > MAX_BYTES) {
+      throw new Error("Immagine troppo grande (massimo 5 MB).");
+    }
+    if (!isImageBytes(bytes, data.contentType)) {
+      throw new Error("Il file caricato non è un'immagine valida.");
+    }
+    const extByType: Record<string, string> = {
+      "image/jpeg": "jpg",
+      "image/png": "png",
+      "image/webp": "webp",
+      "image/gif": "gif",
+      "image/avif": "avif",
+    };
+    const base = data.filename.replace(/[^a-zA-Z0-9._-]/g, "-").replace(/\.[^.]*$/, "").slice(0, 80) || "cover";
+    const path = `${Date.now()}-${base}.${extByType[data.contentType]}`;
     const { error } = await supabaseAdmin.storage
       .from("blog-covers")
       .upload(path, bytes, { contentType: data.contentType, upsert: false });
