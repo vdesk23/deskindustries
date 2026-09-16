@@ -93,6 +93,19 @@ async function handleCheckoutCompleted(session: any, env: StripeEnv) {
     }
   }
 
+  // Collect ALL purchased price lookup keys for this session. Entitlements are
+  // derived from what was actually paid, never from caller-supplied metadata.
+  const purchasedKeys = new Set<string>();
+  try {
+    const allItems = await stripe.checkout.sessions.listLineItems(session.id as string, { limit: 100 });
+    for (const li of allItems.data ?? []) {
+      const key = li?.price?.lookup_key || li?.price?.metadata?.lovable_external_id || li?.price?.id;
+      if (key) purchasedKeys.add(key as string);
+    }
+  } catch (e) {
+    console.error("Could not list session line items", e);
+  }
+
   // Record purchase
   await supabase.from("purchases").upsert(
     {
@@ -121,12 +134,17 @@ async function handleCheckoutCompleted(session: any, env: StripeEnv) {
     await supabase.from("seo_optimizer_extra_credits").upsert(rows, { onConflict: "stripe_session_id" });
   }
 
-  // Foll.IA: activate site when metadata.folliaSiteId present
+  // Foll.IA: activate site when metadata.folliaSiteId present.
+  // The plan is derived from the prices actually purchased, not from metadata.
   const folliaSiteId = session.metadata?.folliaSiteId;
-  const folliaPlan = session.metadata?.folliaPlan; // 'basic' | 'with_setup'
-  if (folliaSiteId) {
-    const newStatus = folliaPlan === "with_setup" ? "in_review" : "live";
-    const planValue = folliaPlan === "with_setup" ? "with_setup_297" : "basic_19";
+  const hasSubscriptionPrice = purchasedKeys.has("follia_monthly_19");
+  const hasSetupFee = purchasedKeys.has("follia_setup_fee_297");
+  if (folliaSiteId && !hasSubscriptionPrice) {
+    console.error("Site activation refused: session did not include the Foll.IA subscription price", session.id);
+  }
+  if (folliaSiteId && hasSubscriptionPrice) {
+    const newStatus = hasSetupFee ? "in_review" : "live";
+    const planValue = hasSetupFee ? "with_setup_297" : "basic_19";
     const { error: siteErr } = await supabase
       .from("follia_sites")
       .update({
@@ -142,7 +160,10 @@ async function handleCheckoutCompleted(session: any, env: StripeEnv) {
 
   // Foll.IA: ticket payment completion
   const folliaTicketId = session.metadata?.folliaTicketId;
-  if (folliaTicketId) {
+  if (folliaTicketId && !purchasedKeys.has("follia_ticket_50")) {
+    console.error("Ticket payment refused: session did not include the ticket price", session.id);
+  }
+  if (folliaTicketId && purchasedKeys.has("follia_ticket_50")) {
     const { data: t } = await supabase
       .from("follia_tickets")
       .update({
