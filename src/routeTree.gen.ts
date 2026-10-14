@@ -9,103 +9,48 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AccountRouteImport } from './routes/account'
-import { Route as AdminRouteImport } from './routes/admin'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as ChiSiamoRouteImport } from './routes/chi-siamo'
-import { Route as ContattiRouteImport } from './routes/contatti'
-import { Route as FolliaRouteImport } from './routes/follia'
-import { Route as MetodoCocoRouteImport } from './routes/metodo-coco'
-import { Route as PacchettiRouteImport } from './routes/pacchetti'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as ProgettiRouteImport } from './routes/progetti'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as TerminiRouteImport } from './routes/termini'
 import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
-import { Route as AccountSitesRouteImport } from './routes/account.sites'
-import { Route as AdminIndexRouteImport } from './routes/admin.index'
-import { Route as AdminSitesRouteImport } from './routes/admin.sites'
-import { Route as AdminTicketsRouteImport } from './routes/admin.tickets'
-import { Route as BlogIndexRouteImport } from './routes/blog.index'
-import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
-import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
-import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
+import { Route as TerminiRouteImport } from './routes/termini'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as ProgettiRouteImport } from './routes/progetti'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PacchettiRouteImport } from './routes/pacchetti'
+import { Route as MetodoCocoRouteImport } from './routes/metodo-coco'
+import { Route as FolliaRouteImport } from './routes/follia'
+import { Route as ContattiRouteImport } from './routes/contatti'
+import { Route as ChiSiamoRouteImport } from './routes/chi-siamo'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AccountRouteImport } from './routes/account'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettoriIndexRouteImport } from './routes/settori.index'
-import { Route as SettoriSlugRouteImport } from './routes/settori.$slug'
-import { Route as ToolsOttimizzatoreSeoRouteImport } from './routes/tools.ottimizzatore-seo'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ToolsPianoContenutiRouteImport } from './routes/tools.piano-contenuti'
-import { Route as AccountSitesSiteIdRouteImport } from './routes/account.sites.$siteId'
+import { Route as ToolsOttimizzatoreSeoRouteImport } from './routes/tools.ottimizzatore-seo'
+import { Route as SettoriSlugRouteImport } from './routes/settori.$slug'
+import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
+import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AdminTicketsRouteImport } from './routes/admin.tickets'
+import { Route as AdminSitesRouteImport } from './routes/admin.sites'
+import { Route as AccountSitesRouteImport } from './routes/account.sites'
 import { Route as AdminBlogIndexRouteImport } from './routes/admin.blog.index'
-import { Route as AdminBlogIdRouteImport } from './routes/admin.blog.$id'
-import { Route as AdminSitesSiteIdRouteImport } from './routes/admin.sites.$siteId'
-import { Route as ApiPublicContentPlanSubmitRouteImport } from './routes/api/public/content-plan-submit'
-import { Route as ApiPublicLeadSubmitRouteImport } from './routes/api/public/lead-submit'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
-import { Route as AccountTicketsTicketIdPayRouteImport } from './routes/account.tickets.$ticketId.pay'
-import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
-import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
-import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
+import { Route as ApiPublicLeadSubmitRouteImport } from './routes/api/public/lead-submit'
+import { Route as ApiPublicContentPlanSubmitRouteImport } from './routes/api/public/content-plan-submit'
+import { Route as AdminSitesSiteIdRouteImport } from './routes/admin.sites.$siteId'
+import { Route as AdminBlogIdRouteImport } from './routes/admin.blog.$id'
+import { Route as AccountSitesSiteIdRouteImport } from './routes/account.sites.$siteId'
 import { Route as LovableEmailTransactionalSendTicketStaffRouteImport } from './routes/lovable/email/transactional/send-ticket-staff'
+import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
+import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
+import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
+import { Route as AccountTicketsTicketIdPayRouteImport } from './routes/account.tickets.$ticketId.pay'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AccountRoute = AccountRouteImport.update({
-  id: '/account',
-  path: '/account',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ChiSiamoRoute = ChiSiamoRouteImport.update({
-  id: '/chi-siamo',
-  path: '/chi-siamo',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContattiRoute = ContattiRouteImport.update({
-  id: '/contatti',
-  path: '/contatti',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FolliaRoute = FolliaRouteImport.update({
-  id: '/follia',
-  path: '/follia',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MetodoCocoRoute = MetodoCocoRouteImport.update({
-  id: '/metodo-coco',
-  path: '/metodo-coco',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PacchettiRoute = PacchettiRouteImport.update({
-  id: '/pacchetti',
-  path: '/pacchetti',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProgettiRoute = ProgettiRouteImport.update({
-  id: '/progetti',
-  path: '/progetti',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
+const UnsubscribeRoute = UnsubscribeRouteImport.update({
+  id: '/unsubscribe',
+  path: '/unsubscribe',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TerminiRoute = TerminiRouteImport.update({
@@ -113,49 +58,64 @@ const TerminiRoute = TerminiRouteImport.update({
   path: '/termini',
   getParentRoute: () => rootRouteImport,
 } as any)
-const UnsubscribeRoute = UnsubscribeRouteImport.update({
-  id: '/unsubscribe',
-  path: '/unsubscribe',
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AccountSitesRoute = AccountSitesRouteImport.update({
-  id: '/sites',
-  path: '/sites',
-  getParentRoute: () => AccountRoute,
+const ProgettiRoute = ProgettiRouteImport.update({
+  id: '/progetti',
+  path: '/progetti',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AdminIndexRoute = AdminIndexRouteImport.update({
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PacchettiRoute = PacchettiRouteImport.update({
+  id: '/pacchetti',
+  path: '/pacchetti',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MetodoCocoRoute = MetodoCocoRouteImport.update({
+  id: '/metodo-coco',
+  path: '/metodo-coco',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FolliaRoute = FolliaRouteImport.update({
+  id: '/follia',
+  path: '/follia',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContattiRoute = ContattiRouteImport.update({
+  id: '/contatti',
+  path: '/contatti',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChiSiamoRoute = ChiSiamoRouteImport.update({
+  id: '/chi-siamo',
+  path: '/chi-siamo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountRoute = AccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminSitesRoute = AdminSitesRouteImport.update({
-  id: '/sites',
-  path: '/sites',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminTicketsRoute = AdminTicketsRouteImport.update({
-  id: '/tickets',
-  path: '/tickets',
-  getParentRoute: () => AdminRoute,
-} as any)
-const BlogIndexRoute = BlogIndexRouteImport.update({
-  id: '/blog/',
-  path: '/blog/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BlogSlugRoute = BlogSlugRouteImport.update({
-  id: '/blog/$slug',
-  path: '/blog/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CheckoutReturnRoute = CheckoutReturnRouteImport.update({
-  id: '/checkout/return',
-  path: '/checkout/return',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
-  id: '/email/unsubscribe',
-  path: '/email/unsubscribe',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettoriIndexRoute = SettoriIndexRouteImport.update({
@@ -163,9 +123,19 @@ const SettoriIndexRoute = SettoriIndexRouteImport.update({
   path: '/settori/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SettoriSlugRoute = SettoriSlugRouteImport.update({
-  id: '/settori/$slug',
-  path: '/settori/$slug',
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const ToolsPianoContenutiRoute = ToolsPianoContenutiRouteImport.update({
+  id: '/tools/piano-contenuti',
+  path: '/tools/piano-contenuti',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ToolsOttimizzatoreSeoRoute = ToolsOttimizzatoreSeoRouteImport.update({
@@ -173,30 +143,55 @@ const ToolsOttimizzatoreSeoRoute = ToolsOttimizzatoreSeoRouteImport.update({
   path: '/tools/ottimizzatore-seo',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ToolsPianoContenutiRoute = ToolsPianoContenutiRouteImport.update({
-  id: '/tools/piano-contenuti',
-  path: '/tools/piano-contenuti',
+const SettoriSlugRoute = SettoriSlugRouteImport.update({
+  id: '/settori/$slug',
+  path: '/settori/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AccountSitesSiteIdRoute = AccountSitesSiteIdRouteImport.update({
-  id: '/$siteId',
-  path: '/$siteId',
-  getParentRoute: () => AccountSitesRoute,
+const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
+  id: '/email/unsubscribe',
+  path: '/email/unsubscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutReturnRoute = CheckoutReturnRouteImport.update({
+  id: '/checkout/return',
+  path: '/checkout/return',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminTicketsRoute = AdminTicketsRouteImport.update({
+  id: '/tickets',
+  path: '/tickets',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSitesRoute = AdminSitesRouteImport.update({
+  id: '/sites',
+  path: '/sites',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AccountSitesRoute = AccountSitesRouteImport.update({
+  id: '/sites',
+  path: '/sites',
+  getParentRoute: () => AccountRoute,
 } as any)
 const AdminBlogIndexRoute = AdminBlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminBlogIdRoute = AdminBlogIdRouteImport.update({
-  id: '/blog/$id',
-  path: '/blog/$id',
-  getParentRoute: () => AdminRoute,
+const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
+  id: '/lovable/email/suppression',
+  path: '/lovable/email/suppression',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AdminSitesSiteIdRoute = AdminSitesSiteIdRouteImport.update({
-  id: '/$siteId',
-  path: '/$siteId',
-  getParentRoute: () => AdminSitesRoute,
+const ApiPublicLeadSubmitRoute = ApiPublicLeadSubmitRouteImport.update({
+  id: '/api/public/lead-submit',
+  path: '/api/public/lead-submit',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicContentPlanSubmitRoute =
   ApiPublicContentPlanSubmitRouteImport.update({
@@ -204,32 +199,25 @@ const ApiPublicContentPlanSubmitRoute =
     path: '/api/public/content-plan-submit',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiPublicLeadSubmitRoute = ApiPublicLeadSubmitRouteImport.update({
-  id: '/api/public/lead-submit',
-  path: '/api/public/lead-submit',
-  getParentRoute: () => rootRouteImport,
+const AdminSitesSiteIdRoute = AdminSitesSiteIdRouteImport.update({
+  id: '/$siteId',
+  path: '/$siteId',
+  getParentRoute: () => AdminSitesRoute,
 } as any)
-const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
-  id: '/lovable/email/suppression',
-  path: '/lovable/email/suppression',
-  getParentRoute: () => rootRouteImport,
+const AdminBlogIdRoute = AdminBlogIdRouteImport.update({
+  id: '/blog/$id',
+  path: '/blog/$id',
+  getParentRoute: () => AdminRoute,
 } as any)
-const AccountTicketsTicketIdPayRoute =
-  AccountTicketsTicketIdPayRouteImport.update({
-    id: '/tickets/$ticketId/pay',
-    path: '/tickets/$ticketId/pay',
-    getParentRoute: () => AccountRoute,
-  } as any)
-const LovableEmailQueueProcessRoute =
-  LovableEmailQueueProcessRouteImport.update({
-    id: '/lovable/email/queue/process',
-    path: '/lovable/email/queue/process',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const LovableEmailTransactionalPreviewRoute =
-  LovableEmailTransactionalPreviewRouteImport.update({
-    id: '/lovable/email/transactional/preview',
-    path: '/lovable/email/transactional/preview',
+const AccountSitesSiteIdRoute = AccountSitesSiteIdRouteImport.update({
+  id: '/$siteId',
+  path: '/$siteId',
+  getParentRoute: () => AccountSitesRoute,
+} as any)
+const LovableEmailTransactionalSendTicketStaffRoute =
+  LovableEmailTransactionalSendTicketStaffRouteImport.update({
+    id: '/lovable/email/transactional/send-ticket-staff',
+    path: '/lovable/email/transactional/send-ticket-staff',
     getParentRoute: () => rootRouteImport,
   } as any)
 const LovableEmailTransactionalSendRoute =
@@ -238,11 +226,23 @@ const LovableEmailTransactionalSendRoute =
     path: '/lovable/email/transactional/send',
     getParentRoute: () => rootRouteImport,
   } as any)
-const LovableEmailTransactionalSendTicketStaffRoute =
-  LovableEmailTransactionalSendTicketStaffRouteImport.update({
-    id: '/lovable/email/transactional/send-ticket-staff',
-    path: '/lovable/email/transactional/send-ticket-staff',
+const LovableEmailTransactionalPreviewRoute =
+  LovableEmailTransactionalPreviewRouteImport.update({
+    id: '/lovable/email/transactional/preview',
+    path: '/lovable/email/transactional/preview',
     getParentRoute: () => rootRouteImport,
+  } as any)
+const LovableEmailQueueProcessRoute =
+  LovableEmailQueueProcessRouteImport.update({
+    id: '/lovable/email/queue/process',
+    path: '/lovable/email/queue/process',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AccountTicketsTicketIdPayRoute =
+  AccountTicketsTicketIdPayRouteImport.update({
+    id: '/tickets/$ticketId/pay',
+    path: '/tickets/$ticketId/pay',
+    getParentRoute: () => AccountRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -521,88 +521,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/account': {
-      id: '/account'
-      path: '/account'
-      fullPath: '/account'
-      preLoaderRoute: typeof AccountRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/chi-siamo': {
-      id: '/chi-siamo'
-      path: '/chi-siamo'
-      fullPath: '/chi-siamo'
-      preLoaderRoute: typeof ChiSiamoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contatti': {
-      id: '/contatti'
-      path: '/contatti'
-      fullPath: '/contatti'
-      preLoaderRoute: typeof ContattiRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/follia': {
-      id: '/follia'
-      path: '/follia'
-      fullPath: '/follia'
-      preLoaderRoute: typeof FolliaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/metodo-coco': {
-      id: '/metodo-coco'
-      path: '/metodo-coco'
-      fullPath: '/metodo-coco'
-      preLoaderRoute: typeof MetodoCocoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/pacchetti': {
-      id: '/pacchetti'
-      path: '/pacchetti'
-      fullPath: '/pacchetti'
-      preLoaderRoute: typeof PacchettiRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/progetti': {
-      id: '/progetti'
-      path: '/progetti'
-      fullPath: '/progetti'
-      preLoaderRoute: typeof ProgettiRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
+    '/unsubscribe': {
+      id: '/unsubscribe'
+      path: '/unsubscribe'
+      fullPath: '/unsubscribe'
+      preLoaderRoute: typeof UnsubscribeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/termini': {
@@ -612,67 +535,88 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TerminiRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/unsubscribe': {
-      id: '/unsubscribe'
-      path: '/unsubscribe'
-      fullPath: '/unsubscribe'
-      preLoaderRoute: typeof UnsubscribeRouteImport
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/account/sites': {
-      id: '/account/sites'
-      path: '/sites'
-      fullPath: '/account/sites'
-      preLoaderRoute: typeof AccountSitesRouteImport
-      parentRoute: typeof AccountRoute
+    '/progetti': {
+      id: '/progetti'
+      path: '/progetti'
+      fullPath: '/progetti'
+      preLoaderRoute: typeof ProgettiRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/admin/': {
-      id: '/admin/'
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pacchetti': {
+      id: '/pacchetti'
+      path: '/pacchetti'
+      fullPath: '/pacchetti'
+      preLoaderRoute: typeof PacchettiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/metodo-coco': {
+      id: '/metodo-coco'
+      path: '/metodo-coco'
+      fullPath: '/metodo-coco'
+      preLoaderRoute: typeof MetodoCocoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/follia': {
+      id: '/follia'
+      path: '/follia'
+      fullPath: '/follia'
+      preLoaderRoute: typeof FolliaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contatti': {
+      id: '/contatti'
+      path: '/contatti'
+      fullPath: '/contatti'
+      preLoaderRoute: typeof ContattiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chi-siamo': {
+      id: '/chi-siamo'
+      path: '/chi-siamo'
+      fullPath: '/chi-siamo'
+      preLoaderRoute: typeof ChiSiamoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
       path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AdminIndexRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/sites': {
-      id: '/admin/sites'
-      path: '/sites'
-      fullPath: '/admin/sites'
-      preLoaderRoute: typeof AdminSitesRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/tickets': {
-      id: '/admin/tickets'
-      path: '/tickets'
-      fullPath: '/admin/tickets'
-      preLoaderRoute: typeof AdminTicketsRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/blog/': {
-      id: '/blog/'
-      path: '/blog'
-      fullPath: '/blog/'
-      preLoaderRoute: typeof BlogIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/blog/$slug': {
-      id: '/blog/$slug'
-      path: '/blog/$slug'
-      fullPath: '/blog/$slug'
-      preLoaderRoute: typeof BlogSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/checkout/return': {
-      id: '/checkout/return'
-      path: '/checkout/return'
-      fullPath: '/checkout/return'
-      preLoaderRoute: typeof CheckoutReturnRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/email/unsubscribe': {
-      id: '/email/unsubscribe'
-      path: '/email/unsubscribe'
-      fullPath: '/email/unsubscribe'
-      preLoaderRoute: typeof EmailUnsubscribeRouteImport
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settori/': {
@@ -682,11 +626,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettoriIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/settori/$slug': {
-      id: '/settori/$slug'
-      path: '/settori/$slug'
-      fullPath: '/settori/$slug'
-      preLoaderRoute: typeof SettoriSlugRouteImport
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/tools/piano-contenuti': {
+      id: '/tools/piano-contenuti'
+      path: '/tools/piano-contenuti'
+      fullPath: '/tools/piano-contenuti'
+      preLoaderRoute: typeof ToolsPianoContenutiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tools/ottimizzatore-seo': {
@@ -696,19 +654,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolsOttimizzatoreSeoRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tools/piano-contenuti': {
-      id: '/tools/piano-contenuti'
-      path: '/tools/piano-contenuti'
-      fullPath: '/tools/piano-contenuti'
-      preLoaderRoute: typeof ToolsPianoContenutiRouteImport
+    '/settori/$slug': {
+      id: '/settori/$slug'
+      path: '/settori/$slug'
+      fullPath: '/settori/$slug'
+      preLoaderRoute: typeof SettoriSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/account/sites/$siteId': {
-      id: '/account/sites/$siteId'
-      path: '/$siteId'
-      fullPath: '/account/sites/$siteId'
-      preLoaderRoute: typeof AccountSitesSiteIdRouteImport
-      parentRoute: typeof AccountSitesRoute
+    '/email/unsubscribe': {
+      id: '/email/unsubscribe'
+      path: '/email/unsubscribe'
+      fullPath: '/email/unsubscribe'
+      preLoaderRoute: typeof EmailUnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout/return': {
+      id: '/checkout/return'
+      path: '/checkout/return'
+      fullPath: '/checkout/return'
+      preLoaderRoute: typeof CheckoutReturnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/tickets': {
+      id: '/admin/tickets'
+      path: '/tickets'
+      fullPath: '/admin/tickets'
+      preLoaderRoute: typeof AdminTicketsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/sites': {
+      id: '/admin/sites'
+      path: '/sites'
+      fullPath: '/admin/sites'
+      preLoaderRoute: typeof AdminSitesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/account/sites': {
+      id: '/account/sites'
+      path: '/sites'
+      fullPath: '/account/sites'
+      preLoaderRoute: typeof AccountSitesRouteImport
+      parentRoute: typeof AccountRoute
     }
     '/admin/blog/': {
       id: '/admin/blog/'
@@ -717,25 +710,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBlogIndexRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/blog/$id': {
-      id: '/admin/blog/$id'
-      path: '/blog/$id'
-      fullPath: '/admin/blog/$id'
-      preLoaderRoute: typeof AdminBlogIdRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/sites/$siteId': {
-      id: '/admin/sites/$siteId'
-      path: '/$siteId'
-      fullPath: '/admin/sites/$siteId'
-      preLoaderRoute: typeof AdminSitesSiteIdRouteImport
-      parentRoute: typeof AdminSitesRoute
-    }
-    '/api/public/content-plan-submit': {
-      id: '/api/public/content-plan-submit'
-      path: '/api/public/content-plan-submit'
-      fullPath: '/api/public/content-plan-submit'
-      preLoaderRoute: typeof ApiPublicContentPlanSubmitRouteImport
+    '/lovable/email/suppression': {
+      id: '/lovable/email/suppression'
+      path: '/lovable/email/suppression'
+      fullPath: '/lovable/email/suppression'
+      preLoaderRoute: typeof LovableEmailSuppressionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/lead-submit': {
@@ -745,32 +724,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicLeadSubmitRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/lovable/email/suppression': {
-      id: '/lovable/email/suppression'
-      path: '/lovable/email/suppression'
-      fullPath: '/lovable/email/suppression'
-      preLoaderRoute: typeof LovableEmailSuppressionRouteImport
+    '/api/public/content-plan-submit': {
+      id: '/api/public/content-plan-submit'
+      path: '/api/public/content-plan-submit'
+      fullPath: '/api/public/content-plan-submit'
+      preLoaderRoute: typeof ApiPublicContentPlanSubmitRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/account/tickets/$ticketId/pay': {
-      id: '/account/tickets/$ticketId/pay'
-      path: '/tickets/$ticketId/pay'
-      fullPath: '/account/tickets/$ticketId/pay'
-      preLoaderRoute: typeof AccountTicketsTicketIdPayRouteImport
-      parentRoute: typeof AccountRoute
+    '/admin/sites/$siteId': {
+      id: '/admin/sites/$siteId'
+      path: '/$siteId'
+      fullPath: '/admin/sites/$siteId'
+      preLoaderRoute: typeof AdminSitesSiteIdRouteImport
+      parentRoute: typeof AdminSitesRoute
     }
-    '/lovable/email/queue/process': {
-      id: '/lovable/email/queue/process'
-      path: '/lovable/email/queue/process'
-      fullPath: '/lovable/email/queue/process'
-      preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
-      parentRoute: typeof rootRouteImport
+    '/admin/blog/$id': {
+      id: '/admin/blog/$id'
+      path: '/blog/$id'
+      fullPath: '/admin/blog/$id'
+      preLoaderRoute: typeof AdminBlogIdRouteImport
+      parentRoute: typeof AdminRoute
     }
-    '/lovable/email/transactional/preview': {
-      id: '/lovable/email/transactional/preview'
-      path: '/lovable/email/transactional/preview'
-      fullPath: '/lovable/email/transactional/preview'
-      preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
+    '/account/sites/$siteId': {
+      id: '/account/sites/$siteId'
+      path: '/$siteId'
+      fullPath: '/account/sites/$siteId'
+      preLoaderRoute: typeof AccountSitesSiteIdRouteImport
+      parentRoute: typeof AccountSitesRoute
+    }
+    '/lovable/email/transactional/send-ticket-staff': {
+      id: '/lovable/email/transactional/send-ticket-staff'
+      path: '/lovable/email/transactional/send-ticket-staff'
+      fullPath: '/lovable/email/transactional/send-ticket-staff'
+      preLoaderRoute: typeof LovableEmailTransactionalSendTicketStaffRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lovable/email/transactional/send': {
@@ -780,12 +766,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LovableEmailTransactionalSendRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/lovable/email/transactional/send-ticket-staff': {
-      id: '/lovable/email/transactional/send-ticket-staff'
-      path: '/lovable/email/transactional/send-ticket-staff'
-      fullPath: '/lovable/email/transactional/send-ticket-staff'
-      preLoaderRoute: typeof LovableEmailTransactionalSendTicketStaffRouteImport
+    '/lovable/email/transactional/preview': {
+      id: '/lovable/email/transactional/preview'
+      path: '/lovable/email/transactional/preview'
+      fullPath: '/lovable/email/transactional/preview'
+      preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/lovable/email/queue/process': {
+      id: '/lovable/email/queue/process'
+      path: '/lovable/email/queue/process'
+      fullPath: '/lovable/email/queue/process'
+      preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account/tickets/$ticketId/pay': {
+      id: '/account/tickets/$ticketId/pay'
+      path: '/tickets/$ticketId/pay'
+      fullPath: '/account/tickets/$ticketId/pay'
+      preLoaderRoute: typeof AccountTicketsTicketIdPayRouteImport
+      parentRoute: typeof AccountRoute
     }
   }
 }
