@@ -4,7 +4,7 @@ import { redirect } from "@tanstack/react-router";
  * Pagine in bozza: non pubblicate.
  * Ogni route che la usa reindirizza alla Home ed è esclusa da sitemap/indicizzazione.
  */
-export function draftBeforeLoad() {
+export function draftBeforeLoad(): void {
   throw redirect({ to: "/" });
 }
 
