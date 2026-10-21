@@ -17,7 +17,7 @@ export interface StaticGooglePlace {
 export const DESK_GOOGLE_PLACE: StaticGooglePlace = {
   name: "Desk Industries SRLS",
   rating: 5.0,
-  total: 12,
+  total: 22,
   url: "https://www.google.com/maps/search/?api=1&query=Desk+Industries+SRLS",
 };
 
