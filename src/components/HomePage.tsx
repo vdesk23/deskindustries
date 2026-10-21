@@ -17,6 +17,8 @@ import { LeadForm } from "@/components/hero/LeadForm";
 import { SceneBackground } from "@/components/layout/SceneBackground";
 import { Card3D } from "@/components/ui/Card3D";
 import { GoogleReviews } from "@/components/GoogleReviews";
+import { PartnersMarquee } from "@/components/PartnersMarquee";
+
 
 const PROJECTS = [
   {
@@ -155,6 +157,9 @@ export function HomePage() {
           </motion.div>
         </div>
       </section>
+
+      {/* PARTNER & CERTIFICAZIONI */}
+      <PartnersMarquee />
 
       {/* IL GRUPPO */}
       <section className="relative py-24 lg:py-32">
