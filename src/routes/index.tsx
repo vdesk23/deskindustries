@@ -4,6 +4,8 @@ import { HomePage } from "@/components/HomePage";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Desk Industries — Gruppo di digitalizzazione per PMI" },
       {
         name: "description",

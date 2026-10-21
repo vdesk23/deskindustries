@@ -4,6 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { TEMPLATES } from "@/lib/email-templates/registry";
+import { registrationSchema, quoteRequestSchema, resolveServices } from "@/lib/lead-intake";
 
 const SITE_NAME = "Desk Industries";
 const SENDER_DOMAIN = "notify.deskindustries.com";
@@ -162,6 +163,64 @@ export const Route = createFileRoute("/api/public/lead-submit")({
           body = await request.json();
         } catch {
           return Response.json({ error: "Invalid JSON" }, { status: 400 });
+        }
+
+        if (body && typeof body === "object" && "action" in body) {
+          const db = createClient(supabaseUrl, supabaseServiceKey, { auth: { persistSession: false } });
+          const bridge = await import("@/lib/consus.server");
+          if (body.action === "register") {
+            const registration = registrationSchema.safeParse(body);
+            if (!registration.success) return Response.json({ error: "Controlla i dati del contatto." }, { status: 400 });
+            const { action: _action, continuation: previous, ...contact } = registration.data;
+            let leadId: string;
+            try {
+              if (previous) {
+                leadId = await bridge.verifyContinuation(previous);
+                const { error } = await db.from("lead_requests").update(contact).eq("id", leadId);
+                if (error) throw error;
+              } else {
+                const { data: row, error } = await db.from("lead_requests").insert({ ...contact, looking_for: "", selected_services: [], expected_goals: [] }).select("id").single();
+                if (error || !row) throw new Error("Lead save failed");
+                leadId = row.id;
+              }
+              const continuation = await bridge.issueContinuation(leadId);
+              try {
+                await bridge.registerConsusLead({ leadId, ...contact });
+              } catch (error) {
+                console.error("CONSUS register failed", error instanceof Error ? error.message : "unknown");
+                return Response.json({ error: "Dati salvati, ma il collegamento con CONSUS non è ancora pronto. Riprova tra poco.", continuation }, { status: 503 });
+              }
+              return Response.json({ success: true, continuation });
+            } catch {
+              return Response.json({ error: "Impossibile salvare i dati. Riprova." }, { status: 400 });
+            }
+          }
+          if (body.action === "quote") {
+            const parsedQuote = quoteRequestSchema.safeParse(body);
+            if (!parsedQuote.success) return Response.json({ error: "Seleziona almeno un servizio e descrivi il tuo obiettivo." }, { status: 400 });
+            try {
+              const leadId = await bridge.verifyContinuation(parsedQuote.data.continuation);
+              const { data: contact, error } = await db.from("lead_requests").select("name,email,phone,business,sector").eq("id", leadId).single();
+              if (error || !contact) return Response.json({ error: "Riparti dai dati di contatto." }, { status: 400 });
+              const picked = resolveServices(parsedQuote.data.serviceCodes, await bridge.fetchConsusCatalog());
+              const services = picked.map((item) => item.name);
+              const lookingFor = parsedQuote.data.lookingFor;
+              await bridge.createConsusQuote({ leadId, ...contact, phone: contact.phone ?? undefined, business: contact.business ?? undefined, serviceCodes: picked.map((item) => item.code), serviceNames: services, lookingFor });
+              const { error: updateError } = await db.from("lead_requests").update({ selected_services: services, looking_for: lookingFor }).eq("id", leadId);
+              if (updateError) throw updateError;
+              const templateData = { ...contact, selectedServices: services, lookingFor, expectedGoals: [], accountCreated: false };
+              const emailResults = await Promise.allSettled([
+                enqueueTemplate(db, "lead-request-admin", "master@deskindustries.com", templateData, `lead-admin-${leadId}`),
+                enqueueTemplate(db, "lead-request-confirmation", contact.email, templateData, `lead-confirm-${leadId}`),
+              ]);
+              if (emailResults.some((result) => result.status === "rejected" || !result.value.ok)) console.error("Two-step intake email enqueue failed");
+              return Response.json({ success: true });
+            } catch (error) {
+              console.error("CONSUS quote failed", error instanceof Error ? error.message : "unknown");
+              return Response.json({ error: "Il preventivo non è stato completato. Riprova senza reinserire i dati." }, { status: 503 });
+            }
+          }
+          return Response.json({ error: "Richiesta non valida." }, { status: 400 });
         }
 
         const parsed = leadSchema.safeParse(body);
