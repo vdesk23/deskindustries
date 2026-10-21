@@ -49,7 +49,7 @@ export function Footer() {
             </div>
           </div>
           <p className="font-display tracking-wider">
-            COCO — <span className="text-amber">Costruire Online</span> per Cementificare Offline
+            Digitalizziamo Imprese
           </p>
         </div>
       </div>
