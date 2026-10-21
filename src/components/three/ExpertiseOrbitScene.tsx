@@ -38,7 +38,7 @@ function Orbit({ active, onSelect, reduced }: { active: number; onSelect: (i: nu
     group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, target.current + idle, 1 - Math.exp(-4 * dt));
     meshes.current.forEach((m, i) => {
       if (!m) return;
-      const s = i === active ? 1.45 : hover === i ? 1.15 : 0.9;
+      const s = i === active ? 1.2 : hover === i ? 1.15 : 0.9;
       m.scale.setScalar(THREE.MathUtils.lerp(m.scale.x, s, 1 - Math.exp(-6 * dt)));
       if (!reduced) { m.rotation.x += dt * 0.4; m.rotation.y += dt * 0.6; }
     });
