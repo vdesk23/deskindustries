@@ -105,8 +105,6 @@ function Artifact({ kind, t }: { kind: ArtifactKind; t: number }) {
 function Slot({ index, active, reduced, children }: { index: number; active: number; reduced: boolean; children: (t: number) => ReactNode }) {
   const ref = useRef<THREE.Group>(null);
   const t = useRef(0);
-  const holder = useRef<{ setT?: (n: number) => void }>({});
-  void holder;
   useFrame((_, raw) => {
     const dt = Math.min(raw, 0.05);
     const g = ref.current;
