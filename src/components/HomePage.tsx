@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import {
   ArrowRight,
-  ArrowUpRight,
   Sparkles,
   Bot,
   Cpu,
@@ -20,27 +19,6 @@ import { GoogleReviews } from "@/components/GoogleReviews";
 import { PartnersMarquee } from "@/components/PartnersMarquee";
 
 
-const PROJECTS = [
-  {
-    name: "BancoPlus",
-    tag: "BRAND",
-    desc: "Suite di servizi digitali per l'automazione di farmacie",
-    accent: "from-amber to-amber/60",
-    href: "https://www.bancoplus.it",
-  },
-  {
-    name: "Magnus Agency",
-    tag: "Marketing",
-    desc: "Il braccio marketing del gruppo: contenuti, ads, brand strategy per MPMI.",
-    accent: "from-purple-400 to-amber",
-  },
-  {
-    name: "Arkeo",
-    tag: "R&D",
-    desc: "Studio interno di prodotti software: MVP no-code, automazioni AI, SaaS proprietari.",
-    accent: "from-cyan-400 to-amber",
-  },
-];
 
 const EXPERTISE = [
   { Icon: Bot, label: "Agenti AI", desc: "Team AI custom su Claude, GPT, workflows LangGraph." },
@@ -161,67 +139,6 @@ export function HomePage() {
       {/* PARTNER & CERTIFICAZIONI */}
       <PartnersMarquee />
 
-      {/* IL GRUPPO */}
-      <section className="relative py-24 lg:py-32">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="grid lg:grid-cols-12 gap-12 items-end mb-16">
-            <div className="lg:col-span-7">
-              <p className="text-xs font-display tracking-[0.3em] text-amber uppercase mb-4">
-                Il gruppo
-              </p>
-              <h2 className="text-4xl lg:text-6xl font-display font-medium tracking-tight text-balance">
-                 Digitalizza, Comunica, Scala.
-              </h2>
-            </div>
-            <div className="lg:col-span-5">
-              <p className="text-lg text-muted-foreground">
-                 Desk Industries racchiude un gruppo di aziende e brand interni ed esterni per la digitalizzazione a 360° della propria attività.
-              </p>
-            </div>
-          </div>
-
-          <div className="grid gap-6 lg:grid-cols-3">
-            {PROJECTS.map((p, i) => {
-              const cardBody = (
-                <Card3D className="group h-full p-8 rounded-3xl bg-surface-elevated/50 backdrop-blur-xl border border-border overflow-hidden">
-                  <div className={`absolute -top-16 -right-16 size-48 rounded-full bg-gradient-to-br ${p.accent} opacity-30 blur-3xl`} />
-                  <div className="relative">
-                    <p className="text-xs uppercase tracking-widest text-amber mb-4">{p.tag}</p>
-                    <h3 className="text-3xl font-display font-semibold mb-4">{p.name}</h3>
-                    <p className="text-muted-foreground leading-relaxed">{p.desc}</p>
-                    <div className="mt-8 inline-flex items-center gap-1.5 text-sm text-foreground">
-                      Scopri <ArrowUpRight className="size-4 text-amber" />
-                    </div>
-                  </div>
-                </Card3D>
-              );
-
-              return (
-                <motion.div
-                  key={p.name}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-80px" }}
-                  transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  {p.href ? (
-                    <a
-                      href={p.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-amber rounded-3xl"
-                    >
-                      {cardBody}
-                    </a>
-                  ) : (
-                    cardBody
-                  )}
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
 
       {/* EXPERTISE */}
       <section className="relative py-24 lg:py-32">
