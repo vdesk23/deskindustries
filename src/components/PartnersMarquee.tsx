@@ -11,7 +11,7 @@ const LOGOS = [
   { src: squarespace.url, alt: "Squarespace Circle Gold Partner" },
   { src: lovable.url, alt: "Lovable" },
   { src: marketersPro.url, alt: "wearemarketers PRO" },
-  { src: marketersWorld.url, alt: "Marketers World 2026" },
+  { src: marketersWorld, alt: "Marketers World 2026" },
 ];
 
 export function PartnersMarquee() {
