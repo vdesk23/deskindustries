@@ -1,6 +1,6 @@
 import { Canvas, useFrame } from "@react-three/fiber";
-import { ContactShadows, Environment, Lightformer } from "@react-three/drei";
-import { useRef, type ReactNode } from "react";
+import { ContactShadows, PresentationControls, Environment, Lightformer } from "@react-three/drei";
+import { useRef, useState, type ReactNode } from "react";
 import * as THREE from "three";
 import { EXPERTISE_AREAS, SCENE_COLORS, type ArtifactKind } from "@/lib/expertise-data";
 import { DPR } from "@/lib/motion";
@@ -15,37 +15,33 @@ const Light = () => <meshStandardMaterial color={SCENE_COLORS.light} metalness={
 function Artifact({ kind, t }: { kind: ArtifactKind; t: number }) {
   const s = Math.sin(t);
   switch (kind) {
-    case "layers": // database → backend → UI
+    case "code": // </>
       return (
-        <group>
-          {[0, 1, 2].map((i) => (
-            <mesh key={i} position={[0, -0.6 + i * (0.6 + s * 0.08), 0]}>
-              <boxGeometry args={[1.8 - i * 0.2, 0.12, 1.2 - i * 0.1]} />
-              {i === 2 ? <Glow i={0.5} /> : <Glass />}
-            </mesh>
+        <group scale={0.9}>
+          {[-1, 1].map((d) => (
+            <group key={d} position-x={d * 0.95}>
+              <mesh position={[d * 0.15, 0.25, 0]} rotation-z={d * 0.75}><boxGeometry args={[0.18, 0.75, 0.25]} /><Light /></mesh>
+              <mesh position={[d * 0.15, -0.25, 0]} rotation-z={-d * 0.75}><boxGeometry args={[0.18, 0.75, 0.25]} /><Light /></mesh>
+            </group>
           ))}
-          <mesh position={[0.5, 0.75, 0.3]}><boxGeometry args={[0.35, 0.6, 0.04]} /><Light /></mesh>
+          <mesh rotation-z={-0.35}><boxGeometry args={[0.18, 1.6, 0.25]} /><Glow /></mesh>
         </group>
       );
-    case "nodes": {
-      const pts: [number, number, number][] = [[0, 0.7, 0], [-0.8, -0.4, 0.2], [0.8, -0.4, -0.2], [0, -0.1, 0.8]];
+    case "gear":
       return (
-        <group rotation-y={t * 0.3}>
-          <mesh><sphereGeometry args={[0.35, 32, 32]} /><Glow i={0.6 + s * 0.4} /></mesh>
-          {pts.map((p, i) => {
-            const v = new THREE.Vector3(...p);
-            const mid = v.clone().multiplyScalar(0.5);
-            const q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 1, 0), v.clone().normalize());
+        <group rotation-x={Math.PI / 2}><group rotation-y={t * 0.6}>
+          <mesh><cylinderGeometry args={[0.7, 0.7, 0.3, 48]} /><Light /></mesh>
+          {Array.from({ length: 10 }).map((_, i) => {
+            const a = (i / 10) * Math.PI * 2;
             return (
-              <group key={i}>
-                <mesh position={p}><sphereGeometry args={[0.16, 24, 24]} /><Light /></mesh>
-                <mesh position={mid} quaternion={q}><cylinderGeometry args={[0.025, 0.025, v.length(), 8]} /><Glow i={0.4} /></mesh>
-              </group>
+              <mesh key={i} position={[Math.cos(a) * 0.8, 0, Math.sin(a) * 0.8]} rotation-y={-a}>
+                <boxGeometry args={[0.28, 0.3, 0.22]} /><Light />
+              </mesh>
             );
           })}
-        </group>
+          <mesh position-y={0.01}><cylinderGeometry args={[0.25, 0.25, 0.34, 32]} /><Glow /></mesh>
+        </group></group>
       );
-    }
     case "prism":
       return (
         <group rotation-y={t * 0.4}>
@@ -80,23 +76,39 @@ function Artifact({ kind, t }: { kind: ArtifactKind; t: number }) {
           </group>
         </group>
       );
-    case "box":
+    case "cart":
       return (
-        <group rotation-y={t * 0.3 + 0.6}>
-          <mesh><boxGeometry args={[1.3, 0.9, 1]} /><Light /></mesh>
-          <mesh position-y={0.455}><boxGeometry args={[0.25, 0.01, 1.02]} /><Glow /></mesh>
-          <mesh position={[0, 0.7 + s * 0.08, 0]} rotation-x={Math.PI / 2}><torusGeometry args={[0.18, 0.04, 12, 32]} /><Glow i={0.5} /></mesh>
+        <group position-y={0.1}>
+          {/* basket */}
+          <mesh position={[0.1, 0.1, 0]} rotation-z={0.08}><boxGeometry args={[1.4, 0.7, 0.9]} /><Light /></mesh>
+          <mesh position={[0.1, 0.46, 0]}><boxGeometry args={[1.5, 0.05, 1]} /><Glow /></mesh>
+          {/* handle */}
+          <mesh position={[-0.75, 0.55, 0]} rotation-z={0.5}><cylinderGeometry args={[0.04, 0.04, 0.6, 12]} /><Glass /></mesh>
+          <mesh position={[-0.95, 0.8, 0]} rotation-x={Math.PI / 2}><cylinderGeometry args={[0.05, 0.05, 1, 12]} /><Glow /></mesh>
+          {/* frame + wheels */}
+          <mesh position={[0.1, -0.35, 0]}><boxGeometry args={[1.3, 0.05, 0.8]} /><Glass /></mesh>
+          {[[-0.45, 0.35], [-0.45, -0.35], [0.65, 0.35], [0.65, -0.35]].map(([x, z]) => (
+            <mesh key={`${x}${z}`} position={[x, -0.55, z]} rotation-x={Math.PI / 2}>
+              <torusGeometry args={[0.12, 0.05, 12, 24]} /><Glass />
+            </mesh>
+          ))}
         </group>
       );
-    default: // compass
+    default: // waves: equalizer bars + rings
       return (
-        <group rotation-x={-0.5}>
-          <mesh rotation-x={Math.PI / 2}><cylinderGeometry args={[0.95, 0.95, 0.12, 64]} /><Glass /></mesh>
-          <mesh rotation-x={Math.PI / 2} position-y={0.07}><torusGeometry args={[0.95, 0.03, 8, 96]} /><Glow i={0.5} /></mesh>
-          <group position-y={0.12} rotation-y={s * 0.6}>
-            <mesh position-z={-0.35} rotation-x={-Math.PI / 2}><coneGeometry args={[0.1, 0.7, 4]} /><Glow /></mesh>
-            <mesh position-z={0.35} rotation-x={Math.PI / 2}><coneGeometry args={[0.1, 0.7, 4]} /><Light /></mesh>
-          </group>
+        <group>
+          {Array.from({ length: 9 }).map((_, i) => {
+            const h = 0.3 + Math.abs(Math.sin(i * 0.9 + t * 3)) * 1.2 * (1 - Math.abs(i - 4) / 6);
+            return (
+              <mesh key={i} position={[(i - 4) * 0.22, 0, 0]} scale={[1, h, 1]}>
+                <boxGeometry args={[0.12, 1, 0.12]} />
+                {i === 4 ? <Glow /> : i % 2 ? <Light /> : <Glow i={0.4} />}
+              </mesh>
+            );
+          })}
+          {[1.25, 1.5].map((r) => (
+            <mesh key={r}><torusGeometry args={[r, 0.015, 8, 96, Math.PI * 0.5]} /><Glow i={0.4} /></mesh>
+          ))}
         </group>
       );
   }
@@ -118,14 +130,19 @@ function Slot({ index, active, reduced, children }: { index: number; active: num
     if (!reduced) t.current += dt;
     g.position.y = reduced ? 0 : Math.sin(t.current * 1.2) * 0.06;
   });
-  return <group ref={ref} scale={index === active ? 1 : 0.001}><Animated t={t} reduced={reduced}>{children}</Animated></group>;
+  return <group ref={ref} scale={index === active ? 1 : 0.001}><Animated t={t} reduced={reduced} on={index === active}>{children}</Animated></group>;
 }
 
-function Animated({ t, reduced, children }: { t: React.MutableRefObject<number>; reduced: boolean; children: (t: number) => ReactNode }) {
+function Animated({ t, reduced, on, children }: { t: React.MutableRefObject<number>; reduced: boolean; on: boolean; children: (t: number) => ReactNode }) {
   // Re-render artifact pose via a child group driven every frame.
   const ref = useRef<THREE.Group>(null);
-  useFrame(() => { if (ref.current && !reduced) ref.current.rotation.y = Math.sin(t.current * 0.4) * 0.35; });
-  return <group ref={ref}>{children(0)}</group>;
+  const [time, setTime] = useState(0);
+  useFrame(() => {
+    if (!on || reduced) return;
+    if (ref.current) ref.current.rotation.y = Math.sin(t.current * 0.4) * 0.35;
+    setTime(t.current);
+  });
+  return <group ref={ref}>{children(time)}</group>;
 }
 
 export default function ExpertiseStageScene({ active, reduced }: { active: number; reduced: boolean }) {
@@ -138,11 +155,13 @@ export default function ExpertiseStageScene({ active, reduced }: { active: numbe
         <Lightformer intensity={2} position={[0, 5, 0]} scale={[10, 10, 1]} />
         <Lightformer intensity={1.2} color={SCENE_COLORS.amber} position={[-5, 1, -1]} rotation-y={Math.PI / 2} scale={[20, 1, 1]} />
       </Environment>
+      <PresentationControls global cursor snap={false} speed={1.6} rotation={[0, 0, 0]} polar={[-Math.PI / 3, Math.PI / 3]} azimuth={[-Infinity, Infinity]}>
       {EXPERTISE_AREAS.map((a, i) => (
         <Slot key={a.id} index={i} active={active} reduced={reduced}>
           {(t) => <Artifact kind={a.artifact} t={t} />}
         </Slot>
       ))}
+      </PresentationControls>
       <ContactShadows position={[0, -1.15, 0]} opacity={0.5} scale={6} blur={2.4} far={3} color={SCENE_COLORS.dark} />
     </Canvas>
   );
