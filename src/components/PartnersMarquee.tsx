@@ -3,7 +3,7 @@ import shopify from "@/assets/partners/shopify.png.asset.json";
 import squarespace from "@/assets/partners/squarespace.png.asset.json";
 import lovable from "@/assets/partners/lovable.png.asset.json";
 import marketersPro from "@/assets/partners/marketers-pro.png.asset.json";
-import marketersWorld from "@/assets/partners/marketers-world.png.asset.json";
+import marketersWorld from "@/assets/partners/marketers-world.png";
 
 const LOGOS = [
   { src: google.url, alt: "Google Cloud Partner Network" },
