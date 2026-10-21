@@ -1,3 +1,4 @@
+import type { ErrorComponentProps } from "@tanstack/react-router";
 import { draftBeforeLoad } from "@/lib/draft-route";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import ReactMarkdown from "react-markdown";
@@ -152,7 +153,7 @@ function BlogNotFound() {
   );
 }
 
-function BlogError({ error }: { error: Error }) {
+function BlogError({ error }: ErrorComponentProps) {
   return (
     <div className="mx-auto max-w-2xl px-5 py-24 text-center">
       <h1 className="text-2xl font-display font-semibold">Errore nel caricamento</h1>
