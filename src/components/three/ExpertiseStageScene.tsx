@@ -1,6 +1,6 @@
 import { Canvas, useFrame } from "@react-three/fiber";
-import { ContactShadows, Environment, Lightformer } from "@react-three/drei";
-import { useRef, type ReactNode } from "react";
+import { ContactShadows, PresentationControls, Environment, Lightformer } from "@react-three/drei";
+import { useRef, useState, type ReactNode } from "react";
 import * as THREE from "three";
 import { EXPERTISE_AREAS, SCENE_COLORS, type ArtifactKind } from "@/lib/expertise-data";
 import { DPR } from "@/lib/motion";
@@ -29,7 +29,7 @@ function Artifact({ kind, t }: { kind: ArtifactKind; t: number }) {
       );
     case "gear":
       return (
-        <group rotation-z={reducedSpin(t)}>
+        <group rotation-x={Math.PI / 2}><group rotation-y={t * 0.6}>
           <mesh><cylinderGeometry args={[0.7, 0.7, 0.3, 48]} /><Light /></mesh>
           {Array.from({ length: 10 }).map((_, i) => {
             const a = (i / 10) * Math.PI * 2;
@@ -40,7 +40,7 @@ function Artifact({ kind, t }: { kind: ArtifactKind; t: number }) {
             );
           })}
           <mesh position-y={0.01}><cylinderGeometry args={[0.25, 0.25, 0.34, 32]} /><Glow /></mesh>
-        </group>
+        </group></group>
       );
     case "prism":
       return (
@@ -130,14 +130,19 @@ function Slot({ index, active, reduced, children }: { index: number; active: num
     if (!reduced) t.current += dt;
     g.position.y = reduced ? 0 : Math.sin(t.current * 1.2) * 0.06;
   });
-  return <group ref={ref} scale={index === active ? 1 : 0.001}><Animated t={t} reduced={reduced}>{children}</Animated></group>;
+  return <group ref={ref} scale={index === active ? 1 : 0.001}><Animated t={t} reduced={reduced} on={index === active}>{children}</Animated></group>;
 }
 
-function Animated({ t, reduced, children }: { t: React.MutableRefObject<number>; reduced: boolean; children: (t: number) => ReactNode }) {
+function Animated({ t, reduced, on, children }: { t: React.MutableRefObject<number>; reduced: boolean; on: boolean; children: (t: number) => ReactNode }) {
   // Re-render artifact pose via a child group driven every frame.
   const ref = useRef<THREE.Group>(null);
-  useFrame(() => { if (ref.current && !reduced) ref.current.rotation.y = Math.sin(t.current * 0.4) * 0.35; });
-  return <group ref={ref}>{children(0)}</group>;
+  const [time, setTime] = useState(0);
+  useFrame(() => {
+    if (!on || reduced) return;
+    if (ref.current) ref.current.rotation.y = Math.sin(t.current * 0.4) * 0.35;
+    setTime(t.current);
+  });
+  return <group ref={ref}>{children(time)}</group>;
 }
 
 export default function ExpertiseStageScene({ active, reduced }: { active: number; reduced: boolean }) {
@@ -150,11 +155,13 @@ export default function ExpertiseStageScene({ active, reduced }: { active: numbe
         <Lightformer intensity={2} position={[0, 5, 0]} scale={[10, 10, 1]} />
         <Lightformer intensity={1.2} color={SCENE_COLORS.amber} position={[-5, 1, -1]} rotation-y={Math.PI / 2} scale={[20, 1, 1]} />
       </Environment>
+      <PresentationControls global cursor snap={false} speed={1.6} rotation={[0, 0, 0]} polar={[-Math.PI / 3, Math.PI / 3]} azimuth={[-Infinity, Infinity]}>
       {EXPERTISE_AREAS.map((a, i) => (
         <Slot key={a.id} index={i} active={active} reduced={reduced}>
           {(t) => <Artifact kind={a.artifact} t={t} />}
         </Slot>
       ))}
+      </PresentationControls>
       <ContactShadows position={[0, -1.15, 0]} opacity={0.5} scale={6} blur={2.4} far={3} color={SCENE_COLORS.dark} />
     </Canvas>
   );
