@@ -3,7 +3,7 @@ import shopify from "@/assets/partners/shopify.png.asset.json";
 import squarespace from "@/assets/partners/squarespace.png.asset.json";
 import lovable from "@/assets/partners/lovable.png.asset.json";
 import marketersPro from "@/assets/partners/marketers-pro.png.asset.json";
-import marketersWorld from "@/assets/partners/marketers-world.png.asset.json";
+import marketersWorld from "@/assets/partners/marketers-world.png";
 
 const LOGOS = [
   { src: google.url, alt: "Google Cloud Partner Network" },
@@ -11,7 +11,7 @@ const LOGOS = [
   { src: squarespace.url, alt: "Squarespace Circle Gold Partner" },
   { src: lovable.url, alt: "Lovable" },
   { src: marketersPro.url, alt: "wearemarketers PRO" },
-  { src: marketersWorld.url, alt: "Marketers World 2026" },
+  { src: marketersWorld, alt: "Marketers World 2026" },
 ];
 
 export function PartnersMarquee() {
