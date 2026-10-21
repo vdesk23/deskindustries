@@ -50,9 +50,9 @@ const EXPERTISE = [
 ];
 
 const CAPABILITIES = [
-  "Automatizza la raccolta di recensioni",
-  "Costi di sviluppo a consumo",
-  "Incassa ed emetti fatture in automatico",
+  "Strategie di marketing data-driven",
+  "Soluzioni digitali Cloud e on-premises",
+  "Automazioni AI-based",
   "Proprietà del codice",
 ];
 
@@ -90,7 +90,7 @@ export function HomePage() {
             variants={fadeUp}
             className="mt-8 text-5xl sm:text-6xl lg:text-7xl font-display font-medium leading-[0.98] tracking-tight text-balance"
           >
-             Ti facciamo risparmiare <span className="italic text-amber">tempo</span> e <span className="italic text-amber">risorse</span> disegnando automazioni per la tua attività.
+             Ti facciamo risparmiare <span className="italic text-amber">tempo</span> e <span className="italic text-amber">risorse</span> disegnando soluzioni digitali per la tua attività.
           </motion.h1>
 
           <motion.p
