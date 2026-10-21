@@ -17,17 +17,7 @@ import { SceneBackground } from "@/components/layout/SceneBackground";
 import { Card3D } from "@/components/ui/Card3D";
 import { GoogleReviews } from "@/components/GoogleReviews";
 import { PartnersMarquee } from "@/components/PartnersMarquee";
-
-
-
-const EXPERTISE = [
-  { Icon: Bot, label: "Agenti AI", desc: "Team AI custom su Claude, GPT, workflows LangGraph." },
-  { Icon: Code2, label: "No-code / Low-code", desc: "Bubble, Webflow, Lovable, Supabase, Airtable." },
-  { Icon: Zap, label: "Automazioni", desc: "n8n, Make, Zapier orchestrati con logica AI." },
-  { Icon: Palette, label: "Brand & Design", desc: "Identità, sistemi visivi, prodotti UX-first." },
-  { Icon: Search, label: "SEO & AIO", desc: "Ottimizzazione per Google, ChatGPT, Perplexity." },
-  { Icon: Layers, label: "Web & Mobile", desc: "TanStack, Next, PWA, app native su misura." },
-];
+import { ExpertiseExplorer } from "@/components/ExpertiseExplorer";
 
 const CAPABILITIES = [
   "Strategie di marketing data-driven",
@@ -148,30 +138,13 @@ export function HomePage() {
               Expertise
             </p>
             <h2 className="text-4xl lg:text-5xl font-display font-medium tracking-tight text-balance">
-              Sei aree di competenza,{" "}
-              <span className="italic text-amber font-normal">un solo team orchestrato</span>.
+              Sette aree di competenza,{" "}
+              <span className="italic text-amber font-normal">un unico partner</span>.
             </h2>
+            <p className="mt-4 text-muted-foreground">Esplora le aree: clicca una forma, usa le frecce o scegli qui sotto.</p>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {EXPERTISE.map(({ Icon, label, desc }, i) => (
-              <motion.div
-                key={label}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.06 }}
-              >
-                <Card3D intensity={6} className="p-6 rounded-2xl border border-border bg-surface-elevated/50 backdrop-blur-xl h-full">
-                  <div className="size-12 rounded-xl bg-amber-soft flex items-center justify-center mb-5">
-                    <Icon className="size-5 text-amber" />
-                  </div>
-                  <h3 className="font-display font-semibold text-lg mb-2">{label}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
-                </Card3D>
-              </motion.div>
-            ))}
-          </div>
+          <ExpertiseExplorer />
         </div>
       </section>
 
