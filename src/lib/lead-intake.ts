@@ -27,9 +27,9 @@ export function serviceCategory(service: ServiceOption): string {
   const text = `${service.code} ${service.name}`.toLowerCase();
   if (/ecommerce|e-commerce|shopify|negozio online/.test(text)) return "E-commerce";
   if (/advertising|ads|campagn|pubblicit/.test(text)) return "Advertising";
-  if (/automat|agent|firebase|vertex|workflow/.test(text)) return "Automazioni";
+  if (/automat|automaz|agent|firebase|vertex|workflow|soluzioni ai|cloud/.test(text)) return "Automazioni";
   if (/brand|naming|archetip|logo/.test(text)) return "Branding";
-  if (/video|shoot|content|contenut|editorial|animaz|social/.test(text)) return "Content Creation";
+  if (/video|shoot|content|contenut|editorial|animaz|social|copy|blog|multipost/.test(text)) return "Content Creation";
   if (/consulen|coach|strateg/.test(text)) return "Consulenze";
   if (/web|app|landing|seo|geo|audit|sito|siti/.test(text)) return "Sviluppo Web / Mobile";
   return "Altri servizi";

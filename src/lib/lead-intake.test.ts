@@ -11,6 +11,9 @@ describe("two-step commercial intake", () => {
   it("groups generic catalog entries by service sector", () => {
     expect(groupServices([{ code: "SEO", name: "Audit SEO", category: "Servizi" }, { code: "ADS", name: "Google Ads", category: "Servizi" }]).map(([category]) => category)).toEqual(["Sviluppo Web / Mobile", "Advertising"]);
   });
+  it("categorizes automation services rather than placing them in other services", () => {
+    expect(groupServices([{ code: "AUTO", name: "Automazioni per Email Marketing", category: "Servizi" }])[0]?.[0]).toBe("Automazioni");
+  });
   it("uses official catalog names and rejects unknown services", () => {
     expect(resolveServices(["SEO", "SEO"], [{ code: "SEO", name: "Audit SEO", category: "Web" }])).toEqual([{ code: "SEO", name: "Audit SEO", category: "Web" }]);
     expect(() => resolveServices(["FAKE"], [])).toThrow();
