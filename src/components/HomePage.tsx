@@ -162,7 +162,9 @@ export function HomePage() {
               </p>
               <h2 className="text-4xl lg:text-5xl font-display font-medium tracking-tight text-balance">
                 Raccontaci il tuo progetto.{" "}
-                <span className="italic text-amber font-normal">{"\nTi rispondiamo entro 24h."}</span>
+                <span className="block italic text-amber font-normal">
+                  Ti rispondiamo entro 24h.
+                </span>
               </h2>
               <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
                 Ogni richiesta viene letta da una persona reale del team. Preparerai una call con un
