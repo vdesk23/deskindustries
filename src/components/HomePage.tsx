@@ -156,6 +156,9 @@ export function HomePage() {
         </div>
       </section>
 
+      {/* PARTNER & CERTIFICAZIONI */}
+      <PartnersMarquee />
+
       {/* IL GRUPPO */}
       <section className="relative py-24 lg:py-32">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
