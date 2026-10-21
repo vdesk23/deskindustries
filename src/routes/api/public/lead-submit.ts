@@ -15,7 +15,8 @@ const leadSchema = z.object({
   phone: z.string().trim().max(40).optional().or(z.literal("")),
   business: z.string().trim().max(120).optional().or(z.literal("")),
   sector: z.string().min(1).max(60),
-  selectedServices: z.array(z.string()).min(1).max(10),
+  selectedServices: z.array(z.string().max(160)).min(1).max(30),
+  serviceCodes: z.array(z.string().max(60)).max(30).optional(),
   expectedGoals: z.array(z.string()).max(10),
   lookingFor: z.string().trim().min(5).max(500),
   hasWebsite: z.string().max(40).optional(),
@@ -278,10 +279,31 @@ export const Route = createFileRoute("/api/public/lead-submit")({
         if (!adminRes.ok) console.error("Admin email enqueue failed", adminRes);
         if (!confirmRes.ok) console.error("Confirmation email enqueue failed", confirmRes);
 
+        // Sync to CONSUS: client record + user + draft opportunity. Never blocks the lead.
+        let consusSynced = false;
+        try {
+          const { pushLeadToConsus } = await import("@/lib/consus.server");
+          await pushLeadToConsus({
+            leadId,
+            name: data.name,
+            email: data.email,
+            phone: data.phone || undefined,
+            business: data.business || undefined,
+            sector: data.sector,
+            serviceCodes: data.serviceCodes ?? [],
+            serviceNames: data.selectedServices,
+            lookingFor: data.lookingFor,
+          });
+          consusSynced = true;
+        } catch (e) {
+          console.error("CONSUS sync failed", e instanceof Error ? e.message : e);
+        }
+
         return Response.json({
           success: true,
           leadId,
           accountCreated,
+          consusSynced,
           emailsQueued: { admin: adminRes.ok, confirmation: confirmRes.ok },
         });
       },

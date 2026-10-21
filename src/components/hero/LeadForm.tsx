@@ -1,4 +1,5 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
+import { listServiceCatalog } from "@/lib/services-catalog.functions";
 import { motion } from "framer-motion";
 import { ArrowRight, Check, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -24,11 +25,23 @@ const INTERESTS = [
   "Consulenza strategica",
 ] as const;
 
+type Option = { code: string; name: string };
+const FALLBACK: Option[] = INTERESTS.map((i) => ({ code: "", name: i }));
+
 export function LeadForm() {
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [selected, setSelected] = useState<string[]>([INTERESTS[0]]);
+  const [options, setOptions] = useState<Option[]>(FALLBACK);
+  const [selected, setSelected] = useState<string[]>([]);
+
+  useEffect(() => {
+    listServiceCatalog()
+      .then((r) => {
+        if (r.live && r.services.length) setOptions(r.services.map((s) => ({ code: s.code, name: s.name })));
+      })
+      .catch(() => {});
+  }, []);
 
   function toggle(v: string) {
     setSelected((s) => (s.includes(v) ? s.filter((x) => x !== v) : [...s, v]));
@@ -36,16 +49,22 @@ export function LeadForm() {
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (!selected.length) {
+      setError("Seleziona almeno un servizio.");
+      return;
+    }
     setLoading(true);
     setError(null);
     const fd = new FormData(e.currentTarget);
+    const picked = options.filter((o) => selected.includes(o.name));
     const payload = {
       name: String(fd.get("name") ?? ""),
       email: String(fd.get("email") ?? ""),
       phone: String(fd.get("phone") ?? ""),
       business: String(fd.get("business") ?? ""),
       sector: String(fd.get("sector") ?? "Altro"),
-      selectedServices: selected.length ? selected : [INTERESTS[0]],
+      selectedServices: picked.map((o) => o.name),
+      serviceCodes: picked.map((o) => o.code).filter(Boolean),
       expectedGoals: [],
       lookingFor: String(fd.get("lookingFor") ?? ""),
       contactPreference: "email" as const,
@@ -129,12 +148,13 @@ export function LeadForm() {
       <div className="space-y-2">
         <Label>Cosa ti interessa? *</Label>
         <div className="flex flex-wrap gap-2">
-          {INTERESTS.map((i) => {
+          {options.map(({ name: i }) => {
             const on = selected.includes(i);
             return (
               <button
                 type="button"
                 key={i}
+                aria-pressed={on}
                 onClick={() => toggle(i)}
                 className={`text-xs px-3 py-2 rounded-full border transition-colors ${
                   on
