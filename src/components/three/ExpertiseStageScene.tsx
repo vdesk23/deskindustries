@@ -5,7 +5,7 @@ import * as THREE from "three";
 import { EXPERTISE_AREAS, SCENE_COLORS, type ArtifactKind } from "@/lib/expertise-data";
 import { DPR } from "@/lib/motion";
 
-const glass = { color: SCENE_COLORS.dark, metalness: 0.6, roughness: 0.2 };
+const glass = { color: SCENE_COLORS.violet, metalness: 0.5, roughness: 0.25 };
 const Glass = () => <meshStandardMaterial {...glass} />;
 const Glow = ({ i = 0.8 }: { i?: number }) => (
   <meshStandardMaterial color={SCENE_COLORS.amber} emissive={SCENE_COLORS.amber} emissiveIntensity={i} metalness={0.3} roughness={0.3} />
