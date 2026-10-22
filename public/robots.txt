@@ -9,4 +9,4 @@ Disallow: /email/
 Disallow: /lovable/
 Disallow: /api/
 
-Sitemap: https://deskindustries.lovable.app/sitemap.xml
+Sitemap: https://www.deskindustries.com/sitemap.xml
