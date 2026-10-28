@@ -4,6 +4,8 @@ import { Logo } from "./Logo";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 
+const DESK_PM_URL = "https://project.deskinc.app";
+
 export function Header() {
   const { user } = useAuth();
 
@@ -22,11 +24,11 @@ export function Header() {
               </Button>
             </Link>
           ) : (
-            <Link to="/auth" search={{ redirect: "/account", mode: "login" }}>
+            <a href={DESK_PM_URL}>
               <Button variant="ghost" size="sm" className="rounded-full">
                 Accedi
               </Button>
-            </Link>
+            </a>
           )}
         </div>
       </div>
