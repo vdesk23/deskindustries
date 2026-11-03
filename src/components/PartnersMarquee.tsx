@@ -1,17 +1,17 @@
-import google from "@/assets/partners/google.png.asset.json";
-import shopify from "@/assets/partners/shopify.png.asset.json";
-import squarespace from "@/assets/partners/squarespace.png.asset.json";
-import lovable from "@/assets/partners/lovable.png.asset.json";
-import marketersPro from "@/assets/partners/marketers-pro.png.asset.json";
-import marketersWorld from "@/assets/partners/marketers-world.png";
+import google from "@/assets/partners/google.webp.asset.json";
+import shopify from "@/assets/partners/shopify.webp.asset.json";
+import squarespace from "@/assets/partners/squarespace.webp.asset.json";
+import lovable from "@/assets/partners/lovable.webp.asset.json";
+import marketersPro from "@/assets/partners/marketers-pro.webp.asset.json";
+import marketersWorld from "@/assets/partners/marketers-world.webp.asset.json";
 
 const LOGOS = [
-  { src: google.url, alt: "Google Cloud Partner Network" },
-  { src: shopify.url, alt: "Shopify Certified Partner" },
-  { src: squarespace.url, alt: "Squarespace Circle Gold Partner" },
-  { src: lovable.url, alt: "Lovable" },
-  { src: marketersPro.url, alt: "wearemarketers PRO" },
-  { src: marketersWorld, alt: "Marketers World 2026" },
+  { src: google.url, alt: "Google Cloud Partner Network", w: 330 },
+  { src: shopify.url, alt: "Shopify Certified Partner", w: 88 },
+  { src: squarespace.url, alt: "Squarespace Circle Gold Partner", w: 196 },
+  { src: lovable.url, alt: "Lovable", w: 427 },
+  { src: marketersPro.url, alt: "wearemarketers PRO", w: 849 },
+  { src: marketersWorld.url, alt: "Marketers World 2026", w: 1014 },
 ];
 
 export function PartnersMarquee() {
@@ -29,6 +29,9 @@ export function PartnersMarquee() {
               src={l.src}
               alt={l.alt}
               loading="lazy"
+              decoding="async"
+              width={l.w}
+              height={88}
               className="h-9 w-auto shrink-0 opacity-70 transition-opacity duration-300 hover:opacity-100 lg:h-11"
             />
           ))}
