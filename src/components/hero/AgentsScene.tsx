@@ -32,7 +32,7 @@ function AgentOrb({ position, color, speed }: { position: [number, number, numbe
 function Particles() {
   const ref = useRef<THREE.Points>(null);
   const positions = useMemo(() => {
-    const count = 800;
+    const count = 400;
     const arr = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
       const r = 4 + Math.random() * 4;
@@ -72,7 +72,7 @@ function CentralCore() {
   });
   return (
     <mesh ref={ref}>
-      <torusKnotGeometry args={[1.1, 0.32, 200, 32]} />
+      <torusKnotGeometry args={[1.1, 0.32, 96, 12]} />
       <meshStandardMaterial
         color="#EAA210"
         emissive="#EAA210"
@@ -89,8 +89,8 @@ export function AgentsScene() {
   return (
     <Canvas
       camera={{ position: [0, 0, 6], fov: 55 }}
-      dpr={[1, 2]}
-      gl={{ antialias: true, alpha: true }}
+      dpr={[0.75, 1]}
+      gl={{ antialias: false, alpha: true, powerPreference: "low-power" }}
     >
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} intensity={1.2} color="#EAA210" />

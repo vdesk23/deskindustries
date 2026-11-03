@@ -147,7 +147,7 @@ function Animated({ t, reduced, on, children }: { t: React.MutableRefObject<numb
 
 export default function ExpertiseStageScene({ active, reduced }: { active: number; reduced: boolean }) {
   return (
-    <Canvas dpr={DPR} camera={{ position: [0, 1.2, 4.6], fov: 40 }} gl={{ alpha: true, antialias: true }} onCreated={({ camera }) => camera.lookAt(0, 0, 0)}>
+    <Canvas frameloop={reduced ? "demand" : "always"} dpr={DPR} camera={{ position: [0, 1.2, 4.6], fov: 40 }} gl={{ alpha: true, antialias: true }} onCreated={({ camera }) => camera.lookAt(0, 0, 0)}>
       <ambientLight intensity={0.6} />
       <directionalLight position={[3, 5, 4]} intensity={1.6} />
       <pointLight position={[-2, 1, 2]} intensity={6} color={SCENE_COLORS.amber} distance={8} />
