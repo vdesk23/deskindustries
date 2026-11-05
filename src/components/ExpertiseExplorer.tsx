@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
+import { WebGLBoundary } from "@/components/three/WebGLBoundary";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { ArrowRight, Check, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -66,9 +67,11 @@ export function ExpertiseExplorer() {
       <div className="rounded-3xl border border-border bg-surface-elevated/50 backdrop-blur-xl overflow-hidden shadow-elevated">
         <div className="relative h-[260px] sm:h-[320px] border-b border-border">
           {visible && webgl ? (
+            <WebGLBoundary fallback={<div className="absolute inset-0 grid place-items-center"><p className="font-display text-3xl text-amber">{area.title}</p></div>}>
             <Suspense fallback={null}>
               <ExpertiseStageScene active={active} reduced={reduced} />
             </Suspense>
+            </WebGLBoundary>
           ) : (
             <div className="absolute inset-0 grid place-items-center">
               <p className="font-display text-3xl text-amber">{area.title}</p>
