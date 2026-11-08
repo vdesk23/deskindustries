@@ -4,12 +4,14 @@ import squarespace from "@/assets/partners/squarespace.webp.asset.json";
 import lovable from "@/assets/partners/lovable.webp.asset.json";
 import marketersPro from "@/assets/partners/marketers-pro.webp.asset.json";
 import marketersWorld from "@/assets/partners/marketers-world.webp.asset.json";
+import desution from "@/assets/partners/desution.webp.asset.json";
 
 const LOGOS = [
   { src: google.url, alt: "Google Cloud Partner Network", w: 330 },
   { src: shopify.url, alt: "Shopify Certified Partner", w: 88 },
   { src: squarespace.url, alt: "Squarespace Circle Gold Partner", w: 196 },
   { src: lovable.url, alt: "Lovable", w: 427 },
+  { src: desution.url, alt: "Desution", w: 591, href: "https://www.desution.com" },
   { src: marketersPro.url, alt: "wearemarketers PRO", w: 849 },
   { src: marketersWorld.url, alt: "Marketers World 2026", w: 1014 },
 ];
@@ -23,18 +25,35 @@ export function PartnersMarquee() {
       </p>
       <div className="relative mt-8 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]">
         <div className="flex w-max items-center gap-14 px-14 lg:gap-20 lg:px-20 animate-[marquee_32s_linear_infinite] hover:[animation-play-state:paused]">
-          {items.map((l, i) => (
-            <img
-              key={i}
-              src={l.src}
-              alt={l.alt}
-              loading="lazy"
-              decoding="async"
-              width={l.w}
-              height={88}
-              className="h-9 w-auto shrink-0 opacity-70 transition-opacity duration-300 hover:opacity-100 lg:h-11"
-            />
-          ))}
+          {items.map((l, i) => {
+            const image = (
+              <img
+                key={i}
+                src={l.src}
+                alt={l.alt}
+                loading="lazy"
+                decoding="async"
+                width={l.w}
+                height={88}
+                className="h-9 w-auto shrink-0 opacity-70 transition-opacity duration-300 hover:opacity-100 lg:h-11"
+              />
+            );
+
+            return l.href ? (
+              <a
+                key={i}
+                href={l.href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`Visita il sito di ${l.alt}`}
+                className="shrink-0 rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+              >
+                {image}
+              </a>
+            ) : (
+              image
+            );
+          })}
         </div>
       </div>
     </section>
