@@ -4,6 +4,7 @@ import squarespace from "@/assets/partners/squarespace.webp.asset.json";
 import lovable from "@/assets/partners/lovable.webp.asset.json";
 import marketersPro from "@/assets/partners/marketers-pro.webp.asset.json";
 import marketersWorld from "@/assets/partners/marketers-world.webp.asset.json";
+import desution from "@/assets/partners/desution.webp.asset.json";
 
 const LOGOS = [
   { src: google.url, alt: "Google Cloud Partner Network", w: 330 },
