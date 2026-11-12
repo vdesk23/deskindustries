@@ -1,6 +1,6 @@
 import { Body, Button, Container, Head, Heading, Html, Preview, Section, Text } from "@react-email/components";
 import type { TemplateEntry } from "./registry";
-import portfolioAsset from "@/assets/portfolio-desk-industries.pdf.asset.json";
+import portfolioAsset from "@/assets/portfolio-desk-industries-v2.pdf.asset.json";
 
 const SITE_URL = "https://www.deskindustries.com";
 
