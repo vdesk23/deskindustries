@@ -50,7 +50,7 @@ export function HomePage() {
             className="inline-flex items-center gap-2 rounded-full border border-border bg-background/40 backdrop-blur-xl px-3 py-1.5 text-xs text-muted-foreground"
           >
             <span className="size-1.5 rounded-full bg-amber animate-pulse" />
-             Soluzioni Digitali, Impatto Reale.
+             Zero vincoli contrattuali. Paghi solo ciò che usi.
           </motion.div>
 
           <motion.h1
@@ -70,7 +70,7 @@ export function HomePage() {
             variants={fadeUp}
             className="mt-6 text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto"
           >
-             Desk Industries aiuta le MPMI nella transizione digitale costruendo e disegnando automazioni per incrementare: vendite, marketing, logistica, gestione del personale e delle attività ripetitive
+             Desk Industries aiuta le MPMI nella transizione digitale costruendo e disegnando automazioni per incrementare: vendite, marketing, logistica, gestione del personale e delle attività ripetitive. Nessun contratto a lungo termine: paghi solo i servizi consumati, a settimana o a mese, come preferisci tu.
           </motion.p>
 
           <motion.ul
@@ -130,6 +130,42 @@ export function HomePage() {
       <PartnersMarquee />
 
 
+      {/* MODELLO DESK */}
+      <section className="relative py-24 lg:py-32">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="grid lg:grid-cols-12 gap-8 mb-16">
+            <div className="lg:col-span-7">
+              <p className="text-xs font-display tracking-[0.3em] text-amber uppercase mb-4">Il Modello Desk</p>
+              <h2 className="text-4xl lg:text-5xl font-display font-medium tracking-tight text-balance">
+                Niente contratti. <span className="italic text-amber font-normal">Solo risultati</span>.
+              </h2>
+            </div>
+            <p className="lg:col-span-5 text-muted-foreground leading-relaxed self-end">
+              Restiamo al tuo fianco perché funziona, non perché c'è una firma. Servizi, assistenza ed effort del team si adattano alle sfide di ogni giorno.
+            </p>
+          </div>
+          <div className="grid gap-6 lg:grid-cols-3">
+            {[
+              { Icon: Zap, t: "Zero vincoli", d: "Nessuna durata minima, nessuna penale. Puoi fermarti o ripartire quando vuoi." },
+              { Icon: Layers, t: "Paghi a consumo", d: "Solo i servizi e le ore effettivamente erogate, con cadenza settimanale o mensile: scegli tu." },
+              { Icon: Bot, t: "Su misura, day by day", d: "Priorità e risorse si riorganizzano sulle sfide reali della tua attività, giorno dopo giorno." },
+            ].map(({ Icon, t, d }, i) => (
+              <motion.div key={t} custom={i} initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
+                <Card3D intensity={6} className="rounded-3xl h-full">
+                  <div className="h-full rounded-3xl border border-border bg-surface-elevated/50 backdrop-blur-xl p-8">
+                    <div className="size-12 rounded-2xl bg-amber-soft flex items-center justify-center">
+                      <Icon className="size-6 text-amber" />
+                    </div>
+                    <h3 className="mt-6 text-xl font-display font-semibold tracking-tight">{t}</h3>
+                    <p className="mt-3 text-muted-foreground leading-relaxed">{d}</p>
+                  </div>
+                </Card3D>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* EXPERTISE */}
       <section className="relative py-24 lg:py-32">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
@@ -174,7 +210,7 @@ export function HomePage() {
                 {[
                   { Icon: Rocket, t: "Prima call gratuita", d: "30 minuti di analisi, senza impegno." },
                   { Icon: Cpu, t: "Proposta AI-powered", d: "Un piano d'azione generato in 48h dal nostro team." },
-                  { Icon: Sparkles, t: "Start rapido", d: "Si firma e si parte entro 7 giorni." },
+                  { Icon: Sparkles, t: "Nessun vincolo", d: "Partiamo in pochi giorni e paghi solo il lavoro svolto, a settimana o a mese." },
                 ].map(({ Icon, t, d }) => (
                   <div key={t} className="flex items-start gap-4">
                     <div className="size-10 rounded-lg bg-amber-soft flex items-center justify-center shrink-0">
