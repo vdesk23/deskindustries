@@ -184,6 +184,10 @@ export const Route = createFileRoute("/api/public/lead-submit")({
                 leadId = row.id;
               }
               const continuation = await bridge.issueContinuation(leadId);
+              if (!previous) {
+                const sent = await enqueueTemplate(db, "lead-portfolio", contact.email, { name: contact.name }, `lead-portfolio-${leadId}`).catch(() => null);
+                if (!sent?.ok) console.error("Portfolio email enqueue failed");
+              }
               try {
                 await bridge.registerConsusLead({ leadId, ...contact });
               } catch (error) {

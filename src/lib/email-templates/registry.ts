@@ -20,6 +20,7 @@ export interface TemplateEntry {
 import { template as welcomePostPurchase } from './welcome-post-purchase'
 import { template as leadRequestAdmin } from './lead-request-admin'
 import { template as leadRequestConfirmation } from './lead-request-confirmation'
+import { template as leadPortfolio } from './lead-portfolio'
 import { template as contentPlanAdmin } from './content-plan-admin'
 import { template as contentPlanConfirmation } from './content-plan-confirmation'
 import { template as folliaTicketStaff } from './follia-ticket-staff'
@@ -31,6 +32,7 @@ export const TEMPLATES: Record<string, TemplateEntry> = {
   'welcome-post-purchase': welcomePostPurchase,
   'lead-request-admin': leadRequestAdmin,
   'lead-request-confirmation': leadRequestConfirmation,
+  'lead-portfolio': leadPortfolio,
   'content-plan-admin': contentPlanAdmin,
   'content-plan-confirmation': contentPlanConfirmation,
   'follia-ticket-staff': folliaTicketStaff,
