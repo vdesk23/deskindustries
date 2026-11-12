@@ -20,10 +20,10 @@ import { PartnersMarquee } from "@/components/PartnersMarquee";
 import { ExpertiseExplorer } from "@/components/ExpertiseExplorer";
 
 const CAPABILITIES = [
-  "Strategie di marketing data-driven",
-  "Soluzioni digitali Cloud e on-premises",
-  "Automazioni AI-based",
-  "Proprietà del codice",
+  "Strategie di Marketing data-driven",
+  "Architetture di soluzioni Cloud ed AI",
+  "Costruzioni di Agenti AI",
+  "Nessun vincolo di contratto",
 ];
 
 const fadeUp = {
@@ -70,7 +70,7 @@ export function HomePage() {
             variants={fadeUp}
             className="mt-6 text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto"
           >
-             Desk Industries aiuta le MPMI nella transizione digitale costruendo e disegnando automazioni per incrementare: vendite, marketing, logistica, gestione del personale e delle attività ripetitive. Nessun contratto a lungo termine: paghi solo i servizi consumati, a settimana o a mese, come preferisci tu.
+             Desk Industries aiuta le MPMI nella transizione digitale costruendo e disegnando soluzioni per incrementare: vendite, marketing, logistica, gestione del personale e delle attività ripetitive.
           </motion.p>
 
           <motion.ul
