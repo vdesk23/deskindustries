@@ -1,8 +1,7 @@
 import type { ErrorComponentProps } from "@tanstack/react-router";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import { ArrowLeft, Calendar } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, ArrowRight } from "lucide-react";
+import { BlogMarkdown, extractHeadings, readingMinutes } from "@/components/BlogMarkdown";
 import { getPostBySlug } from "@/lib/blog.functions";
 
 export const Route = createFileRoute("/blog/$slug")({
@@ -75,6 +74,7 @@ function formatDate(d: string | null) {
 function BlogPostPage() {
   const data = Route.useLoaderData();
   if (!data) return null;
+  const headings = extractHeadings(data.content_md);
 
   return (
     <article className="mx-auto max-w-3xl px-5 lg:px-8 py-16 lg:py-24">
@@ -98,6 +98,10 @@ function BlogPostPage() {
           </>
         )}
         <span>·</span>
+        <span className="flex items-center gap-1">
+          <Clock className="size-3" /> {readingMinutes(data.content_md)} min di lettura
+        </span>
+        <span>·</span>
         <span>{data.author_name}</span>
       </div>
 
@@ -110,13 +114,47 @@ function BlogPostPage() {
 
       {data.cover_url && (
         <div className="mt-10 rounded-2xl overflow-hidden border border-border aspect-[16/9]">
-          <img src={data.cover_url} alt={data.title} className="w-full h-full object-cover" />
+          <img src={data.cover_url} alt={`Copertina: ${data.title}`} width={1600} height={900} className="w-full h-full object-cover" />
         </div>
       )}
 
-      <div className="mt-12 prose prose-invert prose-amber max-w-none blog-content">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>{data.content_md}</ReactMarkdown>
+      {headings.length > 2 && (
+        <nav aria-label="Indice dell'articolo" className="mt-12 rounded-2xl border border-border bg-card/60 p-6">
+          <p className="text-xs uppercase tracking-widest text-amber mb-4">In questo articolo</p>
+          <ol className="space-y-2">
+            {headings.map((h, i) => (
+              <li key={h.id}>
+                <a href={`#${h.id}`} className="flex gap-3 text-foreground/85 hover:text-amber transition-colors">
+                  <span className="text-muted-foreground tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+                  {h.text}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )}
+
+      <div className="mt-4">
+        <BlogMarkdown source={data.content_md} />
       </div>
+
+      <aside className="mt-16 rounded-2xl border border-amber/40 bg-card/70 p-8 lg:p-10">
+        <p className="text-xs uppercase tracking-widest text-amber mb-3">Parliamone</p>
+        <h2 className="text-2xl lg:text-3xl font-display font-medium text-balance">
+          Quante ore può restituirti un'automazione?
+        </h2>
+        <p className="mt-3 text-muted-foreground leading-relaxed">
+          Raccontaci il tuo progetto: nessun vincolo contrattuale, paghi solo ciò che usi.
+        </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <a href="/#lead" className="inline-flex items-center gap-2 rounded-full bg-amber px-5 py-2.5 text-sm font-medium text-background hover:brightness-110 transition">
+            Richiedi una consulenza <ArrowRight className="size-4" />
+          </a>
+          <Link to="/blog" className="inline-flex items-center gap-2 rounded-full border border-border px-5 py-2.5 text-sm hover:border-amber transition">
+            Altri articoli
+          </Link>
+        </div>
+      </aside>
 
       {data.tags.length > 0 && (
         <div className="mt-12 flex flex-wrap gap-2">
