@@ -7,3 +7,6 @@
 - [x] Audit tecnico, contenuti, visibilità Semrush e verifica accesso Search Console.
 - [x] Correggere dominio sitemap e direttiva Sitemap in robots dopo approvazione.
 - [ ] Verifica indicizzazione Google: proprietà non verificata nell’account consultato.
+
+# Immagini articolo Desution
+- [x] Sostituire copertina e immagini interne con grafiche 2D / infografiche e verificarle nell’articolo.
