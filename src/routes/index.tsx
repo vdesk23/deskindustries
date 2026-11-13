@@ -1,7 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { HomePage } from "@/components/HomePage";
+import { listPublishedPosts } from "@/lib/blog.functions";
 
 export const Route = createFileRoute("/")({
+  loader: async () => {
+    try {
+      const posts = await listPublishedPosts();
+      return posts.slice(0, 3);
+    } catch {
+      return [];
+    }
+  },
   head: () => ({
     meta: [
       { property: "og:type", content: "website" },
@@ -40,5 +49,10 @@ export const Route = createFileRoute("/")({
       },
     ],
   }),
-  component: HomePage,
+  component: HomeRoute,
 });
+
+function HomeRoute() {
+  const latestPosts = Route.useLoaderData();
+  return <HomePage latestPosts={latestPosts} />;
+}

@@ -18,6 +18,8 @@ import { Card3D } from "@/components/ui/Card3D";
 import { GoogleReviews } from "@/components/GoogleReviews";
 import { PartnersMarquee } from "@/components/PartnersMarquee";
 import { ExpertiseExplorer } from "@/components/ExpertiseExplorer";
+import { BlogTeaser } from "@/components/BlogTeaser";
+import type { BlogListItem } from "@/lib/blog.functions";
 
 const CAPABILITIES = [
   "Strategie di Marketing data-driven",
@@ -35,7 +37,7 @@ const fadeUp = {
   }),
 };
 
-export function HomePage() {
+export function HomePage({ latestPosts = [] }: { latestPosts?: BlogListItem[] }) {
   return (
     <>
       <SceneBackground />
@@ -233,6 +235,7 @@ export function HomePage() {
       </section>
 
       {/* BLOG TEASER */}
+      <BlogTeaser posts={latestPosts} />
     </>
   );
 }

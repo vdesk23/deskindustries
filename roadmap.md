@@ -10,3 +10,7 @@
 
 # Immagini articolo Desution
 - [x] Sostituire copertina e immagini interne con grafiche 2D / infografiche e verificarle nell’articolo.
+
+# Sezione blog in home
+- [x] Teaser dopo il form contatti: ultimi 3 articoli pubblicati e pulsante "Leggi tutto" verso /blog.
+- [ ] Pubblicare altri articoli: oggi ne risulta uno solo, quindi la griglia mostra una sola card.

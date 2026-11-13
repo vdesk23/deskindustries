@@ -7,6 +7,20 @@ import { z } from "zod";
 export type BlogPost = Database["public"]["Tables"]["blog_posts"]["Row"];
 export type BlogCategory = "case-study" | "news" | "insight";
 
+/** Fields returned by `listPublishedPosts` (no body, no admin metadata). */
+export type BlogListItem = Pick<
+  BlogPost,
+  | "id"
+  | "slug"
+  | "title"
+  | "excerpt"
+  | "cover_url"
+  | "category"
+  | "tags"
+  | "author_name"
+  | "published_at"
+>;
+
 function serverPublic() {
   const url = process.env.SUPABASE_URL!;
   const key = process.env.SUPABASE_PUBLISHABLE_KEY!;
