@@ -1,11 +1,9 @@
-import { draftBeforeLoad } from "@/lib/draft-route";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowUpRight, Calendar } from "lucide-react";
 import { listPublishedPosts } from "@/lib/blog.functions";
 
 export const Route = createFileRoute("/blog/")({
-  beforeLoad: draftBeforeLoad,
   loader: () => listPublishedPosts(),
   head: () => ({
     meta: [
@@ -16,6 +14,8 @@ export const Route = createFileRoute("/blog/")({
           "Case study, news e insight sulla digitalizzazione delle PMI dal gruppo Desk Industries.",
       },
       { property: "og:title", content: "Blog — Desk Industries" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       {
         property: "og:description",
         content: "Case study, news e insight sulla digitalizzazione delle PMI.",

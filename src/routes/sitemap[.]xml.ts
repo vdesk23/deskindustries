@@ -12,6 +12,8 @@ interface SitemapEntry {
 
 const STATIC_ROUTES: SitemapEntry[] = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
+  { path: "/blog", changefreq: "weekly", priority: "0.7" },
+  { path: "/blog/desk-industries-desution-partnership", lastmod: "2026-11-13", changefreq: "monthly", priority: "0.6" },
   { path: "/privacy", changefreq: "yearly", priority: "0.3" },
   { path: "/termini", changefreq: "yearly", priority: "0.3" },
 ];

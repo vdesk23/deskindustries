@@ -1,5 +1,4 @@
 import type { ErrorComponentProps } from "@tanstack/react-router";
-import { draftBeforeLoad } from "@/lib/draft-route";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -7,7 +6,6 @@ import { ArrowLeft, Calendar } from "lucide-react";
 import { getPostBySlug } from "@/lib/blog.functions";
 
 export const Route = createFileRoute("/blog/$slug")({
-  beforeLoad: draftBeforeLoad,
   loader: async ({ params }) => {
     const post = await getPostBySlug({ data: { slug: params.slug } });
     if (!post) throw notFound();
@@ -18,7 +16,7 @@ export const Route = createFileRoute("/blog/$slug")({
       return { meta: [{ title: "Articolo non trovato — Desk Industries" }, { name: "robots", content: "noindex" }] };
     }
     const desc = loaderData.excerpt ?? `${loaderData.title} — Desk Industries`;
-    const url = `https://deskindustries.lovable.app/blog/${params.slug}`;
+    const url = `https://www.deskindustries.com/blog/${params.slug}`;
     return {
       meta: [
         { title: `${loaderData.title} — Blog Desk Industries` },
@@ -26,6 +24,7 @@ export const Route = createFileRoute("/blog/$slug")({
         { property: "og:title", content: loaderData.title },
         { property: "og:description", content: desc },
         { property: "og:type", content: "article" },
+        { name: "twitter:card", content: "summary_large_image" },
         { property: "og:url", content: url },
         ...(loaderData.cover_url
           ? [
