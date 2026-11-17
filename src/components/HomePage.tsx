@@ -22,9 +22,9 @@ import { BlogTeaser } from "@/components/BlogTeaser";
 import type { BlogListItem } from "@/lib/blog.functions";
 
 const CAPABILITIES = [
-  "Strategie di Marketing data-driven",
-  "Architetture di soluzioni Cloud ed AI",
-  "Costruzioni di Agenti AI",
+  "Marketing data-driven per store fisici ed e-commerce",
+  "Cassa, magazzino e store online sincronizzati",
+  "Agenti AI per ordini, inventario e clienti",
   "Nessun vincolo di contratto",
 ];
 
@@ -52,7 +52,7 @@ export function HomePage({ latestPosts = [] }: { latestPosts?: BlogListItem[] })
             className="inline-flex items-center gap-2 rounded-full border border-border bg-background/40 backdrop-blur-xl px-3 py-1.5 text-xs text-muted-foreground"
           >
             <span className="size-1.5 rounded-full bg-amber animate-pulse" />
-             Zero vincoli contrattuali. Paghi solo ciò che usi.
+             Dal negozio fisico all'e-commerce · Zero vincoli, paghi solo ciò che usi.
           </motion.div>
 
           <motion.h1
@@ -62,7 +62,7 @@ export function HomePage({ latestPosts = [] }: { latestPosts?: BlogListItem[] })
             variants={fadeUp}
             className="mt-8 text-5xl sm:text-6xl lg:text-7xl font-display font-medium leading-[0.98] tracking-tight text-balance"
           >
-             Ti facciamo risparmiare <span className="italic text-amber">tempo</span> e <span className="italic text-amber">risorse</span> disegnando soluzioni digitali per la tua attività.
+             Portiamo il tuo <span className="italic text-amber">negozio</span> online e facciamo <span className="italic text-amber">crescere</span> il tuo e-commerce.
           </motion.h1>
 
           <motion.p
@@ -72,7 +72,7 @@ export function HomePage({ latestPosts = [] }: { latestPosts?: BlogListItem[] })
             variants={fadeUp}
             className="mt-6 text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto"
           >
-             Desk Industries aiuta le MPMI nella transizione digitale costruendo e disegnando soluzioni per incrementare: vendite, marketing, logistica, gestione del personale e delle attività ripetitive.
+             Desk Industries aiuta le attività con punti vendita fisici e le reti in franchising a posizionarsi online, scalare l'e-commerce e curare il branding, costruendo soluzioni per inventario, marketing, logistica e vendite.
           </motion.p>
 
           <motion.ul
@@ -115,8 +115,8 @@ export function HomePage({ latestPosts = [] }: { latestPosts?: BlogListItem[] })
             className="mt-24 flex flex-wrap justify-center gap-6 lg:gap-10 text-center"
           >
             {[
-               { num: "40+", label: "MPMI digitalizzate" },
-               { num: "500+", label: "Flussi di automazione" },
+               { num: "40+", label: "Negozi e attività digitalizzate" },
+               { num: "500+", label: "Automazioni tra store e magazzino" },
                { num: "4000+", label: "Ore risparmiate" },
             ].map((s) => (
               <div key={s.label} className="min-w-[160px] border-t-2 border-amber pt-4 px-6">
@@ -143,14 +143,14 @@ export function HomePage({ latestPosts = [] }: { latestPosts?: BlogListItem[] })
               </h2>
             </div>
             <p className="lg:col-span-5 text-muted-foreground leading-relaxed self-end">
-              Restiamo al tuo fianco perché funziona, non perché c'è una firma. Servizi, assistenza ed effort del team si adattano alle sfide di ogni giorno.
+              Restiamo al tuo fianco perché funziona, non perché c'è una firma. Servizi, assistenza ed effort del team seguono la stagionalità del tuo negozio: saldi, festività, lanci e picchi di ordini.
             </p>
           </div>
           <div className="grid gap-6 lg:grid-cols-3">
             {[
-              { Icon: Zap, t: "Zero vincoli", d: "Nessuna durata minima, nessuna penale. Puoi fermarti o ripartire quando vuoi." },
-              { Icon: Layers, t: "Paghi a consumo", d: "Solo i servizi e le ore effettivamente erogate, con cadenza settimanale o mensile: scegli tu." },
-              { Icon: Bot, t: "Su misura, day by day", d: "Priorità e risorse si riorganizzano sulle sfide reali della tua attività, giorno dopo giorno." },
+              { Icon: Zap, t: "Zero vincoli", d: "Nessuna durata minima, nessuna penale. Aumenti o metti in pausa l'effort in base alla stagione del tuo punto vendita." },
+              { Icon: Layers, t: "Paghi a consumo", d: "Solo sviluppo, campagne e automazioni effettivamente erogati, con cadenza settimanale o mensile: scegli tu." },
+              { Icon: Bot, t: "Su misura, day by day", d: "Dal Black Friday a un lotto di resi in magazzino: priorità e risorse si riorganizzano sulle urgenze reali del tuo store." },
             ].map(({ Icon, t, d }, i) => (
               <motion.div key={t} custom={i} initial="hidden" whileInView="show" viewport={{ once: true }} variants={fadeUp}>
                 <Card3D intensity={6} className="rounded-3xl h-full">
@@ -176,7 +176,7 @@ export function HomePage({ latestPosts = [] }: { latestPosts?: BlogListItem[] })
               Expertise
             </p>
             <h2 className="text-4xl lg:text-5xl font-display font-medium tracking-tight text-balance">
-              Sette aree di competenza,{" "}
+              Sette aree per il tuo retail,{" "}
               <span className="italic text-amber font-normal">un unico partner</span>.
             </h2>
             <p className="mt-4 text-muted-foreground">Esplora le aree: clicca una forma, usa le frecce o scegli qui sotto.</p>
