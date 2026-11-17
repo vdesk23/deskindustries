@@ -196,23 +196,24 @@ export function HomePage({ latestPosts = [] }: { latestPosts?: BlogListItem[] })
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
             <div>
               <p className="text-xs font-display tracking-[0.3em] text-amber uppercase mb-4">
-                Iniziamo
+                Iniziamo · Audit retail-to-digital
               </p>
               <h2 className="text-4xl lg:text-5xl font-display font-medium tracking-tight text-balance">
-                Raccontaci il tuo progetto.{" "}
+                Dal tuo negozio fisico al tuo store scalabile.{" "}
                 <span className="block italic text-amber font-normal">
                   Ti rispondiamo entro 24h.
                 </span>
               </h2>
               <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
-                Ogni richiesta viene letta da una persona reale del team. Preparerai una call con un
-                senior specialist, non con un commerciale.
+                Analizziamo il tuo punto vendita, la cassa o il tuo e-commerce e ti presentiamo una
+                roadmap concreta per sincronizzare magazzino, vendite in negozio e ordini online. Parli
+                direttamente con uno specialista, non con un venditore.
               </p>
               <div className="mt-10 grid gap-4">
                 {[
-                  { Icon: Rocket, t: "Prima call gratuita", d: "30 minuti di analisi, senza impegno." },
-                  { Icon: Cpu, t: "Proposta AI-powered", d: "Un piano d'azione generato in 48h dal nostro team." },
-                  { Icon: Sparkles, t: "Nessun vincolo", d: "Partiamo in pochi giorni e paghi solo il lavoro svolto, a settimana o a mese." },
+                  { Icon: Rocket, t: "Audit cassa e magazzino", d: "Verifichiamo come collegare il tuo gestionale al nuovo store senza errori di giacenza." },
+                  { Icon: Cpu, t: "Roadmap omnicanale in 48h", d: "Priorità e tempi chiari tra branding, campagne drive-to-store e vendite online." },
+                  { Icon: Sparkles, t: "Zero vincoli, zero canoni", d: "Paghi solo il lavoro svolto, a settimana o a mese, come preferisci." },
                 ].map(({ Icon, t, d }) => (
                   <div key={t} className="flex items-start gap-4">
                     <div className="size-10 rounded-lg bg-amber-soft flex items-center justify-center shrink-0">

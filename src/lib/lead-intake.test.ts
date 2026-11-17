@@ -1,12 +1,24 @@
 import { describe, expect, it } from "vitest";
-import { registrationSchema, quoteRequestSchema, groupServices, resolveServices } from "./lead-intake";
+import { registrationSchema, quoteRequestSchema, groupServices, resolveServices, STORE_CATEGORIES, STORE_SITUATIONS } from "./lead-intake";
+
+const company = { business: "Boutique Rossi srl", vatNumber: "12345678901", address: "Via Roma 1", city: "Roma" };
+const baseQuote = { action: "quote", continuation: "token", sector: STORE_CATEGORIES[0], situation: STORE_SITUATIONS[0], serviceCodes: ["SEO"], company };
 
 describe("two-step commercial intake", () => {
   it("accepts contact registration without services or quote details", () => {
     expect(registrationSchema.parse({ action: "register", name: "Mario Rossi", email: "mario@example.com", phone: "", business: "", sector: "Retail" }).action).toBe("register");
   });
   it("requires at least one Sibill service for the second step", () => {
-    expect(quoteRequestSchema.safeParse({ action: "quote", continuation: "token", serviceCodes: [], lookingFor: "Nuovo sito" }).success).toBe(false);
+    expect(quoteRequestSchema.safeParse({ ...baseQuote, serviceCodes: [] }).success).toBe(false);
+  });
+  it("step 1 creates the contact with only name, email and phone", () => {
+    expect(registrationSchema.safeParse({ action: "register", name: "Mario Rossi", email: "mario@example.com", phone: "333" }).success).toBe(true);
+  });
+  it("leaves the goal text optional", () => {
+    expect(quoteRequestSchema.safeParse(baseQuote).success).toBe(true);
+  });
+  it("requires company data for the quote", () => {
+    expect(quoteRequestSchema.safeParse({ ...baseQuote, company: { ...company, vatNumber: "" } }).success).toBe(false);
   });
   it("groups generic catalog entries by service sector", () => {
     expect(groupServices([{ code: "SEO", name: "Audit SEO", category: "Servizi" }, { code: "ADS", name: "Google Ads", category: "Servizi" }]).map(([category]) => category)).toEqual(["Sviluppo Web / Mobile", "Advertising"]);

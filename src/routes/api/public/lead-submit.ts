@@ -4,7 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { TEMPLATES } from "@/lib/email-templates/registry";
-import { registrationSchema, quoteRequestSchema, resolveServices } from "@/lib/lead-intake";
+import { registrationSchema, quoteRequestSchema, resolveServices, quoteBrief } from "@/lib/lead-intake";
 
 const SITE_NAME = "Desk Industries";
 const SENDER_DOMAIN = "notify.deskindustries.com";
@@ -201,16 +201,18 @@ export const Route = createFileRoute("/api/public/lead-submit")({
           }
           if (body.action === "quote") {
             const parsedQuote = quoteRequestSchema.safeParse(body);
-            if (!parsedQuote.success) return Response.json({ error: "Seleziona almeno un servizio e descrivi il tuo obiettivo." }, { status: 400 });
+            if (!parsedQuote.success) return Response.json({ error: "Controlla servizi e dati della società." }, { status: 400 });
             try {
               const leadId = await bridge.verifyContinuation(parsedQuote.data.continuation);
-              const { data: contact, error } = await db.from("lead_requests").select("name,email,phone,business,sector").eq("id", leadId).single();
-              if (error || !contact) return Response.json({ error: "Riparti dai dati di contatto." }, { status: 400 });
+              const { data: stored, error } = await db.from("lead_requests").select("name,email,phone").eq("id", leadId).single();
+              if (error || !stored) return Response.json({ error: "Riparti dai dati di contatto." }, { status: 400 });
               const picked = resolveServices(parsedQuote.data.serviceCodes, await bridge.fetchConsusCatalog());
               const services = picked.map((item) => item.name);
-              const lookingFor = parsedQuote.data.lookingFor;
+              const q = parsedQuote.data;
+              const contact = { ...stored, sector: q.sector, business: q.company.business };
+              const lookingFor = quoteBrief(q);
               await bridge.createConsusQuote({ leadId, ...contact, phone: contact.phone ?? undefined, business: contact.business ?? undefined, serviceCodes: picked.map((item) => item.code), serviceNames: services, lookingFor });
-              const { error: updateError } = await db.from("lead_requests").update({ selected_services: services, looking_for: lookingFor }).eq("id", leadId);
+              const { error: updateError } = await db.from("lead_requests").update({ selected_services: services, looking_for: lookingFor, sector: q.sector, business: q.company.business, message: q.situation }).eq("id", leadId);
               if (updateError) throw updateError;
               const templateData = { ...contact, selectedServices: services, lookingFor, expectedGoals: [], accountCreated: false };
               const emailResults = await Promise.allSettled([
