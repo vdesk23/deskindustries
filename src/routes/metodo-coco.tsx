@@ -20,7 +20,7 @@ export const Route = createFileRoute("/metodo-coco")({
         content: "Quattro fasi pensate per attività locali con una saracinesca da alzare ogni mattina.",
       },
     ],
-    links: [{ rel: "canonical", href: "https://deskindustries.lovable.app/metodo-coco" }],
+    links: [{ rel: "canonical", href: "https://www.deskindustries.com/metodo-coco" }],
   }),
   component: MetodoPage,
 });

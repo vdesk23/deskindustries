@@ -20,7 +20,7 @@ export const Route = createFileRoute("/chi-siamo")({
         content: "L'agenzia che porta clienti reali nei negozi reali.",
       },
     ],
-    links: [{ rel: "canonical", href: "https://deskindustries.lovable.app/chi-siamo" }],
+    links: [{ rel: "canonical", href: "https://www.deskindustries.com/chi-siamo" }],
   }),
   component: ChiSiamoPage,
 });

@@ -261,7 +261,7 @@ export const Route = createFileRoute("/settori/$slug")({
         ]
       : [],
     links: loaderData
-      ? [{ rel: "canonical", href: `https://deskindustries.lovable.app/settori/${params.slug}` }]
+      ? [{ rel: "canonical", href: `https://www.deskindustries.com/settori/${params.slug}` }]
       : [],
     scripts: loaderData
       ? [
@@ -274,7 +274,7 @@ export const Route = createFileRoute("/settori/$slug")({
               description: loaderData.sector.tagline,
               provider: { "@type": "Organization", name: "Desk Industries" },
               areaServed: "IT",
-              url: `https://deskindustries.lovable.app/settori/${params.slug}`,
+              url: `https://www.deskindustries.com/settori/${params.slug}`,
             }),
           },
         ]

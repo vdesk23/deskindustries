@@ -14,36 +14,42 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://www.deskindustries.com/" },
       { name: "twitter:card", content: "summary_large_image" },
-      { title: "Desk Industries — Gruppo di digitalizzazione per PMI" },
+      { title: "Desk Industries — E-commerce e digitale per negozi fisici" },
       {
         name: "description",
         content:
-          "Gruppo di digitalizzazione per PMI: agenti AI e specialisti per marketing, prodotti proprietari (Arkeo) e automazioni no-code.",
+          "Portiamo il tuo negozio fisico online: e-commerce, sync cassa e magazzino, agenti AI, advertising drive-to-store e branding. Zero vincoli, paghi a consumo.",
       },
-      { property: "og:title", content: "Desk Industries — Gruppo di digitalizzazione per PMI" },
+      { property: "og:title", content: "Desk Industries — E-commerce e digitale per negozi fisici" },
       {
         property: "og:description",
-        content: "Team di agenti AI + specialisti per digitalizzare la tua azienda.",
+        content:
+          "Dal negozio fisico all'e-commerce scalabile: inventario, logistica, vendite e branding. Zero vincoli contrattuali.",
       },
     ],
-    links: [{ rel: "canonical", href: "https://deskindustries.lovable.app/" }],
+    links: [{ rel: "canonical", href: "https://www.deskindustries.com/" }],
     scripts: [
       {
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "LocalBusiness",
-          "@id": "https://deskindustries.lovable.app/#localbusiness",
+          "@type": "ProfessionalService",
+          "@id": "https://www.deskindustries.com/#business",
           name: "Desk Industries",
           legalName: "Desk Industries SRLS",
-          url: "https://deskindustries.lovable.app",
+          url: "https://www.deskindustries.com",
+          parentOrganization: { "@id": "https://www.deskindustries.com/#organization" },
           description:
-            "Gruppo di digitalizzazione per PMI: marketing con metodo COCO, prodotti proprietari e automazioni.",
-          areaServed: "IT",
-          address: {
-            "@type": "PostalAddress",
-            addressCountry: "IT",
+            "Agenzia digitale per attività locali con negozi fisici e reti in franchising: e-commerce, sincronizzazione cassa e magazzino, agenti AI, advertising drive-to-store, branding e content. Nessun vincolo contrattuale, pagamento a consumo settimanale o mensile.",
+          areaServed: { "@type": "Country", name: "Italia" },
+          address: { "@type": "PostalAddress", addressCountry: "IT" },
+          knowsAbout: ["E-commerce", "Shopify", "Omnicanalità retail", "Gestione inventario", "Agenti AI", "Advertising drive-to-store", "Branding e packaging", "SEO locale"],
+          hasOfferCatalog: {
+            "@type": "OfferCatalog",
+            name: "Servizi retail-to-digital",
+            itemListElement: ["Sviluppo e-commerce e app Click & Collect", "Sync cassa, magazzino e store online", "Agenti AI per ordini, spedizioni e resi", "Campagne Meta e Google drive-to-store", "Branding e packaging per store e franchising", "Content creation in negozio", "Consulenza retail-to-digital"].map((n) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name: n } })),
           },
         }),
       },

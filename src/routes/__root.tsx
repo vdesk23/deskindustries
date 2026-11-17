@@ -34,24 +34,24 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Desk Industries — Gruppo di digitalizzazione per PMI" },
+      { title: "Desk Industries — E-commerce e digitale per negozi fisici" },
       {
         name: "description",
         content:
-          "Gruppo di digitalizzazione per PMI: agenti AI e specialisti per marketing, prodotti proprietari (Arkeo) e automazioni no-code.",
+          "Portiamo il tuo negozio fisico online: e-commerce, sync cassa e magazzino, agenti AI, advertising drive-to-store e branding. Zero vincoli, paghi a consumo.",
       },
       { name: "author", content: "Desk Industries SRLS" },
-      { property: "og:title", content: "Desk Industries — Gruppo di digitalizzazione per PMI" },
+      { property: "og:title", content: "Desk Industries — E-commerce e digitale per negozi fisici" },
       {
         property: "og:description",
         content:
-          "Team di agenti AI + specialisti per digitalizzare la tua azienda. Marketing (Magnus), prodotti proprietari (Arkeo), automazioni no-code.",
+          "Dal negozio fisico all'e-commerce scalabile: inventario, logistica, vendite e branding. Zero vincoli contrattuali.",
       },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Desk Industries" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Desk Industries — Gruppo di digitalizzazione per PMI" },
-      { name: "twitter:description", content: "Team di agenti AI + specialisti per digitalizzare la tua azienda." },
+      { name: "twitter:title", content: "Desk Industries — E-commerce e digitale per negozi fisici" },
+      { name: "twitter:description", content: "Dal negozio fisico all'e-commerce scalabile: inventario, logistica, vendite e branding. Zero vincoli contrattuali." },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -71,18 +71,19 @@ export const Route = createRootRoute({
           "@graph": [
             {
               "@type": "Organization",
-              "@id": "https://deskindustries.lovable.app/#organization",
+              "@id": "https://www.deskindustries.com/#organization",
               name: "Desk Industries",
               legalName: "Desk Industries SRLS",
-              url: "https://deskindustries.lovable.app",
-              sameAs: ["https://www.deskindustries.com"],
+              url: "https://www.deskindustries.com",
+              sameAs: ["https://www.desution.com"],
+              logo: "https://www.deskindustries.com/favicon.png",
             },
             {
               "@type": "WebSite",
-              "@id": "https://deskindustries.lovable.app/#website",
-              url: "https://deskindustries.lovable.app",
+              "@id": "https://www.deskindustries.com/#website",
+              url: "https://www.deskindustries.com",
               name: "Desk Industries",
-              publisher: { "@id": "https://deskindustries.lovable.app/#organization" },
+              publisher: { "@id": "https://www.deskindustries.com/#organization" },
               inLanguage: "it-IT",
             },
           ],

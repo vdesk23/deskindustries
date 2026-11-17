@@ -12,7 +12,7 @@ import {
 import type { TemplateEntry } from "./registry";
 
 const SITE_NAME = "Desk Industries";
-const SITE_URL = "https://deskindustries.lovable.app";
+const SITE_URL = "https://www.deskindustries.com";
 
 interface LeadRequestConfirmationProps {
   name?: string;

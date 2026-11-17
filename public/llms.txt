@@ -1,25 +1,25 @@
 # Desk Industries
 
-> Desk Industries SRLS è un gruppo di digitalizzazione: agenti AI e specialisti che progettano soluzioni su misura per PMI e attività locali. Marketing con il metodo COCO, prodotti proprietari come Arkeo e Follia, automazioni no-code.
+> Desk Industries SRLS (Italia) aiuta attività locali con negozi fisici e reti in franchising a posizionarsi online, scalare il proprio e-commerce e curare branding e comunicazione. Soluzioni per inventario, marketing, logistica, vendite e branding, incluso sviluppo software e agenti AI dedicati al retail. Nessun vincolo contrattuale: il cliente paga solo i servizi consumati, a settimana o a mese.
 
-## Pages
+## Per chi
+- Negozi fisici che vogliono aprire un canale online e diversificare
+- Attività con e-commerce da sincronizzare con cassa e magazzino o da scalare
+- Catene retail e reti in franchising che vogliono un branding coordinato
 
-- [Home](/): Chi siamo, servizi e progetti del gruppo Desk Industries.
-- [Chi siamo](/chi-siamo): Storia, valori e team di Desk Industries SRLS.
-- [Metodo COCO](/metodo-coco): Il framework Costruire-Online-Cementificare-Offline per attività locali.
-- [Servizi e pacchetti](/pacchetti): Aree Coco Web, Coco Social, CoCoaching ed Executive.
-- [Settori](/settori): Soluzioni verticali per barbieri, ristoranti, palestre e altri settori.
-- [Progetti](/progetti): Case study e prodotti proprietari (Arkeo, Follia, Magnus).
-- [Follia](/follia): Piattaforma per la gestione di siti web e ticketing dedicata ai clienti.
-- [Contatti](/contatti): Come contattarci e richiedere una proposta.
-- [Blog](/blog): Case study, news e insight sulla digitalizzazione delle PMI.
+## Servizi
+- Sviluppo web/mobile: store online, app ordini e Click & Collect, SEO locale ed e-commerce
+- Automazioni e agenti AI: sync giacenze, ordini, spedizioni e resi
+- E-commerce: Shopify e custom, conversioni, recupero carrelli, scaling
+- Advertising: campagne Meta e Google drive-to-store e performance e-commerce
+- Branding e packaging, content creation in negozio
+- Consulenze retail-to-digital e formazione del personale
 
-## Tools
+## Pagine
+- [Home](https://www.deskindustries.com/): servizi, modello senza vincoli, richiesta di preventivo
+- [Blog](https://www.deskindustries.com/blog): case study e news
+- [Partnership Desk Industries × Desution](https://www.deskindustries.com/blog/desk-industries-desution-partnership)
 
-- [Ottimizzatore SEO](/tools/ottimizzatore-seo): Strumento per ottimizzare articoli per motori di ricerca e AI.
-- [Piano contenuti](/tools/piano-contenuti): Generatore di piani editoriali su misura.
-
-## Optional
-
-- [Privacy](/privacy): Informativa privacy.
-- [Termini](/termini): Termini di servizio.
+## Contatti
+- Email: master@deskindustries.com
+- Modulo: https://www.deskindustries.com/#lead

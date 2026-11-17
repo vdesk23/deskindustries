@@ -20,7 +20,7 @@ export const Route = createFileRoute("/pacchetti")({
         content: "Aree servizio COCO per web, social e coaching digitale. Preventivi su richiesta.",
       },
     ],
-    links: [{ rel: "canonical", href: "https://deskindustries.lovable.app/pacchetti" }],
+    links: [{ rel: "canonical", href: "https://www.deskindustries.com/pacchetti" }],
     scripts: [
       {
         type: "application/ld+json",
