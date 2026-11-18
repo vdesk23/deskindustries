@@ -613,6 +613,80 @@ export type Database = {
           },
         ]
       }
+      landing_contacts: {
+        Row: {
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          line: string
+          phone: string
+          utm: Json
+          variant: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          first_name: string
+          id?: string
+          last_name: string
+          line: string
+          phone: string
+          utm?: Json
+          variant?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          line?: string
+          phone?: string
+          utm?: Json
+          variant?: string | null
+        }
+        Relationships: []
+      }
+      landing_requests: {
+        Row: {
+          answers: Json
+          contact_id: string
+          created_at: string
+          id: string
+          line: string
+          notes: string | null
+          preferred_slot: string | null
+        }
+        Insert: {
+          answers?: Json
+          contact_id: string
+          created_at?: string
+          id?: string
+          line: string
+          notes?: string | null
+          preferred_slot?: string | null
+        }
+        Update: {
+          answers?: Json
+          contact_id?: string
+          created_at?: string
+          id?: string
+          line?: string
+          notes?: string | null
+          preferred_slot?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "landing_requests_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "landing_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lead_requests: {
         Row: {
           business: string | null

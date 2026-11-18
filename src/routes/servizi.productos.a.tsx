@@ -1,0 +1,205 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { ArrowDown, ArrowRight, Check, Compass, Lightbulb, Rocket } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card3D } from "@/components/ui/Card3D";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { LandingForm } from "@/components/landing/LandingForm";
+import { Reveal } from "@/components/landing/Reveal";
+import { useLandingUtm } from "@/components/landing/useLandingUtm";
+import { GoogleBadge, METHOD_NAME, METHOD_STEPS, PRODUCTOS_FAQ, PRODUCTOS_QUESTIONS, Testimonials } from "@/components/landing/productos-content";
+import hero from "@/assets/productos-hero.jpg";
+
+const TITLE = "ProductOS — Il prodotto digitale del tuo negozio";
+const DESC = "Pensi che il tuo negozio non possa avere un prodotto digitale? Lo troviamo noi, creiamo la strategia e lo lanciamo. Prima call gratuita.";
+
+export const Route = createFileRoute("/servizi/productos/a")({
+  head: () => ({
+    meta: [
+      { title: TITLE },
+      { name: "description", content: DESC },
+      { property: "og:title", content: TITLE },
+      { property: "og:description", content: DESC },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://www.deskindustries.com/servizi/productos/a" },
+      { rel: "preload", as: "image", href: hero },
+    ],
+    scripts: [{
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@graph": [
+          { "@type": "Service", name: "ProductOS", serviceType: "Creazione di prodotti digitali per negozi fisici", provider: { "@id": "https://www.deskindustries.com/#organization" }, areaServed: "IT" },
+          { "@type": "FAQPage", mainEntity: PRODUCTOS_FAQ.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) },
+        ],
+      }),
+    }],
+  }),
+  component: ProductOSLong,
+});
+
+const Eyebrow = ({ children }: { children: React.ReactNode }) => (
+  <p className="text-xs font-display uppercase tracking-[0.25em] text-amber mb-4">{children}</p>
+);
+
+function ProductOSLong() {
+  useLandingUtm();
+  return (
+    <div className="relative">
+      {/* 1. Hook */}
+      <section className="relative min-h-[92vh] flex items-end overflow-hidden">
+        <img src={hero} alt="Titolare di un negozio con un tablet che mostra il suo prodotto digitale" width={1600} height={1008}
+          fetchPriority="high" className="absolute inset-0 h-full w-full object-cover object-[60%_25%]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-background/10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/30 to-transparent" />
+        <div className="relative mx-auto max-w-7xl px-5 lg:px-8 pb-20 pt-40 w-full">
+          <div className="max-w-2xl">
+            <Eyebrow>ProductOS · Desk Industries</Eyebrow>
+            <h1 className="font-display text-4xl sm:text-6xl font-medium tracking-tight leading-[1.05]">
+              Il tuo negozio ha già un <span className="italic text-amber font-normal">prodotto digitale</span>. Noi lo troviamo.
+            </h1>
+            <p className="mt-6 text-lg text-muted-foreground max-w-xl">
+              Non serve essere esperti di digitale. Partiamo da ciò che sai fare meglio e lo trasformiamo in un prodotto che vende anche quando il negozio è chiuso.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <Card3D intensity={10}><a href="#form"><Button variant="amber" size="lg" className="rounded-full">Prenota la call gratuita <ArrowRight className="size-4" /></Button></a></Card3D>
+              <a href="#metodo" className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center gap-1">Come funziona <ArrowDown className="size-4" /></a>
+            </div>
+            <div className="mt-8"><GoogleBadge /></div>
+          </div>
+        </div>
+      </section>
+
+      {/* 2. Agitazione */}
+      <section className="relative py-24 lg:py-32">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="grid gap-8 lg:grid-cols-12 mb-12">
+            <div className="lg:col-span-7">
+              <Eyebrow>Il blocco</Eyebrow>
+              <h2 className="font-display text-3xl sm:text-5xl font-medium tracking-tight">“Il digitale <span className="italic text-amber font-normal">non fa per me</span>.”</h2>
+            </div>
+            <p className="lg:col-span-5 text-muted-foreground self-end">
+              È la frase che sentiamo più spesso. Non è colpa tua: nessuno ti ha mai mostrato cosa può diventare digitale nel tuo lavoro. Intanto, però, il negozio resta legato a tre limiti.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              ["Margini sempre più stretti", "Affitto, personale e fornitori crescono. Il prezzo dei prodotti no."],
+              ["Clienti solo di zona", "Chi non passa davanti alla vetrina non sa che esisti."],
+              ["Ricavi legati agli orari", "Quando abbassi la saracinesca, smetti di guadagnare."],
+            ].map(([t, d], i) => (
+              <Reveal key={t} delay={i * 80}>
+                <Card3D intensity={5} className="h-full rounded-2xl border border-border bg-surface-elevated/50 backdrop-blur-xl p-6">
+                  <h3 className="font-display text-lg font-medium tracking-tight">{t}</h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{d}</p>
+                </Card3D>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 3. Soluzione */}
+      <section className="relative py-24 lg:py-32">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8 grid gap-12 lg:grid-cols-2 items-center">
+          <Reveal>
+            <Eyebrow>La soluzione</Eyebrow>
+            <h2 className="font-display text-3xl sm:text-5xl font-medium tracking-tight">Dal bancone a un <span className="italic text-amber font-normal">secondo fatturato</span>.</h2>
+            <p className="mt-6 text-muted-foreground">Troviamo noi il prodotto digitale adatto al tuo negozio e costruiamo la strategia per venderlo.</p>
+            <ul className="mt-8 space-y-4">
+              {[
+                "Analizziamo il tuo know-how e i tuoi clienti per capire cosa può diventare digitale.",
+                "Scegliamo il prodotto giusto: corso, app, abbonamento o kit digitale.",
+                "Lo lanciamo e lo facciamo crescere insieme a te.",
+              ].map((p) => <li key={p} className="flex gap-3"><Check className="size-5 text-amber shrink-0 mt-0.5" /><span>{p}</span></li>)}
+            </ul>
+            <a href="#form" className="inline-block mt-8"><Button variant="amber" className="rounded-full">Scopri il tuo prodotto <ArrowRight className="size-4" /></Button></a>
+          </Reveal>
+          <Reveal delay={100}>
+            <div className="grid grid-cols-2 gap-4">
+              {[["Corsi e masterclass", "Insegna ciò che sai fare"], ["App fedeltà", "Clienti che tornano"], ["Abbonamenti", "Ricavi ricorrenti"], ["Kit digitali", "Guide, template, ricette"]].map(([t, d]) => (
+                <div key={t} className="rounded-2xl border border-border bg-surface-elevated/50 backdrop-blur-xl p-5">
+                  <p className="font-display font-medium">{t}</p><p className="text-xs text-muted-foreground mt-1">{d}</p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* 4. Metodo */}
+      <section id="metodo" className="relative py-24 lg:py-32 scroll-mt-10">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="grid gap-8 lg:grid-cols-12 mb-12">
+            <div className="lg:col-span-7">
+              <Eyebrow>Il metodo</Eyebrow>
+              <h2 className="font-display text-3xl sm:text-5xl font-medium tracking-tight"><span className="italic text-amber font-normal">{METHOD_NAME}</span>: tre passi, nessun salto nel vuoto.</h2>
+            </div>
+            <p className="lg:col-span-5 text-muted-foreground self-end">Un setup iniziale e una piccola quota sui ricavi del prodotto: guadagniamo quando guadagni anche tu.</p>
+          </div>
+          <div className="grid gap-6 lg:grid-cols-3">
+            {METHOD_STEPS.map((s, i) => {
+              const Icon = [Compass, Lightbulb, Rocket][i];
+              return (
+                <Reveal key={s.t} delay={i * 100}>
+                  <Card3D intensity={6} className="h-full rounded-3xl border border-border bg-surface-elevated/50 backdrop-blur-xl p-8">
+                    <div className="flex items-center justify-between"><Icon className="size-6 text-amber" /><span className="font-display text-sm text-muted-foreground">{s.n}</span></div>
+                    <h3 className="mt-6 font-display text-2xl font-medium tracking-tight">{s.t}</h3>
+                    <p className="mt-3 text-sm text-muted-foreground">{s.d}</p>
+                  </Card3D>
+                </Reveal>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* 5. Prove */}
+      <section className="relative py-24 lg:py-32">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="grid gap-8 lg:grid-cols-12 mb-12">
+            <div className="lg:col-span-7">
+              <Eyebrow>Chi l'ha già fatto</Eyebrow>
+              <h2 className="font-display text-3xl sm:text-5xl font-medium tracking-tight">Prodotti digitali <span className="italic text-amber font-normal">già nati</span> con noi.</h2>
+            </div>
+            <p className="lg:col-span-5 text-muted-foreground self-end">Con CONSUS abbiamo trasformato un metodo di lavoro in un software gestionale. Lo stesso approccio lo applichiamo ai negozi.</p>
+          </div>
+          <Testimonials count={3} />
+        </div>
+      </section>
+
+      {/* 6. Modulo */}
+      <section id="form" className="relative py-24 lg:py-32 scroll-mt-10">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8 grid gap-12 lg:grid-cols-2 items-start">
+          <div>
+            <Eyebrow>Prima call gratuita</Eyebrow>
+            <h2 className="font-display text-3xl sm:text-5xl font-medium tracking-tight">Scopri il <span className="italic text-amber font-normal">prodotto digitale</span> del tuo negozio.</h2>
+            <p className="mt-6 text-muted-foreground">Tre domande, due minuti. Ti richiamiamo noi per una call gratuita di 30 minuti.</p>
+          </div>
+          <LandingForm line="productos" lineLabel="ProductOS" variant="a" questions={PRODUCTOS_QUESTIONS} />
+        </div>
+      </section>
+
+      {/* 7. FAQ */}
+      <section className="relative py-24 lg:py-32">
+        <div className="mx-auto max-w-3xl px-5 lg:px-8">
+          <Eyebrow>Domande frequenti</Eyebrow>
+          <h2 className="font-display text-3xl sm:text-4xl font-medium tracking-tight mb-8">Hai ancora <span className="italic text-amber font-normal">dubbi</span>?</h2>
+          <Accordion type="single" collapsible className="rounded-3xl border border-border bg-surface-elevated/50 backdrop-blur-xl px-6">
+            {PRODUCTOS_FAQ.map((f, i) => (
+              <AccordionItem key={f.q} value={`f${i}`}>
+                <AccordionTrigger className="font-display text-left">{f.q}</AccordionTrigger>
+                <AccordionContent className="text-muted-foreground">{f.a}</AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+          <div className="mt-10 text-center">
+            <Card3D intensity={10} className="inline-block"><a href="#form"><Button variant="amber" size="lg" className="rounded-full">Prenota la call gratuita <ArrowRight className="size-4" /></Button></a></Card3D>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}

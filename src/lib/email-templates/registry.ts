@@ -27,8 +27,10 @@ import { template as folliaTicketStaff } from './follia-ticket-staff'
 import { template as folliaTicketCustomerConfirmation } from './follia-ticket-customer-confirmation'
 import { template as folliaNewRequestStaff } from './follia-new-request-staff'
 import { template as folliaRequestReceived } from './follia-request-received'
+import { template as landingLeadStaff } from './landing-lead-staff'
 
 export const TEMPLATES: Record<string, TemplateEntry> = {
+  'landing-lead-staff': landingLeadStaff,
   'welcome-post-purchase': welcomePostPurchase,
   'lead-request-admin': leadRequestAdmin,
   'lead-request-confirmation': leadRequestConfirmation,

@@ -46,6 +46,8 @@ export function Footer() {
             <div className="flex items-center gap-4">
               <Link to="/privacy" className="hover:text-foreground">Privacy</Link>
               <Link to="/termini" className="hover:text-foreground">Termini</Link>
+              <Link to="/cookie-policy" className="hover:text-foreground">Cookie Policy</Link>
+              <button type="button" className="hover:text-foreground" onClick={() => window.dispatchEvent(new Event("open-cookie-settings"))}>Impostazioni cookie</button>
             </div>
           </div>
           <p className="font-display tracking-wider">

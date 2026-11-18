@@ -15,7 +15,9 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ChiSiamoRouteImport } from './routes/chi-siamo'
 import { Route as ContattiRouteImport } from './routes/contatti'
+import { Route as CookiePolicyRouteImport } from './routes/cookie-policy'
 import { Route as FolliaRouteImport } from './routes/follia'
+import { Route as GrazieRouteImport } from './routes/grazie'
 import { Route as MetodoCocoRouteImport } from './routes/metodo-coco'
 import { Route as PacchettiRouteImport } from './routes/pacchetti'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -31,6 +33,7 @@ import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
+import { Route as ServiziIndexRouteImport } from './routes/servizi.index'
 import { Route as SettoriIndexRouteImport } from './routes/settori.index'
 import { Route as SettoriSlugRouteImport } from './routes/settori.$slug'
 import { Route as ToolsOttimizzatoreSeoRouteImport } from './routes/tools.ottimizzatore-seo'
@@ -40,8 +43,12 @@ import { Route as AdminBlogIndexRouteImport } from './routes/admin.blog.index'
 import { Route as AdminBlogIdRouteImport } from './routes/admin.blog.$id'
 import { Route as AdminSitesSiteIdRouteImport } from './routes/admin.sites.$siteId'
 import { Route as ApiPublicContentPlanSubmitRouteImport } from './routes/api/public/content-plan-submit'
+import { Route as ApiPublicLandingSubmitRouteImport } from './routes/api/public/landing-submit'
 import { Route as ApiPublicLeadSubmitRouteImport } from './routes/api/public/lead-submit'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
+import { Route as ServiziProductosIndexRouteImport } from './routes/servizi.productos.index'
+import { Route as ServiziProductosARouteImport } from './routes/servizi.productos.a'
+import { Route as ServiziProductosBRouteImport } from './routes/servizi.productos.b'
 import { Route as AccountTicketsTicketIdPayRouteImport } from './routes/account.tickets.$ticketId.pay'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
@@ -78,9 +85,19 @@ const ContattiRoute = ContattiRouteImport.update({
   path: '/contatti',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CookiePolicyRoute = CookiePolicyRouteImport.update({
+  id: '/cookie-policy',
+  path: '/cookie-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FolliaRoute = FolliaRouteImport.update({
   id: '/follia',
   path: '/follia',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GrazieRoute = GrazieRouteImport.update({
+  id: '/grazie',
+  path: '/grazie',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MetodoCocoRoute = MetodoCocoRouteImport.update({
@@ -158,6 +175,11 @@ const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
   path: '/email/unsubscribe',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServiziIndexRoute = ServiziIndexRouteImport.update({
+  id: '/servizi/',
+  path: '/servizi/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettoriIndexRoute = SettoriIndexRouteImport.update({
   id: '/settori/',
   path: '/settori/',
@@ -204,6 +226,11 @@ const ApiPublicContentPlanSubmitRoute =
     path: '/api/public/content-plan-submit',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicLandingSubmitRoute = ApiPublicLandingSubmitRouteImport.update({
+  id: '/api/public/landing-submit',
+  path: '/api/public/landing-submit',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicLeadSubmitRoute = ApiPublicLeadSubmitRouteImport.update({
   id: '/api/public/lead-submit',
   path: '/api/public/lead-submit',
@@ -212,6 +239,21 @@ const ApiPublicLeadSubmitRoute = ApiPublicLeadSubmitRouteImport.update({
 const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   id: '/lovable/email/suppression',
   path: '/lovable/email/suppression',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiziProductosIndexRoute = ServiziProductosIndexRouteImport.update({
+  id: '/servizi/productos/',
+  path: '/servizi/productos/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiziProductosARoute = ServiziProductosARouteImport.update({
+  id: '/servizi/productos/a',
+  path: '/servizi/productos/a',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiziProductosBRoute = ServiziProductosBRouteImport.update({
+  id: '/servizi/productos/b',
+  path: '/servizi/productos/b',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AccountTicketsTicketIdPayRoute =
@@ -252,7 +294,9 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/chi-siamo': typeof ChiSiamoRoute
   '/contatti': typeof ContattiRoute
+  '/cookie-policy': typeof CookiePolicyRoute
   '/follia': typeof FolliaRoute
+  '/grazie': typeof GrazieRoute
   '/metodo-coco': typeof MetodoCocoRoute
   '/pacchetti': typeof PacchettiRoute
   '/privacy': typeof PrivacyRoute
@@ -271,14 +315,19 @@ export interface FileRoutesByFullPath {
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
+  '/servizi/': typeof ServiziIndexRoute
   '/settori/': typeof SettoriIndexRoute
   '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/sites/$siteId': typeof AdminSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
+  '/api/public/landing-submit': typeof ApiPublicLandingSubmitRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/servizi/productos/a': typeof ServiziProductosARoute
+  '/servizi/productos/b': typeof ServiziProductosBRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
+  '/servizi/productos/': typeof ServiziProductosIndexRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -291,7 +340,9 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/chi-siamo': typeof ChiSiamoRoute
   '/contatti': typeof ContattiRoute
+  '/cookie-policy': typeof CookiePolicyRoute
   '/follia': typeof FolliaRoute
+  '/grazie': typeof GrazieRoute
   '/metodo-coco': typeof MetodoCocoRoute
   '/pacchetti': typeof PacchettiRoute
   '/privacy': typeof PrivacyRoute
@@ -310,14 +361,19 @@ export interface FileRoutesByTo {
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/admin': typeof AdminIndexRoute
   '/blog': typeof BlogIndexRoute
+  '/servizi': typeof ServiziIndexRoute
   '/settori': typeof SettoriIndexRoute
   '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/sites/$siteId': typeof AdminSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
+  '/api/public/landing-submit': typeof ApiPublicLandingSubmitRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/servizi/productos/a': typeof ServiziProductosARoute
+  '/servizi/productos/b': typeof ServiziProductosBRoute
   '/admin/blog': typeof AdminBlogIndexRoute
+  '/servizi/productos': typeof ServiziProductosIndexRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -332,7 +388,9 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/chi-siamo': typeof ChiSiamoRoute
   '/contatti': typeof ContattiRoute
+  '/cookie-policy': typeof CookiePolicyRoute
   '/follia': typeof FolliaRoute
+  '/grazie': typeof GrazieRoute
   '/metodo-coco': typeof MetodoCocoRoute
   '/pacchetti': typeof PacchettiRoute
   '/privacy': typeof PrivacyRoute
@@ -351,14 +409,19 @@ export interface FileRoutesById {
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
+  '/servizi/': typeof ServiziIndexRoute
   '/settori/': typeof SettoriIndexRoute
   '/account/sites/$siteId': typeof AccountSitesSiteIdRoute
   '/admin/blog/$id': typeof AdminBlogIdRoute
   '/admin/sites/$siteId': typeof AdminSitesSiteIdRoute
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
+  '/api/public/landing-submit': typeof ApiPublicLandingSubmitRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/servizi/productos/a': typeof ServiziProductosARoute
+  '/servizi/productos/b': typeof ServiziProductosBRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
+  '/servizi/productos/': typeof ServiziProductosIndexRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -374,7 +437,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/chi-siamo'
     | '/contatti'
+    | '/cookie-policy'
     | '/follia'
+    | '/grazie'
     | '/metodo-coco'
     | '/pacchetti'
     | '/privacy'
@@ -393,14 +458,19 @@ export interface FileRouteTypes {
     | '/tools/piano-contenuti'
     | '/admin/'
     | '/blog/'
+    | '/servizi/'
     | '/settori/'
     | '/account/sites/$siteId'
     | '/admin/blog/$id'
     | '/admin/sites/$siteId'
     | '/api/public/content-plan-submit'
+    | '/api/public/landing-submit'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
+    | '/servizi/productos/a'
+    | '/servizi/productos/b'
     | '/admin/blog/'
+    | '/servizi/productos/'
     | '/account/tickets/$ticketId/pay'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
@@ -413,7 +483,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/chi-siamo'
     | '/contatti'
+    | '/cookie-policy'
     | '/follia'
+    | '/grazie'
     | '/metodo-coco'
     | '/pacchetti'
     | '/privacy'
@@ -432,14 +504,19 @@ export interface FileRouteTypes {
     | '/tools/piano-contenuti'
     | '/admin'
     | '/blog'
+    | '/servizi'
     | '/settori'
     | '/account/sites/$siteId'
     | '/admin/blog/$id'
     | '/admin/sites/$siteId'
     | '/api/public/content-plan-submit'
+    | '/api/public/landing-submit'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
+    | '/servizi/productos/a'
+    | '/servizi/productos/b'
     | '/admin/blog'
+    | '/servizi/productos'
     | '/account/tickets/$ticketId/pay'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
@@ -453,7 +530,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/chi-siamo'
     | '/contatti'
+    | '/cookie-policy'
     | '/follia'
+    | '/grazie'
     | '/metodo-coco'
     | '/pacchetti'
     | '/privacy'
@@ -472,14 +551,19 @@ export interface FileRouteTypes {
     | '/tools/piano-contenuti'
     | '/admin/'
     | '/blog/'
+    | '/servizi/'
     | '/settori/'
     | '/account/sites/$siteId'
     | '/admin/blog/$id'
     | '/admin/sites/$siteId'
     | '/api/public/content-plan-submit'
+    | '/api/public/landing-submit'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
+    | '/servizi/productos/a'
+    | '/servizi/productos/b'
     | '/admin/blog/'
+    | '/servizi/productos/'
     | '/account/tickets/$ticketId/pay'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
@@ -494,7 +578,9 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ChiSiamoRoute: typeof ChiSiamoRoute
   ContattiRoute: typeof ContattiRoute
+  CookiePolicyRoute: typeof CookiePolicyRoute
   FolliaRoute: typeof FolliaRoute
+  GrazieRoute: typeof GrazieRoute
   MetodoCocoRoute: typeof MetodoCocoRoute
   PacchettiRoute: typeof PacchettiRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -509,10 +595,15 @@ export interface RootRouteChildren {
   ToolsOttimizzatoreSeoRoute: typeof ToolsOttimizzatoreSeoRoute
   ToolsPianoContenutiRoute: typeof ToolsPianoContenutiRoute
   BlogIndexRoute: typeof BlogIndexRoute
+  ServiziIndexRoute: typeof ServiziIndexRoute
   SettoriIndexRoute: typeof SettoriIndexRoute
   ApiPublicContentPlanSubmitRoute: typeof ApiPublicContentPlanSubmitRoute
+  ApiPublicLandingSubmitRoute: typeof ApiPublicLandingSubmitRoute
   ApiPublicLeadSubmitRoute: typeof ApiPublicLeadSubmitRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
+  ServiziProductosARoute: typeof ServiziProductosARoute
+  ServiziProductosBRoute: typeof ServiziProductosBRoute
+  ServiziProductosIndexRoute: typeof ServiziProductosIndexRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
   LovableEmailTransactionalSendRoute: typeof LovableEmailTransactionalSendRoute
@@ -563,11 +654,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContattiRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cookie-policy': {
+      id: '/cookie-policy'
+      path: '/cookie-policy'
+      fullPath: '/cookie-policy'
+      preLoaderRoute: typeof CookiePolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/follia': {
       id: '/follia'
       path: '/follia'
       fullPath: '/follia'
       preLoaderRoute: typeof FolliaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/grazie': {
+      id: '/grazie'
+      path: '/grazie'
+      fullPath: '/grazie'
+      preLoaderRoute: typeof GrazieRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/metodo-coco': {
@@ -675,6 +780,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmailUnsubscribeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/servizi/': {
+      id: '/servizi/'
+      path: '/servizi'
+      fullPath: '/servizi/'
+      preLoaderRoute: typeof ServiziIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settori/': {
       id: '/settori/'
       path: '/settori'
@@ -738,6 +850,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicContentPlanSubmitRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/landing-submit': {
+      id: '/api/public/landing-submit'
+      path: '/api/public/landing-submit'
+      fullPath: '/api/public/landing-submit'
+      preLoaderRoute: typeof ApiPublicLandingSubmitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/lead-submit': {
       id: '/api/public/lead-submit'
       path: '/api/public/lead-submit'
@@ -750,6 +869,27 @@ declare module '@tanstack/react-router' {
       path: '/lovable/email/suppression'
       fullPath: '/lovable/email/suppression'
       preLoaderRoute: typeof LovableEmailSuppressionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servizi/productos/': {
+      id: '/servizi/productos/'
+      path: '/servizi/productos'
+      fullPath: '/servizi/productos/'
+      preLoaderRoute: typeof ServiziProductosIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servizi/productos/a': {
+      id: '/servizi/productos/a'
+      path: '/servizi/productos/a'
+      fullPath: '/servizi/productos/a'
+      preLoaderRoute: typeof ServiziProductosARouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servizi/productos/b': {
+      id: '/servizi/productos/b'
+      path: '/servizi/productos/b'
+      fullPath: '/servizi/productos/b'
+      preLoaderRoute: typeof ServiziProductosBRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/account/tickets/$ticketId/pay': {
@@ -852,7 +992,9 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ChiSiamoRoute: ChiSiamoRoute,
   ContattiRoute: ContattiRoute,
+  CookiePolicyRoute: CookiePolicyRoute,
   FolliaRoute: FolliaRoute,
+  GrazieRoute: GrazieRoute,
   MetodoCocoRoute: MetodoCocoRoute,
   PacchettiRoute: PacchettiRoute,
   PrivacyRoute: PrivacyRoute,
@@ -867,10 +1009,15 @@ const rootRouteChildren: RootRouteChildren = {
   ToolsOttimizzatoreSeoRoute: ToolsOttimizzatoreSeoRoute,
   ToolsPianoContenutiRoute: ToolsPianoContenutiRoute,
   BlogIndexRoute: BlogIndexRoute,
+  ServiziIndexRoute: ServiziIndexRoute,
   SettoriIndexRoute: SettoriIndexRoute,
   ApiPublicContentPlanSubmitRoute: ApiPublicContentPlanSubmitRoute,
+  ApiPublicLandingSubmitRoute: ApiPublicLandingSubmitRoute,
   ApiPublicLeadSubmitRoute: ApiPublicLeadSubmitRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
+  ServiziProductosARoute: ServiziProductosARoute,
+  ServiziProductosBRoute: ServiziProductosBRoute,
+  ServiziProductosIndexRoute: ServiziProductosIndexRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
   LovableEmailTransactionalSendRoute: LovableEmailTransactionalSendRoute,
