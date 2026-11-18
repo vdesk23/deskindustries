@@ -62,13 +62,13 @@ function ProductOSLong() {
           <div className="max-w-2xl">
             <Eyebrow>ProductOS · Desk Industries</Eyebrow>
             <h1 className="font-display text-4xl sm:text-6xl font-medium tracking-tight leading-[1.05]">
-              <WordsIn text="Il tuo negozio ha già un" /><span className="lp-word italic lp-thread-text font-normal" style={{ animationDelay: "420ms" }}>prodotto digitale.</span>{" "}<WordsIn text="Noi lo troviamo." start={560} />
+              <WordsIn text="Diversifica la tua attività con" /><span className="lp-word italic lp-thread-text font-normal" style={{ animationDelay: "420ms" }}>prodotto digitale.</span>
             </h1>
             <p className="mt-6 text-lg text-muted-foreground max-w-xl">
-              Non serve essere esperti di digitale. Partiamo da ciò che sai fare meglio e lo trasformiamo in un prodotto che vende anche quando il negozio è chiuso.
+              Pensi davvero che non ce ne sia nessun prodotto digitale per la tua attività? Negli ultimi 6 anni abbiamo fatto cambiare idea ad oltre 50 imprenditori aiutandoli a diversificare il proprio fatturato.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Card3D intensity={10}><a href="#form"><Button variant="amber" size="lg" className="rounded-full">Prenota la call gratuita <ArrowRight className="size-4" /></Button></a></Card3D>
+              <Card3D intensity={10}><a href="#form"><Button variant="amber" size="lg" className="rounded-full">Scopri il tuo prodotto digitale <ArrowRight className="size-4" /></Button></a></Card3D>
               <a href="#metodo" className="text-sm text-muted-foreground hover:text-foreground inline-flex items-center gap-1">Come funziona <ArrowDown className="size-4" /></a>
             </div>
             <div className="mt-8"><GoogleBadge /></div>
@@ -122,7 +122,7 @@ function ProductOSLong() {
             <p className="mt-6 text-muted-foreground">Troviamo noi il prodotto digitale adatto al tuo negozio e costruiamo la strategia per venderlo.</p>
             <ul className="mt-8 space-y-4">
               {[
-                "Analizziamo il tuo know-how e i tuoi clienti per capire cosa può diventare digitale.",
+                "Analizziamo il tuo know-how, il settore e i tuoi clienti per capire cosa può diventare digitale.",
                 "Scegliamo il prodotto giusto: corso, app, abbonamento o kit digitale.",
                 "Lo lanciamo e lo facciamo crescere insieme a te.",
               ].map((p) => <li key={p} className="flex gap-3"><Check className="size-5 text-amber shrink-0 mt-0.5" /><span>{p}</span></li>)}

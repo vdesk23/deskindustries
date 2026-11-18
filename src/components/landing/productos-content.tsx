@@ -8,7 +8,7 @@ export const PRODUCTOS_QUESTIONS: Question[] = [
   { id: "E-commerce", label: "Vendi già online?", options: ["No, solo in negozio", "Sì, con un e-commerce", "Solo social / marketplace"] },
 ];
 
-export const METHOD_NAME = "ProductOS Loop";
+export const METHOD_NAME = "Product-OSystem ";
 export const METHOD_STEPS = [
   { n: "01", t: "Ricerca", d: "Analizziamo il tuo know-how, i tuoi clienti e il mercato. Troviamo cosa sai fare che può diventare digitale." },
   { n: "02", t: "Strategia", d: "Scegliamo il prodotto giusto (corso, app, abbonamento, kit), il prezzo e il modo di venderlo." },
