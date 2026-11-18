@@ -18,6 +18,7 @@
 - [ ] Pubblicare altri articoli: oggi ne risulta uno solo, quindi la griglia mostra una sola card.
 
 # Landing ECOM – Breakdown
+- [x] Adattare copy e qualificazione sia a chi non vende ancora online sia a chi vuole migliorare i canali esistenti; verificare entrambe le varianti.
 - [x] Aggiornare e attivare le skill landing-builder e desk-design con le convenzioni consolidate su ProductOS.
 - [x] Costruire splitter, variante lunga indicizzata e variante corta noindex per il freebie ECOM – Breakdown.
 - [x] Attivare la linea nel menu Servizi e nella sitemap, con modulo lead e tracciamento esistenti.

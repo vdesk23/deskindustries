@@ -93,7 +93,7 @@ export function LandingForm({ line, lineLabel, variant, questions, submitLabel =
 
       {step === 1 && (
         <div className="space-y-3">
-          <h3 className="font-display text-xl font-medium tracking-tight">Parliamo del tuo negozio</h3>
+          <h3 className="font-display text-xl font-medium tracking-tight">Parliamo della tua attività</h3>
           <div className="grid gap-3 sm:grid-cols-2">
             <Input aria-label="Nome" name="firstName" placeholder="Nome" autoComplete="given-name" value={c.firstName} onChange={(e) => setC({ ...c, firstName: e.target.value })} />
             <Input aria-label="Cognome" name="lastName" placeholder="Cognome" autoComplete="family-name" value={c.lastName} onChange={(e) => setC({ ...c, lastName: e.target.value })} />

@@ -3,51 +3,52 @@ import type { Question } from "./LandingForm";
 
 export const ECOM_BREAKDOWN_QUESTIONS: Question[] = [
   {
+    id: "Situazione attuale",
+    label: "Da che punto parti oggi?",
+    options: ["Non vendo ancora online", "Ho un sito, ma non vende", "Vendo solo su social o marketplace", "Ho un e-commerce attivo", "Vendo su più canali"],
+  },
+  {
     id: "Categoria merceologica",
-    label: "Cosa vendi?",
+    label: "Cosa vendi o vorresti vendere?",
     options: ["Abbigliamento e accessori", "Food & beverage", "Casa e design", "Bellezza e benessere", "Artigianato", "Altro"],
   },
   {
-    id: "Canali di vendita",
-    label: "Dove vendi oggi?",
-    options: ["Solo negozio fisico", "E-commerce proprietario", "Social o marketplace", "Più canali insieme"],
-  },
-  {
     id: "Obiettivo analisi",
-    label: "Cosa vuoi capire meglio?",
-    options: ["Da dove arrivano gli ordini", "Dove si interrompe la vendita", "Come si muovono stock e logistica", "Dove investire per crescere"],
+    label: "Cosa vuoi ottenere dal Breakdown?",
+    options: ["Capire se l’online può funzionare per me", "Iniziare a vendere online", "Aumentare le vendite dell’e-commerce", "Collegare negozio e canali online"],
   },
 ];
 
 export const ECOM_BREAKDOWN_STEPS = [
-  { n: "01", t: "Raccolta", d: "Partiamo da come vendi oggi: canali, passaggi e punti che non riesci a leggere con chiarezza." },
-  { n: "02", t: "Breakdown", d: "Scomponiamo il flusso di vendita e colleghiamo ciò che oggi vedi separato: contatto, ordine, consegna e ritorno." },
-  { n: "03", t: "Restituzione", d: "Ricevi il report e ne parliamo in call: cosa osservare, quali priorità valutare e da dove puoi partire." },
+  { n: "01", t: "Raccolta", d: "Ci racconti da dove parti: solo negozio fisico, primi canali digitali oppure un e-commerce già attivo. Non servono competenze tecniche." },
+  { n: "02", t: "Breakdown", d: "Se sei offline mettiamo a fuoco opportunità e possibili canali. Se vendi già online scomponiamo il percorso per trovare ciò che non funziona." },
+  { n: "03", t: "Restituzione", d: "Ricevi il report e ne parliamo in call: cosa puoi ottenere, quali priorità valutare e da dove partire senza investire a caso." },
 ];
 
 export const ECOM_BREAKDOWN_FAQ = [
-  { q: "ECOM – Breakdown è davvero gratuito?", a: "Sì. Il report sui flussi di vendita e la call di restituzione sono gratuiti. Non devi inserire metodi di pagamento e non ti impegni ad acquistare altri servizi." },
-  { q: "Serve avere già un e-commerce?", a: "No. Possiamo partire dal solo negozio fisico oppure analizzare una vendita distribuita tra sito, social e marketplace. Il percorso si adatta ai canali che usi oggi." },
-  { q: "Che cosa contiene il report?", a: "La mappa dei tuoi flussi di vendita, i passaggi da osservare e le priorità emerse. Durante la call ti aiutiamo a leggere il documento e a valutare le prossime decisioni." },
-  { q: "Devo condividere password o dati dei clienti?", a: "No, non nel modulo di richiesta. Ti chiediamo soltanto informazioni generali su attività, canali e obiettivi. Se serviranno dati aggregati per l’analisi, concorderemo insieme cosa è utile condividere." },
-  { q: "Il report è un piano operativo completo?", a: "No: è una fotografia chiara dei flussi e delle priorità. Eventuali attività operative vengono valutate separatamente, solo se le ritieni utili per la tua attività." },
+  { q: "ECOM – Breakdown è davvero gratuito?", a: "Sì. Il report e la call di restituzione sono gratuiti. Non devi inserire metodi di pagamento e non ti impegni ad acquistare altri servizi." },
+  { q: "Non vendo ancora online. Ha senso richiederlo?", a: "Sì, è uno dei casi per cui nasce. Partiamo dalla tua attività e dal tuo settore per capire quali opportunità puoi esplorare online, quali canali valutare e da dove iniziare." },
+  { q: "Serve avere già un e-commerce?", a: "No. Se hai solo il negozio fisico analizziamo il tuo punto di partenza; se vendi già tramite sito, social o marketplace osserviamo come i canali lavorano insieme e dove puoi migliorare." },
+  { q: "Che cosa contiene il report?", a: "La fotografia del tuo punto di partenza, le opportunità o i passaggi da osservare e le priorità emerse. Durante la call ti aiutiamo a leggere il documento e a valutare le prossime decisioni." },
+  { q: "Devo condividere password o dati dei clienti?", a: "No, non nel modulo di richiesta. Ti chiediamo soltanto informazioni generali su attività, situazione attuale e obiettivi. Se serviranno dati aggregati per l’analisi, concorderemo insieme cosa è utile condividere." },
+  { q: "Il report è un piano operativo completo?", a: "No: è una fotografia chiara del punto di partenza e delle priorità. Eventuali attività operative vengono valutate separatamente, solo se le ritieni utili per la tua attività." },
   { q: "Dopo la call devo acquistare un servizio?", a: "No. La restituzione serve a renderti utili l’analisi e le priorità. Non ci sono vincoli né obblighi di acquisto." },
 ];
 
 const FLOW = [
-  { Icon: Store, n: "01", t: "Contatto", d: "Negozio, sito, social" },
-  { Icon: ShoppingBag, n: "02", t: "Ordine", d: "Carrello e acquisto" },
-  { Icon: PackageCheck, n: "03", t: "Evasione", d: "Stock e consegna" },
-  { Icon: MessagesSquare, n: "04", t: "Relazione", d: "Assistenza e ritorno" },
+  { Icon: Store, n: "01", t: "Attività", d: "Prodotti, clienti, know-how" },
+  { Icon: ShoppingBag, n: "02", t: "Presenza", d: "Negozio, sito, social" },
+  { Icon: PackageCheck, n: "03", t: "Vendita", d: "Opportunità e ordini" },
+  { Icon: MessagesSquare, n: "04", t: "Direzione", d: "Priorità e prossimi passi" },
 ];
 
 export function SalesFlowVisual({ compact = false }: { compact?: boolean }) {
   return (
-    <div role="img" aria-label="Mappa del flusso di vendita: contatto, ordine, evasione e relazione con il cliente" className="lp-glow-card relative overflow-hidden rounded-3xl border border-border bg-surface-elevated/55 p-6 shadow-elevated backdrop-blur-xl sm:p-8">
+    <div role="img" aria-label="Mappa dal punto di partenza alle prossime decisioni: attività, presenza, vendita e direzione" className="lp-glow-card relative overflow-hidden rounded-3xl border border-border bg-surface-elevated/55 p-6 shadow-elevated backdrop-blur-xl sm:p-8">
       <div className="flex items-center justify-between gap-4">
         <div>
-          <p className="font-display text-xs uppercase tracking-[0.22em] text-amber">Mappa del flusso</p>
-          <p className="mt-2 font-display text-xl font-medium tracking-tight">Ogni passaggio, finalmente collegato.</p>
+          <p className="font-display text-xs uppercase tracking-[0.22em] text-amber">La tua mappa online</p>
+          <p className="mt-2 font-display text-xl font-medium tracking-tight">Da dove sei a dove puoi arrivare.</p>
         </div>
         <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl border border-amber/25 bg-amber-soft"><BarChart3 className="size-5 text-amber" /></span>
       </div>

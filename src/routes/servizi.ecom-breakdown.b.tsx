@@ -7,8 +7,8 @@ import { Aurora } from "@/components/landing/Thread";
 import { ECOM_BREAKDOWN_QUESTIONS, SalesFlowVisual } from "@/components/landing/ecom-breakdown-content";
 import { useLandingUtm } from "@/components/landing/useLandingUtm";
 
-const TITLE = "Richiedi ECOM – Breakdown gratuito";
-const DESC = "Ricevi un report sui tuoi flussi di vendita e una call per leggere priorità e opportunità. Gratuito, senza impegno.";
+const TITLE = "ECOM – Breakdown | Parti da dove sei";
+const DESC = "Che tu sia ancora offline o venda già online, ricevi un report e una call per capire opportunità e priorità. Gratis.";
 
 export const Route = createFileRoute("/servizi/ecom-breakdown/b")({
   head: () => ({
@@ -34,11 +34,11 @@ function EcomBreakdownShort() {
         <div className="mx-auto grid max-w-7xl items-start gap-10 px-5 lg:grid-cols-2 lg:px-8">
           <div>
             <p className="mb-4 font-display text-xs uppercase tracking-[0.25em] text-amber">ECOM – Breakdown · Gratuito</p>
-            <h1 className="font-display text-4xl font-medium leading-[1.05] tracking-tight sm:text-5xl">Scopri dove le tue vendite <span className="lp-thread-text font-normal italic">perdono direzione.</span></h1>
-            <p className="mt-6 max-w-xl text-muted-foreground">Analizziamo i passaggi tra canali, ordini e clienti. Poi ti consegniamo un report chiaro e lo leggiamo insieme in call.</p>
+            <h1 className="font-display text-4xl font-medium leading-[1.05] tracking-tight sm:text-5xl">Scopri cosa può ottenere <span className="lp-thread-text font-normal italic">la tua attività online.</span></h1>
+            <p className="mt-6 max-w-xl text-muted-foreground">Non sei ancora online o vuoi vendere di più? Partiamo dalla tua situazione e ti consegniamo un report chiaro, da leggere insieme in call.</p>
             <div className="mt-6"><GoogleBadge /></div>
             <ul className="mt-8 space-y-3">
-              {["Mappa dei tuoi flussi di vendita", "Priorità e opportunità nel report", "Call di restituzione inclusa, senza impegno"].map((p) => (
+              {["Analisi adatta anche a chi parte da zero", "Opportunità e priorità nel report", "Call di restituzione inclusa, senza impegno"].map((p) => (
                 <li key={p} className="flex gap-3"><Check className="mt-0.5 size-5 shrink-0 text-amber" />{p}</li>
               ))}
             </ul>

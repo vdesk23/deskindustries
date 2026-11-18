@@ -11,8 +11,8 @@ import { Aurora, PhilosophyMarquee, ThreadLine, ThreadNode, WordsIn } from "@/co
 import { ECOM_BREAKDOWN_FAQ, ECOM_BREAKDOWN_QUESTIONS, ECOM_BREAKDOWN_STEPS, SalesFlowVisual } from "@/components/landing/ecom-breakdown-content";
 import { useLandingUtm } from "@/components/landing/useLandingUtm";
 
-const TITLE = "ECOM – Breakdown | Analisi gratuita vendite";
-const DESC = "Scopri dove si muovono e dove si fermano le tue vendite. Report sui flussi e call di restituzione: gratis, senza impegno.";
+const TITLE = "ECOM – Breakdown | Analisi gratuita online";
+const DESC = "Non vendi ancora online o vuoi far crescere il tuo e-commerce? Scopri opportunità e priorità con un report e una call gratuiti.";
 
 export const Route = createFileRoute("/servizi/ecom-breakdown/a")({
   head: () => ({
@@ -49,10 +49,10 @@ function EcomBreakdownLong() {
           <div className="lg:col-span-6">
             <p className="mb-4 font-display text-xs uppercase tracking-[0.25em] text-amber">ECOM – Breakdown · Analisi gratuita</p>
             <h1 className="font-display text-4xl font-medium leading-[1.05] tracking-tight sm:text-6xl">
-              <WordsIn text="Scopri dove le tue vendite" />
-              <span className="lp-word lp-thread-text font-normal italic" style={{ animationDelay: "420ms" }}>perdono direzione.</span>
+              <WordsIn text="Scopri cosa può ottenere" />
+              <span className="lp-word lp-thread-text font-normal italic" style={{ animationDelay: "420ms" }}>la tua attività online.</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">Analizziamo come clienti, ordini e canali si collegano. Ricevi un report chiaro e una call per trasformare ciò che vedi in priorità, senza costi e senza impegno.</p>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">Non vendi ancora online? Oppure hai un e-commerce che non cresce come vorresti? Partiamo da dove sei: ricevi un report chiaro e una call per capire opportunità e priorità. Gratis, senza impegno.</p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Card3D intensity={10}><a href="#form"><Button variant="amber" size="lg" className="rounded-full">Richiedi il Breakdown gratuito <ArrowRight className="size-4" /></Button></a></Card3D>
               <a href="#metodo" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">Come funziona <ArrowDown className="size-4" /></a>
@@ -63,7 +63,7 @@ function EcomBreakdownLong() {
         </div>
       </section>
 
-      <PhilosophyMarquee items={["Zero costi", "Nessun impegno", "Report + call inclusi", "Dati che diventano decisioni", "Un solo flusso, tutta la vendita"]} />
+      <PhilosophyMarquee items={["Zero costi", "Nessun impegno", "Report + call inclusi", "Anche se parti da zero", "Prima capire, poi investire"]} />
 
       <div className="relative">
         <ThreadLine />
@@ -72,15 +72,15 @@ function EcomBreakdownLong() {
             <div className="mb-12 grid gap-8 lg:grid-cols-12">
               <div className="lg:col-span-7">
                 <ThreadNode n="01" label="Il blocco" />
-                <h2 className="font-display text-3xl font-medium tracking-tight sm:text-5xl">Le vendite si muovono. <span className="font-normal italic text-amber">Tu vedi dove?</span></h2>
+                <h2 className="font-display text-3xl font-medium tracking-tight sm:text-5xl">“Online non so <span className="font-normal italic text-amber">da dove partire.</span>”</h2>
               </div>
-              <p className="self-end text-muted-foreground lg:col-span-5">Tra negozio, sito, social e marketplace ogni passaggio lascia una traccia. Il problema non è avere dati: è non riuscire a leggerli come un unico percorso.</p>
+              <p className="self-end text-muted-foreground lg:col-span-5">Non è colpa tua: tra siti, social, marketplace e pubblicità sembra che serva conoscere tutto prima di iniziare. In realtà serve prima capire dove sei e cosa ha senso fare per la tua attività.</p>
             </div>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {[
-                { Icon: Layers3, t: "Ogni canale parla da solo", d: "Il negozio misura gli scontrini, il sito gli ordini, i social le interazioni. Manca il quadro che mostra come un canale aiuta — o frena — gli altri.", k: "Tanti numeri, nessuna visione" },
-                { Icon: MousePointerClick, t: "Il cliente sparisce nel percorso", d: "Visita, richiesta, carrello, acquisto e consegna sembrano eventi separati. Così è difficile capire dove l’interesse si trasforma in vendita e dove si perde.", k: "Il passaggio critico resta invisibile" },
-                { Icon: Compass, t: "Le decisioni arrivano a sensazione", d: "Campagne, stock e assistenza richiedono investimenti. Senza leggere il flusso completo, rischi di correggere ciò che è visibile invece di ciò che conta.", k: "Prima capire, poi investire" },
+                { Icon: Layers3, t: "Il digitale sembra un salto nel vuoto", d: "Hai un negozio, un’idea o un prodotto, ma nessuno ti ha ancora mostrato quale opportunità online abbia davvero senso per te. Così rimandi, mentre il dubbio resta.", k: "Non ti manca il potenziale, manca la mappa" },
+                { Icon: MousePointerClick, t: "Essere online non basta", d: "Hai un sito, vendi sui social o hai già un e-commerce, ma i risultati non arrivano come vorresti. Senza un quadro unico è difficile capire cosa sta frenando le vendite.", k: "Il problema giusto resta invisibile" },
+                { Icon: Compass, t: "Investire a sensazione costa", d: "Sito, campagne, stock e logistica richiedono tempo e budget. Se parti dallo strumento prima delle priorità, rischi di pagare per qualcosa di cui non avevi ancora bisogno.", k: "Prima capire, poi investire" },
               ].map(({ Icon, t, d, k }, i) => (
                 <Reveal key={t} delay={i * 80}>
                   <Card3D intensity={5} className="lp-glow-card h-full rounded-3xl border border-border bg-surface-elevated/50 p-8 backdrop-blur-xl">
@@ -99,15 +99,15 @@ function EcomBreakdownLong() {
           <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 lg:grid-cols-2 lg:px-8">
             <Reveal>
               <ThreadNode n="02" label="Cosa ricevi" />
-              <h2 className="font-display text-3xl font-medium tracking-tight sm:text-5xl">Non un altro elenco di numeri. <span className="font-normal italic text-amber">Una mappa per decidere.</span></h2>
-              <p className="mt-6 text-muted-foreground">Il Breakdown scompone il tuo modo di vendere e lo rimette in ordine. Alla fine non resti solo con un documento: sai come leggerlo.</p>
+              <h2 className="font-display text-3xl font-medium tracking-tight sm:text-5xl">Non una ricetta uguale per tutti. <span className="font-normal italic text-amber">Una mappa per decidere.</span></h2>
+              <p className="mt-6 text-muted-foreground">Se parti da zero, mettiamo a fuoco cosa puoi ottenere online e quali canali valutare. Se vendi già, scomponiamo il percorso di vendita per trovare opportunità e ostacoli. Alla fine non resti solo con un documento: sai come leggerlo.</p>
               <a href="#form" className="mt-8 inline-block"><Button variant="amber" className="rounded-full">Richiedi la tua analisi <ArrowRight className="size-4" /></Button></a>
             </Reveal>
             <div className="grid gap-4">
               {[
-                { Icon: RouteIcon, t: "Mappa dei flussi", d: "Canali e passaggi collegati, dal primo contatto alla relazione dopo l’acquisto." },
-                { Icon: FileChartColumn, t: "Report con priorità", d: "Punti da osservare e opportunità emerse, presentati con un linguaggio comprensibile." },
-                { Icon: MessagesSquare, t: "Call di restituzione", d: "Un confronto per chiarire il report e ragionare sulle decisioni possibili." },
+                { Icon: RouteIcon, t: "Mappa del punto di partenza", d: "Situazione attuale, canali e passaggi collegati: da dove sei a dove puoi arrivare." },
+                { Icon: FileChartColumn, t: "Report con priorità", d: "Opportunità da esplorare o punti da migliorare, spiegati senza tecnicismi inutili." },
+                { Icon: MessagesSquare, t: "Call di restituzione", d: "Un confronto per chiarire il report e ragionare sulle decisioni possibili, senza obblighi." },
               ].map(({ Icon, t, d }, i) => (
                 <Reveal key={t} delay={i * 80}>
                   <div className="lp-glow-card flex gap-5 rounded-3xl border border-border bg-surface-elevated/50 p-6 backdrop-blur-xl">
@@ -127,7 +127,7 @@ function EcomBreakdownLong() {
                 <ThreadNode n="03" label="Il metodo" />
                 <h2 className="font-display text-3xl font-medium tracking-tight sm:text-5xl"><span className="lp-thread-text font-normal italic">Breakdown.</span> Tre passaggi, una direzione.</h2>
               </div>
-              <p className="self-end text-muted-foreground lg:col-span-5">Partiamo da ciò che accade davvero nella tua attività. Niente modelli preconfezionati e nessuna credenziale richiesta nel modulo.</p>
+              <p className="self-end text-muted-foreground lg:col-span-5">Partiamo da ciò che esiste davvero oggi, anche se online non c’è ancora nulla. Niente modelli preconfezionati e nessuna credenziale richiesta nel modulo.</p>
             </div>
             <Reveal className="mb-6 hidden lg:block"><div className="lp-draw h-px w-full" /></Reveal>
             <div className="grid gap-6 lg:grid-cols-3">
@@ -164,8 +164,8 @@ function EcomBreakdownLong() {
           <div className="mx-auto grid max-w-7xl items-start gap-12 px-5 lg:grid-cols-2 lg:px-8">
             <div>
               <ThreadNode n="05" label="Richiesta gratuita" />
-              <h2 className="font-display text-3xl font-medium tracking-tight sm:text-5xl">Metti a fuoco le tue vendite. <span className="font-normal italic text-amber">Partiamo da qui.</span></h2>
-              <p className="mt-6 text-muted-foreground">Raccontaci come vendi oggi. Riceverai il report sui flussi e una call per leggere insieme priorità e opportunità.</p>
+              <h2 className="font-display text-3xl font-medium tracking-tight sm:text-5xl">Non devi sapere già tutto. <span className="font-normal italic text-amber">Partiamo da dove sei.</span></h2>
+              <p className="mt-6 text-muted-foreground">Dicci se non vendi ancora online, quali canali usi o cosa non sta funzionando. Costruiremo l’analisi sulla tua situazione, non su un questionario generico.</p>
               <ul className="mt-8 space-y-3">
                 {["Report e call gratuiti", "Nessun metodo di pagamento", "Nessun obbligo di acquisto"].map((p) => <li key={p} className="flex gap-3"><Check className="mt-0.5 size-5 shrink-0 text-amber" />{p}</li>)}
               </ul>
