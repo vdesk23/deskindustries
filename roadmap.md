@@ -18,7 +18,7 @@
 - [ ] Pubblicare altri articoli: oggi ne risulta uno solo, quindi la griglia mostra una sola card.
 
 # Landing ECOM – Breakdown
-- [ ] Aggiornare e attivare le skill landing-builder e desk-design con le convenzioni consolidate su ProductOS.
-- [ ] Costruire splitter, variante lunga indicizzata e variante corta noindex per il freebie ECOM – Breakdown.
-- [ ] Attivare la linea nel menu Servizi e nella sitemap, con modulo lead e tracciamento esistenti.
-- [ ] Verificare desktop/mobile, invio modulo e build; il risultato freebie usato in bozza è report + call in attesa di conferma.
+- [x] Aggiornare e attivare le skill landing-builder e desk-design con le convenzioni consolidate su ProductOS.
+- [x] Costruire splitter, variante lunga indicizzata e variante corta noindex per il freebie ECOM – Breakdown.
+- [x] Attivare la linea nel menu Servizi e nella sitemap, con modulo lead e tracciamento esistenti.
+- [x] Verificare desktop/mobile, invio modulo completo e build; report + call confermati, dati di prova eliminati.

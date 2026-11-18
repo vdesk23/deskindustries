@@ -1,6 +1,6 @@
-import { Star } from "lucide-react";
-import { DESK_GOOGLE_PLACE } from "@/lib/google-reviews-data";
 import type { Question } from "./LandingForm";
+
+export { GoogleBadge } from "./GoogleBadge";
 
 export const PRODUCTOS_QUESTIONS: Question[] = [
   { id: "Categoria negozio", label: "Che tipo di negozio hai?", options: ["Abbigliamento e accessori", "Food & beverage", "Casa e design", "Bellezza e benessere", "Artigianato", "Altro"] },
@@ -23,13 +23,3 @@ export const PRODUCTOS_FAQ = [
   { q: "Devo firmare un contratto lungo?", a: "No. Come per tutti i servizi Desk Industries, non ci sono vincoli contrattuali di lunga durata." },
   { q: "La prima call è a pagamento?", a: "No. La prima call è gratuita e serve a capire se il tuo negozio è pronto per un prodotto digitale." },
 ];
-
-export function GoogleBadge() {
-  return (
-    <div className="flex items-center gap-2 text-sm">
-      <div className="flex">{Array.from({ length: 5 }).map((_, i) => <Star key={i} className="size-4 fill-amber text-amber" />)}</div>
-      <span className="font-display font-medium">{DESK_GOOGLE_PLACE.rating.toFixed(1)}</span>
-      <span className="text-muted-foreground">su Google · {DESK_GOOGLE_PLACE.total} recensioni</span>
-    </div>
-  );
-}

@@ -46,6 +46,9 @@ import { Route as ApiPublicContentPlanSubmitRouteImport } from './routes/api/pub
 import { Route as ApiPublicLandingSubmitRouteImport } from './routes/api/public/landing-submit'
 import { Route as ApiPublicLeadSubmitRouteImport } from './routes/api/public/lead-submit'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
+import { Route as ServiziEcomBreakdownIndexRouteImport } from './routes/servizi.ecom-breakdown.index'
+import { Route as ServiziEcomBreakdownARouteImport } from './routes/servizi.ecom-breakdown.a'
+import { Route as ServiziEcomBreakdownBRouteImport } from './routes/servizi.ecom-breakdown.b'
 import { Route as ServiziProductosIndexRouteImport } from './routes/servizi.productos.index'
 import { Route as ServiziProductosARouteImport } from './routes/servizi.productos.a'
 import { Route as ServiziProductosBRouteImport } from './routes/servizi.productos.b'
@@ -241,6 +244,22 @@ const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   path: '/lovable/email/suppression',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServiziEcomBreakdownIndexRoute =
+  ServiziEcomBreakdownIndexRouteImport.update({
+    id: '/servizi/ecom-breakdown/',
+    path: '/servizi/ecom-breakdown/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ServiziEcomBreakdownARoute = ServiziEcomBreakdownARouteImport.update({
+  id: '/servizi/ecom-breakdown/a',
+  path: '/servizi/ecom-breakdown/a',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiziEcomBreakdownBRoute = ServiziEcomBreakdownBRouteImport.update({
+  id: '/servizi/ecom-breakdown/b',
+  path: '/servizi/ecom-breakdown/b',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServiziProductosIndexRoute = ServiziProductosIndexRouteImport.update({
   id: '/servizi/productos/',
   path: '/servizi/productos/',
@@ -324,9 +343,12 @@ export interface FileRoutesByFullPath {
   '/api/public/landing-submit': typeof ApiPublicLandingSubmitRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/servizi/ecom-breakdown/a': typeof ServiziEcomBreakdownARoute
+  '/servizi/ecom-breakdown/b': typeof ServiziEcomBreakdownBRoute
   '/servizi/productos/a': typeof ServiziProductosARoute
   '/servizi/productos/b': typeof ServiziProductosBRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
+  '/servizi/ecom-breakdown/': typeof ServiziEcomBreakdownIndexRoute
   '/servizi/productos/': typeof ServiziProductosIndexRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -370,9 +392,12 @@ export interface FileRoutesByTo {
   '/api/public/landing-submit': typeof ApiPublicLandingSubmitRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/servizi/ecom-breakdown/a': typeof ServiziEcomBreakdownARoute
+  '/servizi/ecom-breakdown/b': typeof ServiziEcomBreakdownBRoute
   '/servizi/productos/a': typeof ServiziProductosARoute
   '/servizi/productos/b': typeof ServiziProductosBRoute
   '/admin/blog': typeof AdminBlogIndexRoute
+  '/servizi/ecom-breakdown': typeof ServiziEcomBreakdownIndexRoute
   '/servizi/productos': typeof ServiziProductosIndexRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -418,9 +443,12 @@ export interface FileRoutesById {
   '/api/public/landing-submit': typeof ApiPublicLandingSubmitRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/servizi/ecom-breakdown/a': typeof ServiziEcomBreakdownARoute
+  '/servizi/ecom-breakdown/b': typeof ServiziEcomBreakdownBRoute
   '/servizi/productos/a': typeof ServiziProductosARoute
   '/servizi/productos/b': typeof ServiziProductosBRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
+  '/servizi/ecom-breakdown/': typeof ServiziEcomBreakdownIndexRoute
   '/servizi/productos/': typeof ServiziProductosIndexRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -467,9 +495,12 @@ export interface FileRouteTypes {
     | '/api/public/landing-submit'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
+    | '/servizi/ecom-breakdown/a'
+    | '/servizi/ecom-breakdown/b'
     | '/servizi/productos/a'
     | '/servizi/productos/b'
     | '/admin/blog/'
+    | '/servizi/ecom-breakdown/'
     | '/servizi/productos/'
     | '/account/tickets/$ticketId/pay'
     | '/lovable/email/queue/process'
@@ -513,9 +544,12 @@ export interface FileRouteTypes {
     | '/api/public/landing-submit'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
+    | '/servizi/ecom-breakdown/a'
+    | '/servizi/ecom-breakdown/b'
     | '/servizi/productos/a'
     | '/servizi/productos/b'
     | '/admin/blog'
+    | '/servizi/ecom-breakdown'
     | '/servizi/productos'
     | '/account/tickets/$ticketId/pay'
     | '/lovable/email/queue/process'
@@ -560,9 +594,12 @@ export interface FileRouteTypes {
     | '/api/public/landing-submit'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
+    | '/servizi/ecom-breakdown/a'
+    | '/servizi/ecom-breakdown/b'
     | '/servizi/productos/a'
     | '/servizi/productos/b'
     | '/admin/blog/'
+    | '/servizi/ecom-breakdown/'
     | '/servizi/productos/'
     | '/account/tickets/$ticketId/pay'
     | '/lovable/email/queue/process'
@@ -601,8 +638,11 @@ export interface RootRouteChildren {
   ApiPublicLandingSubmitRoute: typeof ApiPublicLandingSubmitRoute
   ApiPublicLeadSubmitRoute: typeof ApiPublicLeadSubmitRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
+  ServiziEcomBreakdownARoute: typeof ServiziEcomBreakdownARoute
+  ServiziEcomBreakdownBRoute: typeof ServiziEcomBreakdownBRoute
   ServiziProductosARoute: typeof ServiziProductosARoute
   ServiziProductosBRoute: typeof ServiziProductosBRoute
+  ServiziEcomBreakdownIndexRoute: typeof ServiziEcomBreakdownIndexRoute
   ServiziProductosIndexRoute: typeof ServiziProductosIndexRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
@@ -871,6 +911,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LovableEmailSuppressionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/servizi/ecom-breakdown/': {
+      id: '/servizi/ecom-breakdown/'
+      path: '/servizi/ecom-breakdown'
+      fullPath: '/servizi/ecom-breakdown/'
+      preLoaderRoute: typeof ServiziEcomBreakdownIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servizi/ecom-breakdown/a': {
+      id: '/servizi/ecom-breakdown/a'
+      path: '/servizi/ecom-breakdown/a'
+      fullPath: '/servizi/ecom-breakdown/a'
+      preLoaderRoute: typeof ServiziEcomBreakdownARouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servizi/ecom-breakdown/b': {
+      id: '/servizi/ecom-breakdown/b'
+      path: '/servizi/ecom-breakdown/b'
+      fullPath: '/servizi/ecom-breakdown/b'
+      preLoaderRoute: typeof ServiziEcomBreakdownBRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/servizi/productos/': {
       id: '/servizi/productos/'
       path: '/servizi/productos'
@@ -1015,8 +1076,11 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicLandingSubmitRoute: ApiPublicLandingSubmitRoute,
   ApiPublicLeadSubmitRoute: ApiPublicLeadSubmitRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
+  ServiziEcomBreakdownARoute: ServiziEcomBreakdownARoute,
+  ServiziEcomBreakdownBRoute: ServiziEcomBreakdownBRoute,
   ServiziProductosARoute: ServiziProductosARoute,
   ServiziProductosBRoute: ServiziProductosBRoute,
+  ServiziEcomBreakdownIndexRoute: ServiziEcomBreakdownIndexRoute,
   ServiziProductosIndexRoute: ServiziProductosIndexRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,

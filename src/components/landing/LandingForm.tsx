@@ -16,11 +16,12 @@ interface Props {
   lineLabel: string;
   variant: Variant;
   questions: Question[];
+  submitLabel?: string;
 }
 
 const UTM_KEY = "lp_utm";
 
-export function LandingForm({ line, lineLabel, variant, questions }: Props) {
+export function LandingForm({ line, lineLabel, variant, questions, submitLabel = "Prenota la call gratuita" }: Props) {
   const navigate = useNavigate();
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [c, setC] = useState({ firstName: "", lastName: "", phone: "", email: "" });
@@ -144,7 +145,7 @@ export function LandingForm({ line, lineLabel, variant, questions }: Props) {
           <div className="flex gap-2">
             <Button type="button" variant="ghost" className="rounded-full" onClick={() => setStep(2)}><ArrowLeft className="size-4" /> Indietro</Button>
             <Button type="button" variant="amber" className="flex-1 rounded-full" disabled={!slot || busy} onClick={submit3}>
-              {busy ? <Loader2 className="size-4 animate-spin" /> : "Prenota la call gratuita"}
+              {busy ? <Loader2 className="size-4 animate-spin" /> : submitLabel}
             </Button>
           </div>
         </div>
