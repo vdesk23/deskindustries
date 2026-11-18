@@ -6,7 +6,8 @@ ProductOS: troviamo il prodotto digitale giusto per il negozio fisico, costruiam
 - Nuovo menu "Servizi" nell'header flottante: si apre verso l'alto con le 7 linee. Per ora è attiva solo ProductOS; le altre sono indicate come "In arrivo" e non hanno link.
 - `/servizi`: elenco dei servizi, pagina indicizzabile.
 - `/servizi/productos`: splitter 50/50 che resta lo stesso per ogni visitatore e conserva gli UTM. Questo è l'URL da usare nelle campagne.
-- `/servizi/productos/a` (versione lunga) e `/servizi/productos/b` (versione corta): non indicizzate.
+- `/servizi/productos/a` (versione lunga): visibile nel menu "Servizi" e indicizzata.
+- `/servizi/productos/b` (versione corta): non indicizzata e assente dal menu "Servizi".
 - `/grazie`: pagina di ringraziamento con il nome del visitatore, non indicizzata.
 - Banner cookie e Cookie Policy aggiornata.
 
@@ -15,7 +16,7 @@ ProductOS: troviamo il prodotto digitale giusto per il negozio fisico, costruiam
 2. Problemi: margini compressi, clienti solo locali, fatturato legato agli orari del negozio.
 3. Soluzione: analisi del know-how, scelta del prodotto (corso, app, abbonamento, kit digitale), lancio e crescita.
 4. Metodo in 4 fasi e modello di condivisione dei ricavi: setup + royalties, senza cifre.
-5. Prove: CONSUS e risultati del portfolio già pubblicati.
+5. Prove: CONSUS, risultati del portfolio già pubblicati e testimonianze dei clienti (recensioni reali con autore).
 6. Modulo a 3 step.
 7. FAQ (6 domande) e invito all'azione finale.
 
