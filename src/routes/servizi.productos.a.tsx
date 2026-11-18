@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowDown, ArrowRight, Check, Compass, Lightbulb, Rocket } from "lucide-react";
+import { ArrowDown, ArrowRight, Check, Clock3, Compass, Lightbulb, MapPin, Rocket, TrendingDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card3D } from "@/components/ui/Card3D";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -91,16 +91,20 @@ function ProductOSLong() {
               È la frase che sentiamo più spesso. Non è colpa tua: nessuno ti ha mai mostrato cosa può diventare digitale nel tuo lavoro. Intanto, però, il negozio resta legato a tre limiti.
             </p>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {[
-              ["Margini sempre più stretti", "Affitto, personale e fornitori crescono. Il prezzo dei prodotti no."],
-              ["Clienti solo di zona", "Chi non passa davanti alla vetrina non sa che esisti."],
-              ["Ricavi legati agli orari", "Quando abbassi la saracinesca, smetti di guadagnare."],
-            ].map(([t, d], i) => (
+              { Icon: TrendingDown, t: "Margini sempre più stretti", d: "Affitto, personale e fornitori crescono ogni anno. Il prezzo dei tuoi prodotti non può salire alla stessa velocità: ciò che resta non basta a reinvestire.", k: "Vendi di più, guadagni uguale" },
+              { Icon: MapPin, t: "Clienti solo di zona", d: "Chi non passa davanti alla vetrina non sa che esisti. I social danno visibilità a intermittenza, ma non ti portano chi cerca te e non ti trova.", k: "Il bacino finisce lì" },
+              { Icon: Clock3, t: "Ricavi legati agli orari", d: "Quando abbassi la saracinesca smetti di guadagnare. Ferie, chiusure e serate vuote sono fatturato che non torna indietro.", k: "Il negozio non lavora di notte" },
+            ].map(({ Icon, t, d, k }, i) => (
               <Reveal key={t} delay={i * 80}>
-                <Card3D intensity={5} className="lp-glow-card h-full rounded-2xl border border-border bg-surface-elevated/50 backdrop-blur-xl p-6">
-                  <h3 className="font-display text-lg font-medium tracking-tight">{t}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground">{d}</p>
+                <Card3D intensity={5} className="lp-glow-card h-full rounded-3xl border border-border bg-surface-elevated/50 backdrop-blur-xl p-8">
+                  <div className="flex size-12 items-center justify-center rounded-2xl border border-amber/25 bg-amber-soft">
+                    <Icon className="size-6 text-amber" />
+                  </div>
+                  <h3 className="mt-6 font-display text-xl font-medium tracking-tight">{t}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{d}</p>
+                  <p className="mt-6 border-t border-border pt-4 text-xs font-display uppercase tracking-[0.18em] text-amber/80">{k}</p>
                 </Card3D>
               </Reveal>
             ))}
