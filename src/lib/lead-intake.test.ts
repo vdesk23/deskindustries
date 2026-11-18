@@ -14,6 +14,13 @@ describe("two-step commercial intake", () => {
   it("step 1 creates the contact with only name, email and phone", () => {
     expect(registrationSchema.safeParse({ action: "register", name: "Mario Rossi", email: "mario@example.com", phone: "333" }).success).toBe(true);
   });
+  it("accepts corrected contact details with the existing lead continuation", () => {
+    const corrected = registrationSchema.parse({ action: "register", continuation: "existing-lead-token", name: "Maria Rossi", email: "maria@example.com", phone: "3331234567" });
+    expect(corrected.continuation).toBe("existing-lead-token");
+    expect(corrected.name).toBe("Maria Rossi");
+    expect(corrected.email).toBe("maria@example.com");
+    expect(corrected.phone).toBe("3331234567");
+  });
   it("leaves the goal text optional", () => {
     expect(quoteRequestSchema.safeParse(baseQuote).success).toBe(true);
   });

@@ -170,7 +170,7 @@ export function LeadForm() {
 
       {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
       <div className="flex gap-3">
-        {step > 2 && <Button type="button" variant="outline" size="lg" aria-label="Indietro" onClick={() => go((step - 1) as Step)}><ArrowLeft /></Button>}
+        {step > 1 && <Button type="button" variant="outline" size="lg" aria-label="Indietro" disabled={loading} onClick={() => go((step - 1) as Step)}><ArrowLeft /></Button>}
         <Button type="submit" variant="hero" size="lg" className="flex-1" disabled={loading || (step === 4 && catalogLoading)}>
           {loading ? <><Loader2 className="size-4 animate-spin" />Invio in corso…</> : <>{step === 5 ? "Richiedi preventivo" : "Continua"}<ArrowRight /></>}
         </Button>
