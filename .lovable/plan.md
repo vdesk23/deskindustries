@@ -13,9 +13,9 @@ ProductOS: troviamo il prodotto digitale giusto per il negozio fisico, costruiam
 
 ## Variante A (versione lunga)
 1. Hook: "Il tuo negozio ha già un *prodotto digitale*. Noi lo troviamo."
-2. Problemi: margini compressi, clienti solo locali, fatturato legato agli orari del negozio.
+2. Problemi: la paura di fondo è non conoscere il digitale, che porta a pensare "la mia attività non può avere un prodotto digitale". Il copy smonta questa convinzione con empatia, poi tocca margini compressi, clienti solo locali e fatturato legato agli orari del negozio.
 3. Soluzione: analisi del know-how, scelta del prodotto (corso, app, abbonamento, kit digitale), lancio e crescita.
-4. Metodo in 4 fasi e modello di condivisione dei ricavi: setup + royalties, senza cifre.
+4. Metodo "ProductOS Loop" in 3 step (Ricerca, Strategia, Lancio) e modello di condivisione dei ricavi: setup + royalties, senza cifre.
 5. Prove: CONSUS, risultati del portfolio già pubblicati e testimonianze dei clienti (recensioni reali con autore).
 6. Modulo a 3 step.
 7. FAQ (6 domande) e invito all'azione finale.
@@ -44,4 +44,4 @@ Nessun dato personale viene inviato a Meta.
 - Animazioni solo CSS con IntersectionObserver e rispetto di reduced-motion; design con i token Desk; `head()` dedicato per ogni route; sitemap aggiornata.
 
 ## Da confermare
-I testi delle FAQ, le fasi del metodo e i tipi di prodotto proposti sono una mia bozza: vanno confermati.
+I testi delle FAQ, il nome del metodo ("ProductOS Loop") e i tipi di prodotto proposti sono una mia bozza: vanno confermati.
