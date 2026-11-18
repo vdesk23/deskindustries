@@ -1,5 +1,5 @@
 import { Star } from "lucide-react";
-import { DESK_GOOGLE_PLACE, DESK_GOOGLE_REVIEWS } from "@/lib/google-reviews-data";
+import { DESK_GOOGLE_PLACE } from "@/lib/google-reviews-data";
 import type { Question } from "./LandingForm";
 
 export const PRODUCTOS_QUESTIONS: Question[] = [
@@ -30,23 +30,6 @@ export function GoogleBadge() {
       <div className="flex">{Array.from({ length: 5 }).map((_, i) => <Star key={i} className="size-4 fill-amber text-amber" />)}</div>
       <span className="font-display font-medium">{DESK_GOOGLE_PLACE.rating.toFixed(1)}</span>
       <span className="text-muted-foreground">su Google · {DESK_GOOGLE_PLACE.total} recensioni</span>
-    </div>
-  );
-}
-
-export function Testimonials({ count = 3 }: { count?: number }) {
-  return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {DESK_GOOGLE_REVIEWS.slice(0, count).map((r) => (
-        <figure key={r.author} className="rounded-2xl border border-border bg-surface-elevated/50 backdrop-blur-xl p-6">
-          <div className="flex mb-3">{Array.from({ length: r.rating }).map((_, i) => <Star key={i} className="size-3.5 fill-amber text-amber" />)}</div>
-          <blockquote className="text-sm leading-relaxed text-foreground/90">“{r.text}”</blockquote>
-          <figcaption className="mt-4 text-xs text-muted-foreground">
-            <span className="font-display text-foreground">{r.author}</span> · {r.relativeTime} ·{" "}
-            <a href={DESK_GOOGLE_PLACE.url} target="_blank" rel="noopener noreferrer" className="text-amber hover:underline">Google</a>
-          </figcaption>
-        </figure>
-      ))}
     </div>
   );
 }

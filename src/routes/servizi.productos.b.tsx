@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Check } from "lucide-react";
 import { LandingForm } from "@/components/landing/LandingForm";
 import { useLandingUtm } from "@/components/landing/useLandingUtm";
-import { GoogleBadge, PRODUCTOS_QUESTIONS, Testimonials } from "@/components/landing/productos-content";
+import { GoogleBadge, PRODUCTOS_QUESTIONS } from "@/components/landing/productos-content";
+import { ReviewsMarquee } from "@/components/landing/ReviewsMarquee";
 import hero from "@/assets/productos-hero.jpg";
 
 export const Route = createFileRoute("/servizi/productos/b")({
@@ -45,7 +46,7 @@ function ProductOSShort() {
         </div>
       </section>
       <section className="relative py-16">
-        <div className="mx-auto max-w-7xl px-5 lg:px-8"><Testimonials count={3} /></div>
+        <div className="mx-auto max-w-7xl px-5 lg:px-8"><ReviewsMarquee /></div>
       </section>
     </div>
   );

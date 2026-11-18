@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Card3D } from "@/components/ui/Card3D";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { LandingForm } from "@/components/landing/LandingForm";
+import { ReviewsMarquee } from "@/components/landing/ReviewsMarquee";
 import { Reveal } from "@/components/landing/Reveal";
 import { Aurora, PhilosophyMarquee, ThreadLine, ThreadNode, WordsIn } from "@/components/landing/Thread";
 import { useLandingUtm } from "@/components/landing/useLandingUtm";
-import { GoogleBadge, METHOD_NAME, METHOD_STEPS, PRODUCTOS_FAQ, PRODUCTOS_QUESTIONS, Testimonials } from "@/components/landing/productos-content";
+import { GoogleBadge, METHOD_NAME, METHOD_STEPS, PRODUCTOS_FAQ, PRODUCTOS_QUESTIONS } from "@/components/landing/productos-content";
 import hero from "@/assets/productos-hero.jpg";
 
 const TITLE = "ProductOS — Il prodotto digitale del tuo negozio";
@@ -178,7 +179,7 @@ function ProductOSLong() {
             </div>
             <p className="lg:col-span-5 text-muted-foreground self-end">Con CONSUS abbiamo trasformato un metodo di lavoro in un software gestionale. Lo stesso approccio lo applichiamo ai negozi.</p>
           </div>
-          <Testimonials count={3} />
+          <ReviewsMarquee />
         </div>
       </section>
 

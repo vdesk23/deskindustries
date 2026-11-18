@@ -236,13 +236,15 @@
 @keyframes lp-word { to { opacity: 1; transform: none; } }
 .lp-marquee { display: flex; width: max-content; animation: lp-marq 40s linear infinite; }
 @keyframes lp-marq { to { transform: translateX(-50%); } }
+.lp-reviews { display: flex; width: max-content; animation: reviews-marquee 80s linear infinite; }
+.lp-reviews:hover { animation-play-state: paused; }
 .lp-draw { transform-origin: left; transform: scaleX(0); transition: transform 1.4s cubic-bezier(.22,1,.36,1) .2s; background: var(--gradient-thread); }
 .is-visible .lp-draw { transform: scaleX(1); }
 .lp-glow-card { position: relative; }
 .lp-glow-card::before { content: ""; position: absolute; inset: -1px; border-radius: inherit; padding: 1px; background: var(--gradient-thread); -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0; transition: opacity .4s; pointer-events: none; }
 .lp-glow-card:hover::before { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
-  .lp-aurora, .lp-kenburns, .lp-marquee { animation: none; }
+  .lp-aurora, .lp-kenburns, .lp-marquee, .lp-reviews { animation: none; }
   .lp-word { animation: none; opacity: 1; transform: none; }
   .lp-draw { transform: scaleX(1); transition: none; }
 }
