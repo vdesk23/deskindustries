@@ -31,6 +31,11 @@ export const registrationSchema = contactSchema.extend({
   continuation: z.string().max(1000).optional(),
 });
 
+/** A corrected recipient gets a new portfolio; unchanged recipients do not. */
+export function shouldSendLeadPortfolio(previousEmail: string | undefined, email: string) {
+  return previousEmail === undefined || previousEmail.trim().toLowerCase() !== email.trim().toLowerCase();
+}
+
 export const quoteRequestSchema = z.object({
   action: z.literal("quote"),
   continuation: z.string().min(1).max(1000),

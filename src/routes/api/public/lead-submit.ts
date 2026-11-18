@@ -4,7 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { TEMPLATES } from "@/lib/email-templates/registry";
-import { registrationSchema, quoteRequestSchema, resolveServices, quoteBrief } from "@/lib/lead-intake";
+import { registrationSchema, quoteRequestSchema, resolveServices, quoteBrief, shouldSendLeadPortfolio } from "@/lib/lead-intake";
 
 const SITE_NAME = "Desk Industries";
 const SENDER_DOMAIN = "notify.deskindustries.com";
@@ -173,9 +173,13 @@ export const Route = createFileRoute("/api/public/lead-submit")({
             if (!registration.success) return Response.json({ error: "Controlla i dati del contatto." }, { status: 400 });
             const { action: _action, continuation: previous, ...contact } = registration.data;
             let leadId: string;
+            let previousEmail: string | undefined;
             try {
               if (previous) {
                 leadId = await bridge.verifyContinuation(previous);
+                const { data: stored, error: readError } = await db.from("lead_requests").select("email").eq("id", leadId).single();
+                if (readError || !stored) throw new Error("Lead not found");
+                previousEmail = stored.email;
                 const { error } = await db.from("lead_requests").update(contact).eq("id", leadId);
                 if (error) throw error;
               } else {
@@ -184,8 +188,9 @@ export const Route = createFileRoute("/api/public/lead-submit")({
                 leadId = row.id;
               }
               const continuation = await bridge.issueContinuation(leadId);
-              if (!previous) {
-                const sent = await enqueueTemplate(db, "lead-portfolio", contact.email, { name: contact.name }, `lead-portfolio-${leadId}`).catch(() => null);
+              if (shouldSendLeadPortfolio(previousEmail, contact.email)) {
+                const portfolioKey = previous ? `lead-portfolio-${leadId}-${contact.email.toLowerCase()}` : `lead-portfolio-${leadId}`;
+                const sent = await enqueueTemplate(db, "lead-portfolio", contact.email, { name: contact.name }, portfolioKey).catch(() => null);
                 if (!sent?.ok) console.error("Portfolio email enqueue failed");
               }
               try {

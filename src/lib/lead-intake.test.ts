@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { registrationSchema, quoteRequestSchema, groupServices, resolveServices, STORE_CATEGORIES, STORE_SITUATIONS } from "./lead-intake";
+import { registrationSchema, quoteRequestSchema, groupServices, resolveServices, shouldSendLeadPortfolio, STORE_CATEGORIES, STORE_SITUATIONS } from "./lead-intake";
 
 const company = { business: "Boutique Rossi srl", vatNumber: "12345678901", address: "Via Roma 1", city: "Roma" };
 const baseQuote = { action: "quote", continuation: "token", sector: STORE_CATEGORIES[0], situation: STORE_SITUATIONS[0], serviceCodes: ["SEO"], company };
@@ -23,6 +23,15 @@ describe("two-step commercial intake", () => {
   });
   it("leaves the goal text optional", () => {
     expect(quoteRequestSchema.safeParse(baseQuote).success).toBe(true);
+  });
+  it("sends the portfolio on first registration", () => {
+    expect(shouldSendLeadPortfolio(undefined, "maria@example.com")).toBe(true);
+  });
+  it("sends a new portfolio to a corrected email", () => {
+    expect(shouldSendLeadPortfolio("typo@example.com", "maria@example.com")).toBe(true);
+  });
+  it("does not resend the portfolio for unchanged email or other contact corrections", () => {
+    expect(shouldSendLeadPortfolio("maria@example.com", " MARIA@example.com ")).toBe(false);
   });
   it("requires company data for the quote", () => {
     expect(quoteRequestSchema.safeParse({ ...baseQuote, company: { ...company, vatNumber: "" } }).success).toBe(false);
