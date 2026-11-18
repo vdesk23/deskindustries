@@ -1,6 +1,6 @@
 ---
 name: desk-design
-description: Regole di design, copy e struttura per pagine e sezioni del sito Desk Industries (palette viola/ambra, Space Grotesk + Inter, schede Card3D, header pill flottante, testi in italiano). Usare ogni volta che si crea o si modifica una pagina, una sezione o un componente visivo di questo progetto.
+description: Regole di design, copy e struttura per pagine e sezioni Desk Industries (palette viola/ambra, filo rosso narrativo, Space Grotesk + Inter, Card3D, header floating e landing animate). Usare per ogni pagina, sezione o componente visivo del progetto.
 ---
 
 # Design Desk Industries
@@ -8,56 +8,55 @@ description: Regole di design, copy e struttura per pagine e sezioni del sito De
 Istruzioni vincolanti per qualsiasi pagina, sezione o componente visivo di questo progetto.
 
 ## 1. Identità visiva
-
-Colori: **solo token** definiti in `src/styles.css`. Mai `text-white`, `bg-black`, `bg-[#...]`, colori Tailwind grezzi (`text-purple-500`).
+Colori: **solo token** definiti in `src/styles.css`. Mai `text-white`, `bg-black`, `bg-[#...]` o colori Tailwind grezzi.
 
 | Uso | Token / classe |
 | --- | --- |
-| Fondo pagina | `bg-background` (viola scuro) |
+| Fondo pagina | `bg-background` |
 | Testo | `text-foreground`, secondario `text-muted-foreground` |
 | Superficie card | `bg-surface-elevated/50` + `backdrop-blur-xl` |
 | Bordi | `border-border` |
-| Accento unico | `text-amber`, `bg-amber`, `bg-amber-soft`, `ring-amber` |
+| Accento principale | `text-amber`, `bg-amber`, `bg-amber-soft`, `ring-amber` |
+| Filo narrativo landing | `lp-thread-text`, `lp-draw` e componenti `ThreadLine`/`ThreadNode` |
 | Ombre | `shadow-elevated`, `shadow-amber` |
 
-L'ambra è **l'unico** colore accento: eyebrow, parole in corsivo nei titoli, icone, bordi attivi, CTA. Non introdurre altri colori di brand (i gradienti multi-tinta sono ammessi solo come alone sfocato decorativo dietro le card, come in `HomePage.tsx`).
+L'ambra guida CTA, icone, eyebrow e stati attivi. Il gradiente ambra-rosso è riservato al filo narrativo e agli aloni decorativi già definiti; non introdurre nuovi colori di brand.
 
-Font: `font-display` (Space Grotesk) per titoli, numeri e label; body Inter di default. Titoli sempre `tracking-tight` + `font-medium`/`font-semibold`, mai bold pesante.
+Font: `font-display` (Space Grotesk) per titoli, numeri e label; body Inter. Titoli `tracking-tight` + `font-medium`/`font-semibold`, mai bold pesante. Card grandi `rounded-3xl`, piccole `rounded-2xl`, CTA `rounded-full`.
 
-Raggi: card grandi `rounded-3xl`, card piccole `rounded-2xl`, pill e bottoni `rounded-full`.
-
-## 2. Struttura di una pagina
-
-- Header: pill flottante in basso (`src/components/Header.tsx`), già montato nel layout root. Non aggiungere navbar in alto.
-- Sfondo 3D (`<SceneBackground />`): obbligatorio in home; sulle pagine interne è opzionale — se usato, le sezioni devono restare semitrasparenti (`/50`–`/60` + `backdrop-blur-xl`) per lasciarlo intravedere.
-- Contenitore sezione: `<section className="relative py-24 lg:py-32">` con `<div className="mx-auto max-w-7xl px-5 lg:px-8">`.
-- Intestazione sezione: eyebrow ambra maiuscolo spaziato, titolo grande a sinistra (7 colonne), testo di supporto a destra (5 colonne).
-- Griglie: `grid gap-6 lg:grid-cols-3` per le card grandi, `gap-4 sm:grid-cols-2 lg:grid-cols-3` per le card feature.
-- Lasciare spazio in fondo alla pagina per l'header flottante.
+## 2. Struttura e filo rosso
+- Header pill flottante in basso, già montato nel layout root; niente navbar tradizionale in alto.
+- Sfondo 3D obbligatorio in home, opzionale nelle pagine interne con fallback statico.
+- Sezioni `relative py-24 lg:py-32`, contenitore `mx-auto max-w-7xl px-5 lg:px-8`.
+- Intestazione: eyebrow ambra, titolo a sinistra e supporto a destra dove serve.
+- Nelle landing ogni sezione è un capitolo `ThreadNode` numerato. `ThreadLine` collega il percorso; `Aurora` crea profondità senza ridurre il contrasto.
+- `PhilosophyMarquee` collega il servizio ai principi Desk: zero vincoli, paghi a consumo, su misura day by day. Usa solo affermazioni pertinenti alla linea.
+- Spazio finale sufficiente per l'header floating.
 
 ## 3. Movimento
+- Card e CTA interattive con `Card3D`: intensity 5–6 per card, 8–12 per CTA.
+- Landing: solo CSS transform/opacity e observer condiviso tramite `Reveal`; titoli con `WordsIn`, foto eventuali con kenburns lieve, linea metodo con `lp-draw`.
+- `ReviewsMarquee` e `PhilosophyMarquee`: scorrimento continuo leggibile, pausa hover, niente movimento con reduced-motion.
+- Evita animazioni continue vistose oltre ai pattern approvati. Decorazioni sempre `pointer-events-none` e dietro al contenuto.
+- Le pagine esistenti possono mantenere Framer Motion; non aggiungerlo alle nuove landing.
 
-- Card e bottoni interattivi avvolti in `<Card3D>` (`@/components/ui/Card3D`): inclinazione + luce che segue il mouse. `intensity` 5–6 per card piccole, 8–12 per CTA.
-- Comparsa allo scorrimento con Framer Motion: `initial={{opacity:0,y:24}} whileInView={{opacity:1,y:0}} viewport={{once:true}}` con `ease: [0.22, 1, 0.36, 1]` e delay a cascata `i * 0.06`–`0.1`.
-- Nessuna animazione infinita vistosa oltre al pulse dell'eyebrow e ai caroselli.
-- Rispettare `prefers-reduced-motion` (Card3D lo fa già).
+## 4. Immagini e infografiche
+Per analisi, audit, software e servizi tecnici preferisci diagrammi 2D, mappe di flusso e pannelli dati chiari, con gli stessi token del sito. Non usare foto stock o immagini AI generiche quando un'infografica spiega meglio il servizio. Ogni visual deve avere testo alternativo utile e non contenere metriche inventate presentate come risultati reali.
 
-## 4. Tono dei contenuti
+## 5. Tono dei contenuti
+- Sempre italiano, concreto, orientato alla decisione che il cliente potrà prendere.
+- Titoli brevi con una o due parole in `italic text-amber font-normal`; un solo h1.
+- Spiega output, input necessari e passaggi. Niente AI-speak, gergo o promesse non dimostrate.
+- Nei freebie evidenzia cosa riceve gratuitamente e perché è utile, senza sminuire il servizio o creare falsa urgenza.
+- Chiusura con CTA al form della pagina.
 
-- Sempre **italiano**, concreto, orientato al risultato. Niente gergo tecnico o AI-speak.
-- Titolo di sezione breve, con una o due parole chiave in `italic text-amber font-normal`.
-- Frasi corte, verbi all'indicativo, benefici misurabili (tempo risparmiato, costi, flussi).
-- Ogni pagina/sezione chiude con un invito all'azione verso il modulo contatti (`#lead` in home, `/contatti` altrove).
+## 6. Checklist
+- [ ] Route con head() dedicato: title <60, description <160, OG/Twitter, canonical dove indicizzabile.
+- [ ] Un solo h1, gerarchia coerente, alt e dimensioni immagini.
+- [ ] Nessun colore hardcoded: cercare `text-white|bg-black|bg-\[#`.
+- [ ] Link interni con TanStack Router; esterni con `target="_blank" rel="noopener noreferrer"`.
+- [ ] Verifica 375px e 1280px: testo leggibile, card non compresse, CTA raggiungibile, decorazioni non interattive.
+- [ ] Reduced-motion verificato e nessun errore console.
 
-## 5. Checklist prima di consegnare una pagina
-
-- [ ] Route in `src/routes/` con `head()` dedicato: title < 60 char, description < 160, `og:title`, `og:description`, `og:type`, `twitter:card`. Mai riusare i metadati di un'altra pagina.
-- [ ] Un solo `<h1>`, gerarchia h2/h3 coerente, HTML semantico (`section`, `nav`, `footer`).
-- [ ] `alt` su tutte le immagini, lazy loading dove sensato.
-- [ ] Nessun colore hardcoded: cercare `text-white|bg-black|bg-\[#` prima di chiudere.
-- [ ] Verifica a 375px e 1280px: testo leggibile sopra lo sfondo, card non compresse, CTA raggiungibile.
-- [ ] Link interni con `<Link>` di `@tanstack/react-router`; link esterni con `target="_blank" rel="noopener noreferrer"`.
-
-## 6. Snippet di riferimento
-
-Vedi `references/patterns.md` per intestazione sezione, card, CTA hero e blocco statistiche pronti da copiare.
+## 7. Snippet di riferimento
+Vedi `references/patterns.md` per i pattern base; per le landing usa come riferimento anche i componenti condivisi in `src/components/landing/` e la variante ProductOS già approvata.
