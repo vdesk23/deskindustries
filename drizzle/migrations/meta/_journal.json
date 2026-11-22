@@ -29,6 +29,13 @@
       "when": 1795370416991,
       "tag": "0003_lock_subscription_check_and_booking_status",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1795370433284,
+      "tag": "0004_restore_subscription_default_env",
+      "breakpoints": true
     }
   ]
 }
