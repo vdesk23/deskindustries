@@ -46,6 +46,9 @@ import { Route as ApiPublicContentPlanSubmitRouteImport } from './routes/api/pub
 import { Route as ApiPublicLandingSubmitRouteImport } from './routes/api/public/landing-submit'
 import { Route as ApiPublicLeadSubmitRouteImport } from './routes/api/public/lead-submit'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
+import { Route as ServiziDigitalKitIndexRouteImport } from './routes/servizi.digital-kit.index'
+import { Route as ServiziDigitalKitARouteImport } from './routes/servizi.digital-kit.a'
+import { Route as ServiziDigitalKitBRouteImport } from './routes/servizi.digital-kit.b'
 import { Route as ServiziEcomBreakdownIndexRouteImport } from './routes/servizi.ecom-breakdown.index'
 import { Route as ServiziEcomBreakdownARouteImport } from './routes/servizi.ecom-breakdown.a'
 import { Route as ServiziEcomBreakdownBRouteImport } from './routes/servizi.ecom-breakdown.b'
@@ -244,6 +247,21 @@ const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   path: '/lovable/email/suppression',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServiziDigitalKitIndexRoute = ServiziDigitalKitIndexRouteImport.update({
+  id: '/servizi/digital-kit/',
+  path: '/servizi/digital-kit/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiziDigitalKitARoute = ServiziDigitalKitARouteImport.update({
+  id: '/servizi/digital-kit/a',
+  path: '/servizi/digital-kit/a',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiziDigitalKitBRoute = ServiziDigitalKitBRouteImport.update({
+  id: '/servizi/digital-kit/b',
+  path: '/servizi/digital-kit/b',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServiziEcomBreakdownIndexRoute =
   ServiziEcomBreakdownIndexRouteImport.update({
     id: '/servizi/ecom-breakdown/',
@@ -343,11 +361,14 @@ export interface FileRoutesByFullPath {
   '/api/public/landing-submit': typeof ApiPublicLandingSubmitRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/servizi/digital-kit/a': typeof ServiziDigitalKitARoute
+  '/servizi/digital-kit/b': typeof ServiziDigitalKitBRoute
   '/servizi/ecom-breakdown/a': typeof ServiziEcomBreakdownARoute
   '/servizi/ecom-breakdown/b': typeof ServiziEcomBreakdownBRoute
   '/servizi/productos/a': typeof ServiziProductosARoute
   '/servizi/productos/b': typeof ServiziProductosBRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
+  '/servizi/digital-kit/': typeof ServiziDigitalKitIndexRoute
   '/servizi/ecom-breakdown/': typeof ServiziEcomBreakdownIndexRoute
   '/servizi/productos/': typeof ServiziProductosIndexRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
@@ -392,11 +413,14 @@ export interface FileRoutesByTo {
   '/api/public/landing-submit': typeof ApiPublicLandingSubmitRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/servizi/digital-kit/a': typeof ServiziDigitalKitARoute
+  '/servizi/digital-kit/b': typeof ServiziDigitalKitBRoute
   '/servizi/ecom-breakdown/a': typeof ServiziEcomBreakdownARoute
   '/servizi/ecom-breakdown/b': typeof ServiziEcomBreakdownBRoute
   '/servizi/productos/a': typeof ServiziProductosARoute
   '/servizi/productos/b': typeof ServiziProductosBRoute
   '/admin/blog': typeof AdminBlogIndexRoute
+  '/servizi/digital-kit': typeof ServiziDigitalKitIndexRoute
   '/servizi/ecom-breakdown': typeof ServiziEcomBreakdownIndexRoute
   '/servizi/productos': typeof ServiziProductosIndexRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
@@ -443,11 +467,14 @@ export interface FileRoutesById {
   '/api/public/landing-submit': typeof ApiPublicLandingSubmitRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/servizi/digital-kit/a': typeof ServiziDigitalKitARoute
+  '/servizi/digital-kit/b': typeof ServiziDigitalKitBRoute
   '/servizi/ecom-breakdown/a': typeof ServiziEcomBreakdownARoute
   '/servizi/ecom-breakdown/b': typeof ServiziEcomBreakdownBRoute
   '/servizi/productos/a': typeof ServiziProductosARoute
   '/servizi/productos/b': typeof ServiziProductosBRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
+  '/servizi/digital-kit/': typeof ServiziDigitalKitIndexRoute
   '/servizi/ecom-breakdown/': typeof ServiziEcomBreakdownIndexRoute
   '/servizi/productos/': typeof ServiziProductosIndexRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
@@ -495,11 +522,14 @@ export interface FileRouteTypes {
     | '/api/public/landing-submit'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
+    | '/servizi/digital-kit/a'
+    | '/servizi/digital-kit/b'
     | '/servizi/ecom-breakdown/a'
     | '/servizi/ecom-breakdown/b'
     | '/servizi/productos/a'
     | '/servizi/productos/b'
     | '/admin/blog/'
+    | '/servizi/digital-kit/'
     | '/servizi/ecom-breakdown/'
     | '/servizi/productos/'
     | '/account/tickets/$ticketId/pay'
@@ -544,11 +574,14 @@ export interface FileRouteTypes {
     | '/api/public/landing-submit'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
+    | '/servizi/digital-kit/a'
+    | '/servizi/digital-kit/b'
     | '/servizi/ecom-breakdown/a'
     | '/servizi/ecom-breakdown/b'
     | '/servizi/productos/a'
     | '/servizi/productos/b'
     | '/admin/blog'
+    | '/servizi/digital-kit'
     | '/servizi/ecom-breakdown'
     | '/servizi/productos'
     | '/account/tickets/$ticketId/pay'
@@ -594,11 +627,14 @@ export interface FileRouteTypes {
     | '/api/public/landing-submit'
     | '/api/public/lead-submit'
     | '/lovable/email/suppression'
+    | '/servizi/digital-kit/a'
+    | '/servizi/digital-kit/b'
     | '/servizi/ecom-breakdown/a'
     | '/servizi/ecom-breakdown/b'
     | '/servizi/productos/a'
     | '/servizi/productos/b'
     | '/admin/blog/'
+    | '/servizi/digital-kit/'
     | '/servizi/ecom-breakdown/'
     | '/servizi/productos/'
     | '/account/tickets/$ticketId/pay'
@@ -638,10 +674,13 @@ export interface RootRouteChildren {
   ApiPublicLandingSubmitRoute: typeof ApiPublicLandingSubmitRoute
   ApiPublicLeadSubmitRoute: typeof ApiPublicLeadSubmitRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
+  ServiziDigitalKitARoute: typeof ServiziDigitalKitARoute
+  ServiziDigitalKitBRoute: typeof ServiziDigitalKitBRoute
   ServiziEcomBreakdownARoute: typeof ServiziEcomBreakdownARoute
   ServiziEcomBreakdownBRoute: typeof ServiziEcomBreakdownBRoute
   ServiziProductosARoute: typeof ServiziProductosARoute
   ServiziProductosBRoute: typeof ServiziProductosBRoute
+  ServiziDigitalKitIndexRoute: typeof ServiziDigitalKitIndexRoute
   ServiziEcomBreakdownIndexRoute: typeof ServiziEcomBreakdownIndexRoute
   ServiziProductosIndexRoute: typeof ServiziProductosIndexRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
@@ -911,6 +950,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LovableEmailSuppressionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/servizi/digital-kit/': {
+      id: '/servizi/digital-kit/'
+      path: '/servizi/digital-kit'
+      fullPath: '/servizi/digital-kit/'
+      preLoaderRoute: typeof ServiziDigitalKitIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servizi/digital-kit/a': {
+      id: '/servizi/digital-kit/a'
+      path: '/servizi/digital-kit/a'
+      fullPath: '/servizi/digital-kit/a'
+      preLoaderRoute: typeof ServiziDigitalKitARouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servizi/digital-kit/b': {
+      id: '/servizi/digital-kit/b'
+      path: '/servizi/digital-kit/b'
+      fullPath: '/servizi/digital-kit/b'
+      preLoaderRoute: typeof ServiziDigitalKitBRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/servizi/ecom-breakdown/': {
       id: '/servizi/ecom-breakdown/'
       path: '/servizi/ecom-breakdown'
@@ -1076,10 +1136,13 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicLandingSubmitRoute: ApiPublicLandingSubmitRoute,
   ApiPublicLeadSubmitRoute: ApiPublicLeadSubmitRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
+  ServiziDigitalKitARoute: ServiziDigitalKitARoute,
+  ServiziDigitalKitBRoute: ServiziDigitalKitBRoute,
   ServiziEcomBreakdownARoute: ServiziEcomBreakdownARoute,
   ServiziEcomBreakdownBRoute: ServiziEcomBreakdownBRoute,
   ServiziProductosARoute: ServiziProductosARoute,
   ServiziProductosBRoute: ServiziProductosBRoute,
+  ServiziDigitalKitIndexRoute: ServiziDigitalKitIndexRoute,
   ServiziEcomBreakdownIndexRoute: ServiziEcomBreakdownIndexRoute,
   ServiziProductosIndexRoute: ServiziProductosIndexRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
