@@ -41,7 +41,10 @@ serve(async (req) => {
     const { priceId, quantity, customerEmail, returnUrl, environment, extraPriceIds } = body;
     const rawMetadata = (body.metadata && typeof body.metadata === "object") ? body.metadata as Record<string, unknown> : {};
 
-    if (!priceId || typeof priceId !== "string" || !/^[a-zA-Z0-9_-]+$/.test(priceId)) {
+    const ALLOWED_PRICES = new Set(["follia_monthly_19", "follia_ticket_50", "seo_optimizer_starter", "seo_optimizer_pro", "seo_optimizer_extra_article"]);
+    if (!priceId || typeof priceId !== "string" || !ALLOWED_PRICES.has(priceId) ||
+        (Array.isArray(extraPriceIds) && extraPriceIds.some((k) => typeof k !== "string" || !ALLOWED_PRICES.has(k))) ||
+        (environment && environment !== "sandbox" && environment !== "live")) {
       return new Response(JSON.stringify({ error: "Invalid priceId" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
