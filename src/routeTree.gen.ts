@@ -49,6 +49,9 @@ import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/em
 import { Route as ServiziAgenzAiIndexRouteImport } from './routes/servizi.agenz-ai.index'
 import { Route as ServiziAgenzAiARouteImport } from './routes/servizi.agenz-ai.a'
 import { Route as ServiziAgenzAiBRouteImport } from './routes/servizi.agenz-ai.b'
+import { Route as ServiziBraindingIndexRouteImport } from './routes/servizi.brainding.index'
+import { Route as ServiziBraindingARouteImport } from './routes/servizi.brainding.a'
+import { Route as ServiziBraindingBRouteImport } from './routes/servizi.brainding.b'
 import { Route as ServiziClickUpIndexRouteImport } from './routes/servizi.click-up.index'
 import { Route as ServiziClickUpARouteImport } from './routes/servizi.click-up.a'
 import { Route as ServiziClickUpBRouteImport } from './routes/servizi.click-up.b'
@@ -271,6 +274,21 @@ const ServiziAgenzAiBRoute = ServiziAgenzAiBRouteImport.update({
   path: '/servizi/agenz-ai/b',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServiziBraindingIndexRoute = ServiziBraindingIndexRouteImport.update({
+  id: '/servizi/brainding/',
+  path: '/servizi/brainding/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiziBraindingARoute = ServiziBraindingARouteImport.update({
+  id: '/servizi/brainding/a',
+  path: '/servizi/brainding/a',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiziBraindingBRoute = ServiziBraindingBRouteImport.update({
+  id: '/servizi/brainding/b',
+  path: '/servizi/brainding/b',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServiziClickUpIndexRoute = ServiziClickUpIndexRouteImport.update({
   id: '/servizi/click-up/',
   path: '/servizi/click-up/',
@@ -417,6 +435,8 @@ export interface FileRoutesByFullPath {
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/servizi/agenz-ai/a': typeof ServiziAgenzAiARoute
   '/servizi/agenz-ai/b': typeof ServiziAgenzAiBRoute
+  '/servizi/brainding/a': typeof ServiziBraindingARoute
+  '/servizi/brainding/b': typeof ServiziBraindingBRoute
   '/servizi/click-up/a': typeof ServiziClickUpARoute
   '/servizi/click-up/b': typeof ServiziClickUpBRoute
   '/servizi/digital-kit/a': typeof ServiziDigitalKitARoute
@@ -429,6 +449,7 @@ export interface FileRoutesByFullPath {
   '/servizi/productos/b': typeof ServiziProductosBRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
   '/servizi/agenz-ai/': typeof ServiziAgenzAiIndexRoute
+  '/servizi/brainding/': typeof ServiziBraindingIndexRoute
   '/servizi/click-up/': typeof ServiziClickUpIndexRoute
   '/servizi/digital-kit/': typeof ServiziDigitalKitIndexRoute
   '/servizi/ecom-breakdown/': typeof ServiziEcomBreakdownIndexRoute
@@ -478,6 +499,8 @@ export interface FileRoutesByTo {
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/servizi/agenz-ai/a': typeof ServiziAgenzAiARoute
   '/servizi/agenz-ai/b': typeof ServiziAgenzAiBRoute
+  '/servizi/brainding/a': typeof ServiziBraindingARoute
+  '/servizi/brainding/b': typeof ServiziBraindingBRoute
   '/servizi/click-up/a': typeof ServiziClickUpARoute
   '/servizi/click-up/b': typeof ServiziClickUpBRoute
   '/servizi/digital-kit/a': typeof ServiziDigitalKitARoute
@@ -490,6 +513,7 @@ export interface FileRoutesByTo {
   '/servizi/productos/b': typeof ServiziProductosBRoute
   '/admin/blog': typeof AdminBlogIndexRoute
   '/servizi/agenz-ai': typeof ServiziAgenzAiIndexRoute
+  '/servizi/brainding': typeof ServiziBraindingIndexRoute
   '/servizi/click-up': typeof ServiziClickUpIndexRoute
   '/servizi/digital-kit': typeof ServiziDigitalKitIndexRoute
   '/servizi/ecom-breakdown': typeof ServiziEcomBreakdownIndexRoute
@@ -541,6 +565,8 @@ export interface FileRoutesById {
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/servizi/agenz-ai/a': typeof ServiziAgenzAiARoute
   '/servizi/agenz-ai/b': typeof ServiziAgenzAiBRoute
+  '/servizi/brainding/a': typeof ServiziBraindingARoute
+  '/servizi/brainding/b': typeof ServiziBraindingBRoute
   '/servizi/click-up/a': typeof ServiziClickUpARoute
   '/servizi/click-up/b': typeof ServiziClickUpBRoute
   '/servizi/digital-kit/a': typeof ServiziDigitalKitARoute
@@ -553,6 +579,7 @@ export interface FileRoutesById {
   '/servizi/productos/b': typeof ServiziProductosBRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
   '/servizi/agenz-ai/': typeof ServiziAgenzAiIndexRoute
+  '/servizi/brainding/': typeof ServiziBraindingIndexRoute
   '/servizi/click-up/': typeof ServiziClickUpIndexRoute
   '/servizi/digital-kit/': typeof ServiziDigitalKitIndexRoute
   '/servizi/ecom-breakdown/': typeof ServiziEcomBreakdownIndexRoute
@@ -605,6 +632,8 @@ export interface FileRouteTypes {
     | '/lovable/email/suppression'
     | '/servizi/agenz-ai/a'
     | '/servizi/agenz-ai/b'
+    | '/servizi/brainding/a'
+    | '/servizi/brainding/b'
     | '/servizi/click-up/a'
     | '/servizi/click-up/b'
     | '/servizi/digital-kit/a'
@@ -617,6 +646,7 @@ export interface FileRouteTypes {
     | '/servizi/productos/b'
     | '/admin/blog/'
     | '/servizi/agenz-ai/'
+    | '/servizi/brainding/'
     | '/servizi/click-up/'
     | '/servizi/digital-kit/'
     | '/servizi/ecom-breakdown/'
@@ -666,6 +696,8 @@ export interface FileRouteTypes {
     | '/lovable/email/suppression'
     | '/servizi/agenz-ai/a'
     | '/servizi/agenz-ai/b'
+    | '/servizi/brainding/a'
+    | '/servizi/brainding/b'
     | '/servizi/click-up/a'
     | '/servizi/click-up/b'
     | '/servizi/digital-kit/a'
@@ -678,6 +710,7 @@ export interface FileRouteTypes {
     | '/servizi/productos/b'
     | '/admin/blog'
     | '/servizi/agenz-ai'
+    | '/servizi/brainding'
     | '/servizi/click-up'
     | '/servizi/digital-kit'
     | '/servizi/ecom-breakdown'
@@ -728,6 +761,8 @@ export interface FileRouteTypes {
     | '/lovable/email/suppression'
     | '/servizi/agenz-ai/a'
     | '/servizi/agenz-ai/b'
+    | '/servizi/brainding/a'
+    | '/servizi/brainding/b'
     | '/servizi/click-up/a'
     | '/servizi/click-up/b'
     | '/servizi/digital-kit/a'
@@ -740,6 +775,7 @@ export interface FileRouteTypes {
     | '/servizi/productos/b'
     | '/admin/blog/'
     | '/servizi/agenz-ai/'
+    | '/servizi/brainding/'
     | '/servizi/click-up/'
     | '/servizi/digital-kit/'
     | '/servizi/ecom-breakdown/'
@@ -784,6 +820,8 @@ export interface RootRouteChildren {
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   ServiziAgenzAiARoute: typeof ServiziAgenzAiARoute
   ServiziAgenzAiBRoute: typeof ServiziAgenzAiBRoute
+  ServiziBraindingARoute: typeof ServiziBraindingARoute
+  ServiziBraindingBRoute: typeof ServiziBraindingBRoute
   ServiziClickUpARoute: typeof ServiziClickUpARoute
   ServiziClickUpBRoute: typeof ServiziClickUpBRoute
   ServiziDigitalKitARoute: typeof ServiziDigitalKitARoute
@@ -795,6 +833,7 @@ export interface RootRouteChildren {
   ServiziProductosARoute: typeof ServiziProductosARoute
   ServiziProductosBRoute: typeof ServiziProductosBRoute
   ServiziAgenzAiIndexRoute: typeof ServiziAgenzAiIndexRoute
+  ServiziBraindingIndexRoute: typeof ServiziBraindingIndexRoute
   ServiziClickUpIndexRoute: typeof ServiziClickUpIndexRoute
   ServiziDigitalKitIndexRoute: typeof ServiziDigitalKitIndexRoute
   ServiziEcomBreakdownIndexRoute: typeof ServiziEcomBreakdownIndexRoute
@@ -1088,6 +1127,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServiziAgenzAiBRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/servizi/brainding/': {
+      id: '/servizi/brainding/'
+      path: '/servizi/brainding'
+      fullPath: '/servizi/brainding/'
+      preLoaderRoute: typeof ServiziBraindingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servizi/brainding/a': {
+      id: '/servizi/brainding/a'
+      path: '/servizi/brainding/a'
+      fullPath: '/servizi/brainding/a'
+      preLoaderRoute: typeof ServiziBraindingARouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servizi/brainding/b': {
+      id: '/servizi/brainding/b'
+      path: '/servizi/brainding/b'
+      fullPath: '/servizi/brainding/b'
+      preLoaderRoute: typeof ServiziBraindingBRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/servizi/click-up/': {
       id: '/servizi/click-up/'
       path: '/servizi/click-up'
@@ -1318,6 +1378,8 @@ const rootRouteChildren: RootRouteChildren = {
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   ServiziAgenzAiARoute: ServiziAgenzAiARoute,
   ServiziAgenzAiBRoute: ServiziAgenzAiBRoute,
+  ServiziBraindingARoute: ServiziBraindingARoute,
+  ServiziBraindingBRoute: ServiziBraindingBRoute,
   ServiziClickUpARoute: ServiziClickUpARoute,
   ServiziClickUpBRoute: ServiziClickUpBRoute,
   ServiziDigitalKitARoute: ServiziDigitalKitARoute,
@@ -1329,6 +1391,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServiziProductosARoute: ServiziProductosARoute,
   ServiziProductosBRoute: ServiziProductosBRoute,
   ServiziAgenzAiIndexRoute: ServiziAgenzAiIndexRoute,
+  ServiziBraindingIndexRoute: ServiziBraindingIndexRoute,
   ServiziClickUpIndexRoute: ServiziClickUpIndexRoute,
   ServiziDigitalKitIndexRoute: ServiziDigitalKitIndexRoute,
   ServiziEcomBreakdownIndexRoute: ServiziEcomBreakdownIndexRoute,
