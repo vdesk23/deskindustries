@@ -58,6 +58,9 @@ import { Route as ServiziDigitalKitBRouteImport } from './routes/servizi.digital
 import { Route as ServiziEcomBreakdownIndexRouteImport } from './routes/servizi.ecom-breakdown.index'
 import { Route as ServiziEcomBreakdownARouteImport } from './routes/servizi.ecom-breakdown.a'
 import { Route as ServiziEcomBreakdownBRouteImport } from './routes/servizi.ecom-breakdown.b'
+import { Route as ServiziOCommerceIndexRouteImport } from './routes/servizi.o-commerce.index'
+import { Route as ServiziOCommerceARouteImport } from './routes/servizi.o-commerce.a'
+import { Route as ServiziOCommerceBRouteImport } from './routes/servizi.o-commerce.b'
 import { Route as ServiziProductosIndexRouteImport } from './routes/servizi.productos.index'
 import { Route as ServiziProductosARouteImport } from './routes/servizi.productos.a'
 import { Route as ServiziProductosBRouteImport } from './routes/servizi.productos.b'
@@ -314,6 +317,21 @@ const ServiziEcomBreakdownBRoute = ServiziEcomBreakdownBRouteImport.update({
   path: '/servizi/ecom-breakdown/b',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ServiziOCommerceIndexRoute = ServiziOCommerceIndexRouteImport.update({
+  id: '/servizi/o-commerce/',
+  path: '/servizi/o-commerce/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiziOCommerceARoute = ServiziOCommerceARouteImport.update({
+  id: '/servizi/o-commerce/a',
+  path: '/servizi/o-commerce/a',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiziOCommerceBRoute = ServiziOCommerceBRouteImport.update({
+  id: '/servizi/o-commerce/b',
+  path: '/servizi/o-commerce/b',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServiziProductosIndexRoute = ServiziProductosIndexRouteImport.update({
   id: '/servizi/productos/',
   path: '/servizi/productos/',
@@ -405,6 +423,8 @@ export interface FileRoutesByFullPath {
   '/servizi/digital-kit/b': typeof ServiziDigitalKitBRoute
   '/servizi/ecom-breakdown/a': typeof ServiziEcomBreakdownARoute
   '/servizi/ecom-breakdown/b': typeof ServiziEcomBreakdownBRoute
+  '/servizi/o-commerce/a': typeof ServiziOCommerceARoute
+  '/servizi/o-commerce/b': typeof ServiziOCommerceBRoute
   '/servizi/productos/a': typeof ServiziProductosARoute
   '/servizi/productos/b': typeof ServiziProductosBRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
@@ -412,6 +432,7 @@ export interface FileRoutesByFullPath {
   '/servizi/click-up/': typeof ServiziClickUpIndexRoute
   '/servizi/digital-kit/': typeof ServiziDigitalKitIndexRoute
   '/servizi/ecom-breakdown/': typeof ServiziEcomBreakdownIndexRoute
+  '/servizi/o-commerce/': typeof ServiziOCommerceIndexRoute
   '/servizi/productos/': typeof ServiziProductosIndexRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -463,6 +484,8 @@ export interface FileRoutesByTo {
   '/servizi/digital-kit/b': typeof ServiziDigitalKitBRoute
   '/servizi/ecom-breakdown/a': typeof ServiziEcomBreakdownARoute
   '/servizi/ecom-breakdown/b': typeof ServiziEcomBreakdownBRoute
+  '/servizi/o-commerce/a': typeof ServiziOCommerceARoute
+  '/servizi/o-commerce/b': typeof ServiziOCommerceBRoute
   '/servizi/productos/a': typeof ServiziProductosARoute
   '/servizi/productos/b': typeof ServiziProductosBRoute
   '/admin/blog': typeof AdminBlogIndexRoute
@@ -470,6 +493,7 @@ export interface FileRoutesByTo {
   '/servizi/click-up': typeof ServiziClickUpIndexRoute
   '/servizi/digital-kit': typeof ServiziDigitalKitIndexRoute
   '/servizi/ecom-breakdown': typeof ServiziEcomBreakdownIndexRoute
+  '/servizi/o-commerce': typeof ServiziOCommerceIndexRoute
   '/servizi/productos': typeof ServiziProductosIndexRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -523,6 +547,8 @@ export interface FileRoutesById {
   '/servizi/digital-kit/b': typeof ServiziDigitalKitBRoute
   '/servizi/ecom-breakdown/a': typeof ServiziEcomBreakdownARoute
   '/servizi/ecom-breakdown/b': typeof ServiziEcomBreakdownBRoute
+  '/servizi/o-commerce/a': typeof ServiziOCommerceARoute
+  '/servizi/o-commerce/b': typeof ServiziOCommerceBRoute
   '/servizi/productos/a': typeof ServiziProductosARoute
   '/servizi/productos/b': typeof ServiziProductosBRoute
   '/admin/blog/': typeof AdminBlogIndexRoute
@@ -530,6 +556,7 @@ export interface FileRoutesById {
   '/servizi/click-up/': typeof ServiziClickUpIndexRoute
   '/servizi/digital-kit/': typeof ServiziDigitalKitIndexRoute
   '/servizi/ecom-breakdown/': typeof ServiziEcomBreakdownIndexRoute
+  '/servizi/o-commerce/': typeof ServiziOCommerceIndexRoute
   '/servizi/productos/': typeof ServiziProductosIndexRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -584,6 +611,8 @@ export interface FileRouteTypes {
     | '/servizi/digital-kit/b'
     | '/servizi/ecom-breakdown/a'
     | '/servizi/ecom-breakdown/b'
+    | '/servizi/o-commerce/a'
+    | '/servizi/o-commerce/b'
     | '/servizi/productos/a'
     | '/servizi/productos/b'
     | '/admin/blog/'
@@ -591,6 +620,7 @@ export interface FileRouteTypes {
     | '/servizi/click-up/'
     | '/servizi/digital-kit/'
     | '/servizi/ecom-breakdown/'
+    | '/servizi/o-commerce/'
     | '/servizi/productos/'
     | '/account/tickets/$ticketId/pay'
     | '/lovable/email/queue/process'
@@ -642,6 +672,8 @@ export interface FileRouteTypes {
     | '/servizi/digital-kit/b'
     | '/servizi/ecom-breakdown/a'
     | '/servizi/ecom-breakdown/b'
+    | '/servizi/o-commerce/a'
+    | '/servizi/o-commerce/b'
     | '/servizi/productos/a'
     | '/servizi/productos/b'
     | '/admin/blog'
@@ -649,6 +681,7 @@ export interface FileRouteTypes {
     | '/servizi/click-up'
     | '/servizi/digital-kit'
     | '/servizi/ecom-breakdown'
+    | '/servizi/o-commerce'
     | '/servizi/productos'
     | '/account/tickets/$ticketId/pay'
     | '/lovable/email/queue/process'
@@ -701,6 +734,8 @@ export interface FileRouteTypes {
     | '/servizi/digital-kit/b'
     | '/servizi/ecom-breakdown/a'
     | '/servizi/ecom-breakdown/b'
+    | '/servizi/o-commerce/a'
+    | '/servizi/o-commerce/b'
     | '/servizi/productos/a'
     | '/servizi/productos/b'
     | '/admin/blog/'
@@ -708,6 +743,7 @@ export interface FileRouteTypes {
     | '/servizi/click-up/'
     | '/servizi/digital-kit/'
     | '/servizi/ecom-breakdown/'
+    | '/servizi/o-commerce/'
     | '/servizi/productos/'
     | '/account/tickets/$ticketId/pay'
     | '/lovable/email/queue/process'
@@ -754,12 +790,15 @@ export interface RootRouteChildren {
   ServiziDigitalKitBRoute: typeof ServiziDigitalKitBRoute
   ServiziEcomBreakdownARoute: typeof ServiziEcomBreakdownARoute
   ServiziEcomBreakdownBRoute: typeof ServiziEcomBreakdownBRoute
+  ServiziOCommerceARoute: typeof ServiziOCommerceARoute
+  ServiziOCommerceBRoute: typeof ServiziOCommerceBRoute
   ServiziProductosARoute: typeof ServiziProductosARoute
   ServiziProductosBRoute: typeof ServiziProductosBRoute
   ServiziAgenzAiIndexRoute: typeof ServiziAgenzAiIndexRoute
   ServiziClickUpIndexRoute: typeof ServiziClickUpIndexRoute
   ServiziDigitalKitIndexRoute: typeof ServiziDigitalKitIndexRoute
   ServiziEcomBreakdownIndexRoute: typeof ServiziEcomBreakdownIndexRoute
+  ServiziOCommerceIndexRoute: typeof ServiziOCommerceIndexRoute
   ServiziProductosIndexRoute: typeof ServiziProductosIndexRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
@@ -1112,6 +1151,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServiziEcomBreakdownBRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/servizi/o-commerce/': {
+      id: '/servizi/o-commerce/'
+      path: '/servizi/o-commerce'
+      fullPath: '/servizi/o-commerce/'
+      preLoaderRoute: typeof ServiziOCommerceIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servizi/o-commerce/a': {
+      id: '/servizi/o-commerce/a'
+      path: '/servizi/o-commerce/a'
+      fullPath: '/servizi/o-commerce/a'
+      preLoaderRoute: typeof ServiziOCommerceARouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servizi/o-commerce/b': {
+      id: '/servizi/o-commerce/b'
+      path: '/servizi/o-commerce/b'
+      fullPath: '/servizi/o-commerce/b'
+      preLoaderRoute: typeof ServiziOCommerceBRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/servizi/productos/': {
       id: '/servizi/productos/'
       path: '/servizi/productos'
@@ -1264,12 +1324,15 @@ const rootRouteChildren: RootRouteChildren = {
   ServiziDigitalKitBRoute: ServiziDigitalKitBRoute,
   ServiziEcomBreakdownARoute: ServiziEcomBreakdownARoute,
   ServiziEcomBreakdownBRoute: ServiziEcomBreakdownBRoute,
+  ServiziOCommerceARoute: ServiziOCommerceARoute,
+  ServiziOCommerceBRoute: ServiziOCommerceBRoute,
   ServiziProductosARoute: ServiziProductosARoute,
   ServiziProductosBRoute: ServiziProductosBRoute,
   ServiziAgenzAiIndexRoute: ServiziAgenzAiIndexRoute,
   ServiziClickUpIndexRoute: ServiziClickUpIndexRoute,
   ServiziDigitalKitIndexRoute: ServiziDigitalKitIndexRoute,
   ServiziEcomBreakdownIndexRoute: ServiziEcomBreakdownIndexRoute,
+  ServiziOCommerceIndexRoute: ServiziOCommerceIndexRoute,
   ServiziProductosIndexRoute: ServiziProductosIndexRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
