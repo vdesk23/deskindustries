@@ -68,7 +68,7 @@ export const Route = createFileRoute("/api/public/landing-submit")({
           await enqueueTemplate(db, "landing-lead-staff", "master@deskindustries.com",
             { stage: "contact", line: d.line, variant: d.variant, firstName: d.firstName, lastName: d.lastName, email: d.email, phone: d.phone, utm: d.utm },
             `landing-contact-${id}-${d.email.toLowerCase()}`).catch(() => null);
-          return Response.json({ contactId: id, contactToken: await signContact(id, key) });
+          return Response.json({ contactId: id, contactToken: await signContact(id as string, key) });
         }
 
         if (action === "request") {

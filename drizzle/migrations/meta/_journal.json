@@ -15,6 +15,13 @@
       "when": 1795369371585,
       "tag": "0001_lock_down_definer_functions",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795369431952,
+      "tag": "0002_signup_no_unverified_site_claim",
+      "breakpoints": true
     }
   ]
 }
