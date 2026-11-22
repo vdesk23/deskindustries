@@ -34,6 +34,7 @@ export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
+      { name: "google-site-verification", content: "dSrDPK-glnxst6x_1MCFgs-9m8Qh0pfcLnl0LYcYs7U" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Desk Industries — E-commerce e digitale per negozi fisici" },
       {
