@@ -18,6 +18,21 @@ const supabaseAdmin = createClient(
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
 );
 
+const ALLOWED_RETURN_HOSTS = new Set([
+  "www.deskindustries.com", "deskindustries.com", "deskindustries.lovable.app",
+  "deskinc.app", "www.deskinc.app",
+  "id-preview--665af6d8-e1ef-4a8b-9a76-5fea17beea52.lovable.app",
+]);
+function safeReturnUrl(u: unknown): string {
+  const fallback = "https://www.deskindustries.com/?session_id={CHECKOUT_SESSION_ID}";
+  if (typeof u !== "string") return fallback;
+  try {
+    const url = new URL(u.replace("{CHECKOUT_SESSION_ID}", "x"));
+    if (url.protocol === "https:" && ALLOWED_RETURN_HOSTS.has(url.hostname)) return u;
+  } catch { /* invalid */ }
+  return fallback;
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -129,7 +144,7 @@ serve(async (req) => {
       line_items: lineItems,
       mode: isRecurring ? "subscription" : "payment",
       ui_mode: "embedded",
-      return_url: returnUrl || `${req.headers.get("origin")}/checkout/return?session_id={CHECKOUT_SESSION_ID}`,
+      return_url: safeReturnUrl(returnUrl),
       ...(customerEmail && { customer_email: customerEmail }),
       ...(Object.keys(safeMetadata).length > 0 && { metadata: safeMetadata }),
       ...(isRecurring && Object.keys(safeMetadata).length > 0 && {
