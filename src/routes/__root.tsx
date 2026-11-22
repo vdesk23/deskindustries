@@ -3,7 +3,6 @@ import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/r
 import appCss from "../styles.css?url";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { PaymentTestModeBanner } from "@/components/PaymentTestModeBanner";
 import { CookieBanner } from "@/components/CookieBanner";
 import { useEffect } from "react";
 import { initMetaPixel } from "@/lib/meta-pixel";
@@ -118,7 +117,6 @@ function RootComponent() {
   return (
     <AuthProvider>
       <div className="min-h-screen flex flex-col text-foreground relative">
-        <PaymentTestModeBanner />
         <Header />
         <main className="flex-1 pb-28">
           <Outlet />

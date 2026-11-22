@@ -7,12 +7,12 @@ export const Route = createFileRoute("/termini")({
       {
         name: "description",
         content:
-          "Termini e Condizioni di servizio di Desk Industries SRLS per i servizi COCO su misura.",
+          "Termini e Condizioni di servizio di Desk Industries SRLS per i servizi su misura.",
       },
       { property: "og:title", content: "Termini e Condizioni — Desk Industries" },
       {
         property: "og:description",
-        content: "Le condizioni contrattuali per i servizi COCO di Desk Industries.",
+        content: "Le condizioni contrattuali per i servizi di Desk Industries.",
       },
     ],
   }),
@@ -48,7 +48,7 @@ function TerminiPage() {
           <h2 className="text-2xl font-display font-semibold text-foreground">2. Oggetto del servizio</h2>
           <p className="mt-3">
             I servizi <strong>Coco Web</strong>, <strong>Coco Social</strong>, <strong>CoCoaching</strong> e <strong>CoCoaching Executive</strong>
-            vengono descritti nella pagina <a href="/pacchetti" className="text-amber hover:underline">Servizi COCO</a> e definiti in dettaglio nella proposta personalizzata.
+            vengono descritti nella sezione <a href="/servizi" className="text-amber hover:underline">Servizi</a> e definiti in dettaglio nella proposta personalizzata.
             Ogni costo, durata e perimetro operativo viene concordato per iscritto prima dell'attivazione.
           </p>
         </section>

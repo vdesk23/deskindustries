@@ -12,7 +12,7 @@ export const Route = createFileRoute("/chi-siamo")({
       {
         name: "description",
         content:
-          "Desk Industries SRLS è l'agenzia di marketing che dà voce online alle attività locali. Scopri il nostro metodo, i valori e la filosofia COCO.",
+          "Desk Industries SRLS è l'agenzia di marketing che dà voce online alle attività locali. Scopri il nostro metodo, i valori e la nostra filosofia.",
       },
       { property: "og:title", content: "Chi siamo — Desk Industries" },
       {
@@ -39,7 +39,7 @@ const VALUES = [
   {
     Icon: Compass,
     title: "Metodo",
-    desc: "Il framework COCO è il nostro nord. Ogni decisione passa da lì: costruiamo, attiviamo, cementifichiamo.",
+    desc: "Il nostro metodo è il nostro nord. Ogni decisione passa da lì: costruiamo, attiviamo, cementifichiamo.",
   },
   {
     Icon: Rocket,
@@ -88,8 +88,8 @@ function ChiSiamoPage() {
             </p>
             <p>
               Per questo abbiamo costruito{" "}
-              <Link to="/metodo-coco" className="text-amber underline-offset-4 hover:underline">
-                il metodo COCO
+              <Link to="/servizi" className="text-amber underline-offset-4 hover:underline">
+                il nostro metodo
               </Link>
               : un sistema che parte dalle fondamenta e arriva fino al primo cliente
               che entra dalla porta.
@@ -165,9 +165,9 @@ function ChiSiamoPage() {
                 Prenota una call <ArrowRight />
               </Button>
             </Link>
-            <Link to="/metodo-coco">
+            <Link to="/servizi">
               <Button variant="outline" size="xl">
-                Scopri il metodo COCO
+                Scopri i servizi
               </Button>
             </Link>
           </div>

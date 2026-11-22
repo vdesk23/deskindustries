@@ -97,7 +97,7 @@ const LeadRequestAdminEmail = ({
 
           <Hr style={hr} />
           <Heading as="h2" style={h2}>Aree di interesse</Heading>
-          <Row label="Servizi COCO" value={selectedServices.map(labelize).join(", ")} />
+          <Row label="Servizi" value={selectedServices.map(labelize).join(", ")} />
           <Row label="Obiettivi attesi" value={expectedGoals.map(labelize).join(", ")} />
           <Row label="Cosa cerca" value={lookingFor} />
 

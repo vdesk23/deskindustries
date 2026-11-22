@@ -2,12 +2,12 @@ import { createFileRoute, Outlet, useNavigate, Link } from "@tanstack/react-rout
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { useAuth } from "@/hooks/useAuth";
-import { checkIsAdmin } from "@/lib/follia-admin.functions";
+import { checkIsAdmin } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
     meta: [
-      { title: "Admin — Foll.IA" },
+      { title: "Admin — Desk Industries" },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
@@ -54,9 +54,6 @@ function AdminLayout() {
         <div className="mb-8">
           <p className="text-xs font-display tracking-[0.3em] text-amber uppercase mb-2">Pannello admin</p>
           <nav className="flex gap-4 text-sm border-b border-border pb-3">
-            <Link to="/admin" activeOptions={{ exact: true }} className="hover:text-amber [&.active]:text-amber [&.active]:font-semibold">Dashboard</Link>
-            <Link to="/admin/sites" className="hover:text-amber [&.active]:text-amber [&.active]:font-semibold">Siti Foll.IA</Link>
-            <Link to="/admin/tickets" className="hover:text-amber [&.active]:text-amber [&.active]:font-semibold">Ticket</Link>
             <Link to="/admin/blog" className="hover:text-amber [&.active]:text-amber [&.active]:font-semibold">Blog</Link>
           </nav>
         </div>
