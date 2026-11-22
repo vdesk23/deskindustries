@@ -16,6 +16,7 @@ const STATIC_ROUTES: SitemapEntry[] = [
   { path: "/blog/desk-industries-desution-partnership", lastmod: "2026-11-13", changefreq: "monthly", priority: "0.6" },
   { path: "/servizi", changefreq: "monthly", priority: "0.8" },
   { path: "/servizi/productos/a", lastmod: "2026-11-18", changefreq: "monthly", priority: "0.8" },
+  { path: "/servizi/agenz-ai/a", lastmod: "2026-11-22", changefreq: "monthly", priority: "0.8" },
   { path: "/servizi/click-up/a", lastmod: "2026-11-22", changefreq: "monthly", priority: "0.8" },
   { path: "/servizi/digital-kit/a", lastmod: "2026-11-22", changefreq: "monthly", priority: "0.8" },
   { path: "/servizi/ecom-breakdown/a", lastmod: "2026-11-18", changefreq: "monthly", priority: "0.8" },
