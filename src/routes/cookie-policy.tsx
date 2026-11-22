@@ -2,7 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/cookie-policy")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://www.deskindustries.com/cookie-policy" }],
     meta: [
+      { property: "og:url", content: "https://www.deskindustries.com/cookie-policy" },
       { title: "Cookie Policy — Desk Industries" },
       { name: "description", content: "Quali cookie e strumenti di misurazione usa il sito Desk Industries e come gestire le tue preferenze." },
       { property: "og:title", content: "Cookie Policy — Desk Industries" },

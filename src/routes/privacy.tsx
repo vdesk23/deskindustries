@@ -2,7 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/privacy")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://www.deskindustries.com/privacy" }],
     meta: [
+      { property: "og:url", content: "https://www.deskindustries.com/privacy" },
       { title: "Privacy Policy — Desk Industries" },
       {
         name: "description",

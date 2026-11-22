@@ -2,7 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/termini")({
   head: () => ({
+    links: [{ rel: "canonical", href: "https://www.deskindustries.com/termini" }],
     meta: [
+      { property: "og:url", content: "https://www.deskindustries.com/termini" },
       { title: "Termini e Condizioni — Desk Industries" },
       {
         name: "description",

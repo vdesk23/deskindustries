@@ -6,7 +6,9 @@ import { listPublishedPosts } from "@/lib/blog.functions";
 export const Route = createFileRoute("/blog/")({
   loader: () => listPublishedPosts(),
   head: () => ({
+    links: [{ rel: "canonical", href: "https://www.deskindustries.com/blog" }],
     meta: [
+      { property: "og:url", content: "https://www.deskindustries.com/blog" },
       { title: "Blog — Desk Industries" },
       {
         name: "description",

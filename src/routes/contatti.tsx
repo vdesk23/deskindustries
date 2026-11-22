@@ -36,7 +36,9 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/contatti")({
   beforeLoad: draftBeforeLoad,
   head: () => ({
+    links: [{ rel: "canonical", href: "https://www.deskindustries.com/contatti" }],
     meta: [
+      { property: "og:url", content: "https://www.deskindustries.com/contatti" },
       { title: "Contatti — Richiedi una proposta su misura | Desk Industries" },
       {
         name: "description",
