@@ -18,6 +18,13 @@ serve(async (req) => {
       });
     }
 
+    const ALLOWED = new Set(["follia_monthly_19", "follia_ticket_50", "seo_optimizer_starter", "seo_optimizer_pro", "seo_optimizer_extra_article"]);
+    if (!ALLOWED.has(priceId) || (environment && environment !== "sandbox" && environment !== "live")) {
+      return new Response(JSON.stringify({ error: "Invalid priceId" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
     const env = (environment || "sandbox") as StripeEnv;
     const stripe = createStripeClient(env);
 

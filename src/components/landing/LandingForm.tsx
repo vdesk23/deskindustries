@@ -30,6 +30,7 @@ export function LandingForm({ line, lineLabel, variant, questions, submitLabel =
   const [slot, setSlot] = useState("");
   const [notes, setNotes] = useState("");
   const [contactId, setContactId] = useState<string>();
+  const [contactToken, setContactToken] = useState<string>();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const started = useRef(false);
@@ -67,12 +68,12 @@ export function LandingForm({ line, lineLabel, variant, questions, submitLabel =
   const submit1 = async () => {
     let utm = {};
     try { utm = JSON.parse(sessionStorage.getItem(UTM_KEY) || "{}"); } catch { /* none */ }
-    const r = await post({ action: "contact", line, variant, contactId, ...c, privacy, utm });
-    if (r?.contactId) { setContactId(r.contactId); setStep(2); }
+    const r = await post({ action: "contact", line, variant, contactId, contactToken, ...c, privacy, utm });
+    if (r?.contactId) { setContactId(r.contactId); setContactToken(r.contactToken); setStep(2); }
   };
 
   const submit3 = async () => {
-    const r = await post({ action: "request", line, contactId, answers, preferredSlot: slot, notes });
+    const r = await post({ action: "request", line, contactId, contactToken, answers, preferredSlot: slot, notes });
     if (r?.ok) {
       done.current = true;
       trackPixel("Lead", { content_name: lineLabel });

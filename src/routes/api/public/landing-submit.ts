@@ -11,6 +11,7 @@ const contactSchema = z.object({
   line: z.enum(lineIds),
   variant: z.enum(["a", "b"]).optional(),
   contactId: z.string().uuid().optional(),
+  contactToken: z.string().max(128).optional(),
   firstName: z.string().trim().min(2).max(60),
   lastName: z.string().trim().min(2).max(60),
   phone: z.string().trim().min(6).max(30),
@@ -23,10 +24,17 @@ const requestSchema = z.object({
   action: z.literal("request"),
   line: z.enum(lineIds),
   contactId: z.string().uuid(),
+  contactToken: z.string().max(128),
   answers: z.record(z.string().max(60), z.string().max(200)),
   preferredSlot: z.string().trim().max(120).optional().default(""),
   notes: z.string().trim().max(1000).optional().default(""),
 });
+
+async function signContact(id: string, secret: string) {
+  const k = await crypto.subtle.importKey("raw", new TextEncoder().encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const sig = await crypto.subtle.sign("HMAC", k, new TextEncoder().encode(`landing-contact:${id}`));
+  return Array.from(new Uint8Array(sig)).map((b) => b.toString(16).padStart(2, "0")).join("");
+}
 
 export const Route = createFileRoute("/api/public/landing-submit")({
   server: {
@@ -47,6 +55,7 @@ export const Route = createFileRoute("/api/public/landing-submit")({
           const d = p.data;
           const row = { line: d.line, variant: d.variant ?? null, first_name: d.firstName, last_name: d.lastName, phone: d.phone, email: d.email, utm: d.utm };
           let id = d.contactId;
+          if (id && (!d.contactToken || d.contactToken !== (await signContact(id, key)))) id = undefined;
           if (id) {
             const { data, error } = await db.from("landing_contacts").update(row).eq("id", id).eq("line", d.line).select("id").maybeSingle();
             if (error || !data) id = undefined;
@@ -59,13 +68,16 @@ export const Route = createFileRoute("/api/public/landing-submit")({
           await enqueueTemplate(db, "landing-lead-staff", "master@deskindustries.com",
             { stage: "contact", line: d.line, variant: d.variant, firstName: d.firstName, lastName: d.lastName, email: d.email, phone: d.phone, utm: d.utm },
             `landing-contact-${id}-${d.email.toLowerCase()}`).catch(() => null);
-          return Response.json({ contactId: id });
+          return Response.json({ contactId: id, contactToken: await signContact(id, key) });
         }
 
         if (action === "request") {
           const p = requestSchema.safeParse(body);
           if (!p.success) return Response.json({ error: "Controlla i dati inseriti" }, { status: 400 });
           const d = p.data;
+          if (d.contactToken !== (await signContact(d.contactId, key))) {
+            return Response.json({ error: "Contatto non trovato, ricompila il primo step" }, { status: 404 });
+          }
           const { data: c } = await db.from("landing_contacts").select("*").eq("id", d.contactId).eq("line", d.line).maybeSingle();
           if (!c) return Response.json({ error: "Contatto non trovato, ricompila il primo step" }, { status: 404 });
           const { data: r, error } = await db.from("landing_requests")

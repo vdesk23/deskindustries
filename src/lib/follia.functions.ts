@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { createClient } from "@supabase/supabase-js";
 import { TEMPLATES } from "@/lib/email-templates/registry";
 import { render } from "@react-email/components";
@@ -410,6 +411,7 @@ async function callAiPrefill(payload: {
 }
 
 export const prefillFolliaFromUrls = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => prefillSchema.parse(input))
   .handler(async ({ data }) => {
     const oldSiteUrl = data.oldSiteUrl?.trim() || "";

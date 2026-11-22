@@ -6,6 +6,20 @@ import { render } from "@react-email/components";
 import * as React from "react";
 import { createClient } from "@supabase/supabase-js";
 
+// Returns the caller's VERIFIED email from auth (never the user-editable
+// profile row). Null when the email is not confirmed.
+async function getVerifiedEmail(userId: string): Promise<string | null> {
+  const admin = getAdminClient();
+  const { data } = await admin.auth.admin.getUserById(userId);
+  const u = data?.user;
+  if (!u?.email || !u.email_confirmed_at) return null;
+  return u.email.toLowerCase().trim();
+}
+
+function escapeLike(v: string) {
+  return v.replace(/[\\%_]/g, (c) => "\\" + c);
+}
+
 export const listMyFolliaSites = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
@@ -17,18 +31,13 @@ export const listMyFolliaSites = createServerFn({ method: "GET" })
     // link email con ?siteId=.
     try {
       const admin = getAdminClient();
-      const { data: profile } = await admin
-        .from("profiles")
-        .select("email")
-        .eq("user_id", userId)
-        .maybeSingle();
-      const email = (profile?.email || "").toLowerCase().trim();
+      const email = await getVerifiedEmail(userId);
       if (email) {
         await admin
           .from("follia_sites")
           .update({ user_id: userId, claimed_at: new Date().toISOString() })
           .is("user_id", null)
-          .ilike("lead_email", email);
+          .ilike("lead_email", escapeLike(email));
       }
     } catch (e) {
       console.error("auto-claim follia sites failed", e);
@@ -53,16 +62,16 @@ export const getMyFolliaSite = createServerFn({ method: "POST" })
     // Questo evita problemi di RLS quando l'utente è admin oppure sta
     // rivendicando il sito tramite lead_email.
     const admin = getAdminClient();
-    const [{ data: site, error: siteErr }, { data: profile }, { data: role }] = await Promise.all([
+    const [{ data: site, error: siteErr }, verifiedEmail, { data: role }] = await Promise.all([
       admin.from("follia_sites").select(siteSelect).eq("id", data.siteId).maybeSingle(),
-      admin.from("profiles").select("email").eq("user_id", userId).maybeSingle(),
+      getVerifiedEmail(userId),
       admin.from("user_roles").select("role").eq("user_id", userId).eq("role", "admin").maybeSingle(),
     ]);
     if (siteErr) throw new Error(siteErr.message);
     if (!site) throw new Error("Sito non trovato");
 
     const isAdmin = !!role;
-    const email = (profile?.email || context.claims?.email || "").toLowerCase().trim();
+    const email = verifiedEmail || "";
     const isOwner = site.user_id === userId;
     const canClaim = !site.user_id && email && String(site.lead_email).toLowerCase() === email;
 
@@ -215,7 +224,7 @@ const ticketV2Schema = z.object({
     .array(
       z.object({
         name: z.string().min(1).max(255),
-        path: z.string().min(1).max(500),
+        path: z.string().min(1).max(500).regex(/^[0-9a-f-]{36}\/[^/]+$/, "Percorso non valido"),
         size: z.number().int().min(0).max(10 * 1024 * 1024),
       }),
     )
@@ -278,11 +287,13 @@ async function enqueueRenderedEmail(args: {
 
 async function signTicketAttachments(
   attachments: Array<{ name: string; path: string; size?: number }>,
+  userId: string,
 ) {
   if (!attachments.length) return [];
   const admin = getAdminClient();
   const signed: Array<{ name: string; url: string; size?: number }> = [];
   for (const a of attachments) {
+    if (!a.path.startsWith(`${userId}/`) || a.path.includes("..")) continue;
     const { data } = await admin.storage
       .from("follia-ticket-attachments")
       .createSignedUrl(a.path, 60 * 60 * 24 * 7);
@@ -359,7 +370,7 @@ export const createFolliaTicketV2 = createServerFn({ method: "POST" })
 
     // If assistance included, send emails immediately. Otherwise, wait for payment webhook.
     if (!requiresPayment) {
-      const signed = await signTicketAttachments(data.attachments);
+      const signed = await signTicketAttachments(data.attachments, userId);
       const adminUrl = `${APP_BASE_URL}/account/sites/${data.siteId}`;
       // Send to each staff address separately with distinct idempotency keys
       for (const staffEmail of STAFF_EMAILS) {
@@ -455,16 +466,20 @@ export const claimFolliaSite = createServerFn({ method: "POST" })
     const admin = getAdminClient();
     const { data: site, error: selErr } = await admin
       .from("follia_sites")
-      .select("id, user_id")
+      .select("id, user_id, lead_email")
       .eq("id", data.siteId)
       .maybeSingle();
     if (selErr) throw new Error(selErr.message);
     if (!site) return { ok: false as const, reason: "not_found" as const };
+    const verifiedEmail = await getVerifiedEmail(userId);
     if (site.user_id && site.user_id !== userId) {
       return { ok: false as const, reason: "owned_by_other" as const };
     }
     if (site.user_id === userId) {
       return { ok: true as const, alreadyClaimed: true };
+    }
+    if (!verifiedEmail || String(site.lead_email).toLowerCase().trim() !== verifiedEmail) {
+      return { ok: false as const, reason: "owned_by_other" as const };
     }
     const { error: updErr } = await admin
       .from("follia_sites")

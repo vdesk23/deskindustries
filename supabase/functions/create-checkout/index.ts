@@ -119,7 +119,7 @@ serve(async (req) => {
     }
     const isRecurring = primaryPrice.type === "recurring";
 
-    const lineItems = [{ price: primaryPrice.id, quantity: quantity || 1 }];
+    const lineItems = [{ price: primaryPrice.id, quantity: 1 }];
     for (const extra of allLookupKeys.slice(1)) {
       const p = byLookup.get(extra);
       if (p) lineItems.push({ price: p.id, quantity: 1 });

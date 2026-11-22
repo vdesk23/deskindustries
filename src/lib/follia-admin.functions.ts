@@ -59,8 +59,9 @@ export const adminListSites = createServerFn({ method: "POST" })
     if (data.requestStatus) q = q.eq("request_status", data.requestStatus);
     if (data.claimed === "yes") q = q.not("user_id", "is", null);
     if (data.claimed === "no") q = q.is("user_id", null);
-    if (data.search) {
-      const s = `%${data.search}%`;
+    if (data.search && data.search.replace(/[^\p{L}\p{N}@.\- ]/gu, "").trim()) {
+      const clean = data.search.replace(/[^\p{L}\p{N}@.\- ]/gu, "").trim();
+      const s = `%${clean}%`;
       q = q.or(`subdomain.ilike.${s},lead_email.ilike.${s},custom_domain.ilike.${s}`);
     }
     const { data: sites, error } = await q.limit(500);

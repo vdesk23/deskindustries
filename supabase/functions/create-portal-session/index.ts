@@ -12,6 +12,18 @@ const supabase = createClient(
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
 );
 
+const ALLOWED_RETURN_HOSTS = new Set([
+  "deskindustries.com", "www.deskindustries.com", "deskinc.app", "www.deskinc.app",
+  "deskindustries.lovable.app", "localhost",
+]);
+function isAllowedReturnUrl(u: unknown): u is string {
+  if (typeof u !== "string") return false;
+  try {
+    const url = new URL(u.replace("{CHECKOUT_SESSION_ID}", "x"));
+    return ALLOWED_RETURN_HOSTS.has(url.hostname) || url.hostname.endsWith(".lovable.app");
+  } catch { return false; }
+}
+
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
@@ -55,7 +67,7 @@ serve(async (req) => {
     const stripe = createStripeClient(env);
     const portal = await stripe.billingPortal.sessions.create({
       customer: sub.stripe_customer_id,
-      ...(returnUrl && { return_url: returnUrl }),
+      ...(isAllowedReturnUrl(returnUrl) && { return_url: returnUrl }),
     });
 
     return new Response(JSON.stringify({ url: portal.url }), {

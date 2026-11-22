@@ -134,6 +134,10 @@ function FolliaLanding() {
       setStep("form");
       return;
     }
+    if (!user) {
+      setPrefillError("Accedi per usare la compilazione automatica, oppure continua e compila a mano.");
+      return;
+    }
     setPrefillLoading(true);
     setPrefillAttempted(true);
     try {
