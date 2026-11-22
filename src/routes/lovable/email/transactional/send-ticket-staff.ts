@@ -1,8 +1,5 @@
-import * as React from "react";
-import { render } from "@react-email/components";
 import { createClient } from "@supabase/supabase-js";
 import { createFileRoute } from "@tanstack/react-router";
-import { TEMPLATES } from "@/lib/email-templates/registry";
 
 const STAFF_EMAILS = ["master@deskindustries.com", "web@deskindustries.com"];
 const APP_BASE_URL = "https://deskindustries.com";
@@ -21,36 +18,9 @@ async function enqueue(
   templateData: Record<string, unknown>,
   idempotencyKey: string,
 ) {
-  const tpl = TEMPLATES[templateName];
-  if (!tpl) return;
-  const element = React.createElement(tpl.component, templateData as Record<string, unknown>);
-  const html = await render(element);
-  const text = await render(element, { plainText: true });
-  const subject =
-    typeof tpl.subject === "function" ? tpl.subject(templateData as Record<string, unknown>) : tpl.subject;
-  const messageId = crypto.randomUUID();
-  await admin.from("email_send_log").insert({
-    message_id: messageId,
-    template_name: templateName,
-    recipient_email: to,
-    status: "pending",
-  });
-  await admin.rpc("enqueue_email", {
-    queue_name: "transactional_emails",
-    payload: {
-      message_id: messageId,
-      to,
-      from: "Foll.IA <noreply@deskindustries.com>",
-      sender_domain: "notify.deskindustries.com",
-      subject,
-      html,
-      text,
-      purpose: "transactional",
-      label: templateName,
-      idempotency_key: idempotencyKey,
-      queued_at: new Date().toISOString(),
-    },
-  });
+  const { enqueueTemplate } = await import("@/lib/email-enqueue.server");
+  const res = await enqueueTemplate(admin, templateName, to, templateData as Record<string, any>, idempotencyKey);
+  if (!res.ok) console.error("email send failed", res.error);
 }
 
 export const Route = createFileRoute("/lovable/email/transactional/send-ticket-staff")({

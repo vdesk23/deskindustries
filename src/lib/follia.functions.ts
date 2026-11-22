@@ -2,9 +2,6 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { createClient } from "@supabase/supabase-js";
-import { TEMPLATES } from "@/lib/email-templates/registry";
-import { render } from "@react-email/components";
-import * as React from "react";
 
 const RESERVED_SUBDOMAINS = new Set([
   "www", "api", "app", "admin", "account", "auth", "login", "signup",
@@ -50,31 +47,6 @@ function getAdmin(): any {
   return createClient(url, key);
 }
 
-function generateToken(): string {
-  const bytes = new Uint8Array(32);
-  crypto.getRandomValues(bytes);
-  return Array.from(bytes).map((b) => b.toString(16).padStart(2, "0")).join("");
-}
-
-async function getUnsubscribeToken(admin: any, email: string): Promise<string> {
-  const normalized = email.toLowerCase();
-  const { data: existing } = await admin
-    .from("email_unsubscribe_tokens")
-    .select("token, used_at")
-    .eq("email", normalized)
-    .maybeSingle();
-  if (existing && !existing.used_at) return existing.token;
-  const token = generateToken();
-  await admin
-    .from("email_unsubscribe_tokens")
-    .upsert({ token, email: normalized }, { onConflict: "email", ignoreDuplicates: true });
-  const { data: stored } = await admin
-    .from("email_unsubscribe_tokens")
-    .select("token")
-    .eq("email", normalized)
-    .maybeSingle();
-  return stored?.token ?? token;
-}
 
 async function enqueueEmail(args: {
   templateName: string;
@@ -82,40 +54,9 @@ async function enqueueEmail(args: {
   templateData: Record<string, unknown>;
   idempotencyKey: string;
 }) {
-  const tpl = TEMPLATES[args.templateName];
-  if (!tpl) throw new Error(`Template ${args.templateName} not found`);
-  const element = React.createElement(tpl.component, args.templateData as Record<string, unknown>);
-  const html = await render(element);
-  const plainText = await render(element, { plainText: true });
-  const subject = typeof tpl.subject === "function" ? tpl.subject(args.templateData as Record<string, unknown>) : tpl.subject;
-
-  const admin = getAdmin();
-  const messageId = crypto.randomUUID();
-  const unsubscribeToken = await getUnsubscribeToken(admin, args.to);
-  await admin.from("email_send_log").insert({
-    message_id: messageId,
-    template_name: args.templateName,
-    recipient_email: args.to,
-    status: "pending",
-  });
-  const { error } = await admin.rpc("enqueue_email", {
-    queue_name: "transactional_emails",
-    payload: {
-      message_id: messageId,
-      to: args.to,
-      from: "Foll.IA <noreply@deskindustries.it>",
-      sender_domain: "notify.deskindustries.it",
-      subject,
-      html,
-      text: plainText,
-      purpose: "transactional",
-      label: args.templateName,
-      idempotency_key: args.idempotencyKey,
-      unsubscribe_token: unsubscribeToken,
-      queued_at: new Date().toISOString(),
-    },
-  });
-  if (error) console.error("enqueue_email failed", error);
+  const { enqueueTemplate } = await import("@/lib/email-enqueue.server");
+  const res = await enqueueTemplate(getAdmin(), args.templateName, args.to, args.templateData as Record<string, any>, args.idempotencyKey);
+  if (!res.ok) console.error("email send failed", res.error);
 }
 
 function buildLovablePrompt(d: z.infer<typeof draftSchema>): string {

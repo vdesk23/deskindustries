@@ -8,7 +8,12 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock("@tanstack/react-router", () => ({ createFileRoute: () => (config: unknown) => config }));
-vi.mock("@react-email/components", () => ({ render: vi.fn().mockResolvedValue("portfolio email") }));
+vi.mock("./email-templates/send-email", () => ({
+  sendTemplateEmail: vi.fn(async (_name: string, to: string, opts: { idempotencyKey?: string }) => {
+    mocks.queued.push({ payload: { to, idempotency_key: opts.idempotencyKey } });
+    return { sent: true };
+  }),
+}));
 vi.mock("./email-templates/registry", () => ({ TEMPLATES: { "lead-portfolio": { component: () => null, subject: "Portfolio" } } }));
 vi.mock("./consus.server", () => ({
   verifyContinuation: vi.fn().mockResolvedValue("existing-lead-id"),

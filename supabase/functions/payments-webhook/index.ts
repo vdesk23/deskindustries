@@ -195,7 +195,7 @@ async function handleCheckoutCompleted(session: any, env: StripeEnv) {
   // Send welcome email if user does not yet exist
   if (!existingUser) {
     try {
-      await fetch(`${APP_URL}/lovable/email/transactional/send`, {
+      const welcomeInit = {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -212,7 +212,12 @@ async function handleCheckoutCompleted(session: any, env: StripeEnv) {
             mode: session.mode,
           },
         }),
-      });
+      };
+      const welcomeRes = await fetch(`${APP_URL}/lovable/email/transactional/welcome-post-purchase`, welcomeInit);
+      if (welcomeRes.status === 404) {
+        // Older published build: fall back to the previous send route.
+        await fetch(`${APP_URL}/lovable/email/transactional/send`, welcomeInit);
+      }
     } catch (e) {
       console.error("Failed to send welcome email", e);
     }

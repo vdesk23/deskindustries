@@ -1,9 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
-import { TEMPLATES } from "@/lib/email-templates/registry";
-import { render } from "@react-email/components";
-import * as React from "react";
 import { createClient } from "@supabase/supabase-js";
 
 // Returns the caller's VERIFIED email from auth (never the user-editable
@@ -248,41 +245,9 @@ async function enqueueRenderedEmail(args: {
   templateData: Record<string, unknown>;
   idempotencyKey: string;
 }) {
-  const tpl = TEMPLATES[args.templateName];
-  if (!tpl) throw new Error(`Template ${args.templateName} not found`);
-  const element = React.createElement(tpl.component, args.templateData as Record<string, unknown>);
-  const html = await render(element);
-  const plainText = await render(element, { plainText: true });
-  const subject =
-    typeof tpl.subject === "function" ? tpl.subject(args.templateData as Record<string, unknown>) : tpl.subject;
-
-  const admin = getAdminClient();
-  const messageId = crypto.randomUUID();
-
-  await admin.from("email_send_log").insert({
-    message_id: messageId,
-    template_name: args.templateName,
-    recipient_email: args.to,
-    status: "pending",
-  });
-
-  const { error } = await admin.rpc("enqueue_email", {
-    queue_name: "transactional_emails",
-    payload: {
-      message_id: messageId,
-      to: args.to,
-      from: "Foll.IA <noreply@deskindustries.com>",
-      sender_domain: "notify.deskindustries.com",
-      subject,
-      html,
-      text: plainText,
-      purpose: "transactional",
-      label: args.templateName,
-      idempotency_key: args.idempotencyKey,
-      queued_at: new Date().toISOString(),
-    },
-  });
-  if (error) console.error("enqueue_email failed", error);
+  const { enqueueTemplate } = await import("@/lib/email-enqueue.server");
+  const res = await enqueueTemplate(getAdminClient(), args.templateName, args.to, args.templateData as Record<string, any>, args.idempotencyKey);
+  if (!res.ok) console.error("email send failed", res.error);
 }
 
 async function signTicketAttachments(

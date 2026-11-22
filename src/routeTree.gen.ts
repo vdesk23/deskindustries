@@ -32,7 +32,6 @@ import { Route as AdminTicketsRouteImport } from './routes/admin.tickets'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as CheckoutReturnRouteImport } from './routes/checkout.return'
-import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as ServiziIndexRouteImport } from './routes/servizi.index'
 import { Route as SettoriIndexRouteImport } from './routes/settori.index'
 import { Route as SettoriSlugRouteImport } from './routes/settori.$slug'
@@ -45,7 +44,7 @@ import { Route as AdminSitesSiteIdRouteImport } from './routes/admin.sites.$site
 import { Route as ApiPublicContentPlanSubmitRouteImport } from './routes/api/public/content-plan-submit'
 import { Route as ApiPublicLandingSubmitRouteImport } from './routes/api/public/landing-submit'
 import { Route as ApiPublicLeadSubmitRouteImport } from './routes/api/public/lead-submit'
-import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
+import { Route as LovableEmailEventsRouteImport } from './routes/lovable/email/events'
 import { Route as ServiziAgenzAiIndexRouteImport } from './routes/servizi.agenz-ai.index'
 import { Route as ServiziAgenzAiARouteImport } from './routes/servizi.agenz-ai.a'
 import { Route as ServiziAgenzAiBRouteImport } from './routes/servizi.agenz-ai.b'
@@ -68,10 +67,9 @@ import { Route as ServiziProductosIndexRouteImport } from './routes/servizi.prod
 import { Route as ServiziProductosARouteImport } from './routes/servizi.productos.a'
 import { Route as ServiziProductosBRouteImport } from './routes/servizi.productos.b'
 import { Route as AccountTicketsTicketIdPayRouteImport } from './routes/account.tickets.$ticketId.pay'
-import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
-import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalSendTicketStaffRouteImport } from './routes/lovable/email/transactional/send-ticket-staff'
+import { Route as LovableEmailTransactionalWelcomePostPurchaseRouteImport } from './routes/lovable/email/transactional/welcome-post-purchase'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -188,11 +186,6 @@ const CheckoutReturnRoute = CheckoutReturnRouteImport.update({
   path: '/checkout/return',
   getParentRoute: () => rootRouteImport,
 } as any)
-const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
-  id: '/email/unsubscribe',
-  path: '/email/unsubscribe',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ServiziIndexRoute = ServiziIndexRouteImport.update({
   id: '/servizi/',
   path: '/servizi/',
@@ -254,9 +247,9 @@ const ApiPublicLeadSubmitRoute = ApiPublicLeadSubmitRouteImport.update({
   path: '/api/public/lead-submit',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
-  id: '/lovable/email/suppression',
-  path: '/lovable/email/suppression',
+const LovableEmailEventsRoute = LovableEmailEventsRouteImport.update({
+  id: '/lovable/email/events',
+  path: '/lovable/email/events',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServiziAgenzAiIndexRoute = ServiziAgenzAiIndexRouteImport.update({
@@ -371,28 +364,22 @@ const AccountTicketsTicketIdPayRoute =
     path: '/tickets/$ticketId/pay',
     getParentRoute: () => AccountRoute,
   } as any)
-const LovableEmailQueueProcessRoute =
-  LovableEmailQueueProcessRouteImport.update({
-    id: '/lovable/email/queue/process',
-    path: '/lovable/email/queue/process',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const LovableEmailTransactionalPreviewRoute =
   LovableEmailTransactionalPreviewRouteImport.update({
     id: '/lovable/email/transactional/preview',
     path: '/lovable/email/transactional/preview',
     getParentRoute: () => rootRouteImport,
   } as any)
-const LovableEmailTransactionalSendRoute =
-  LovableEmailTransactionalSendRouteImport.update({
-    id: '/lovable/email/transactional/send',
-    path: '/lovable/email/transactional/send',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const LovableEmailTransactionalSendTicketStaffRoute =
   LovableEmailTransactionalSendTicketStaffRouteImport.update({
     id: '/lovable/email/transactional/send-ticket-staff',
     path: '/lovable/email/transactional/send-ticket-staff',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const LovableEmailTransactionalWelcomePostPurchaseRoute =
+  LovableEmailTransactionalWelcomePostPurchaseRouteImport.update({
+    id: '/lovable/email/transactional/welcome-post-purchase',
+    path: '/lovable/email/transactional/welcome-post-purchase',
     getParentRoute: () => rootRouteImport,
   } as any)
 
@@ -418,7 +405,6 @@ export interface FileRoutesByFullPath {
   '/admin/tickets': typeof AdminTicketsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/checkout/return': typeof CheckoutReturnRoute
-  '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
@@ -432,7 +418,7 @@ export interface FileRoutesByFullPath {
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/landing-submit': typeof ApiPublicLandingSubmitRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
-  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/lovable/email/events': typeof LovableEmailEventsRoute
   '/servizi/agenz-ai/a': typeof ServiziAgenzAiARoute
   '/servizi/agenz-ai/b': typeof ServiziAgenzAiBRoute
   '/servizi/brainding/a': typeof ServiziBraindingARoute
@@ -456,10 +442,9 @@ export interface FileRoutesByFullPath {
   '/servizi/o-commerce/': typeof ServiziOCommerceIndexRoute
   '/servizi/productos/': typeof ServiziProductosIndexRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
-  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
-  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
   '/lovable/email/transactional/send-ticket-staff': typeof LovableEmailTransactionalSendTicketStaffRoute
+  '/lovable/email/transactional/welcome-post-purchase': typeof LovableEmailTransactionalWelcomePostPurchaseRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -482,7 +467,6 @@ export interface FileRoutesByTo {
   '/admin/tickets': typeof AdminTicketsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/checkout/return': typeof CheckoutReturnRoute
-  '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
@@ -496,7 +480,7 @@ export interface FileRoutesByTo {
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/landing-submit': typeof ApiPublicLandingSubmitRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
-  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/lovable/email/events': typeof LovableEmailEventsRoute
   '/servizi/agenz-ai/a': typeof ServiziAgenzAiARoute
   '/servizi/agenz-ai/b': typeof ServiziAgenzAiBRoute
   '/servizi/brainding/a': typeof ServiziBraindingARoute
@@ -520,10 +504,9 @@ export interface FileRoutesByTo {
   '/servizi/o-commerce': typeof ServiziOCommerceIndexRoute
   '/servizi/productos': typeof ServiziProductosIndexRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
-  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
-  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
   '/lovable/email/transactional/send-ticket-staff': typeof LovableEmailTransactionalSendTicketStaffRoute
+  '/lovable/email/transactional/welcome-post-purchase': typeof LovableEmailTransactionalWelcomePostPurchaseRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -548,7 +531,6 @@ export interface FileRoutesById {
   '/admin/tickets': typeof AdminTicketsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/checkout/return': typeof CheckoutReturnRoute
-  '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/settori/$slug': typeof SettoriSlugRoute
   '/tools/ottimizzatore-seo': typeof ToolsOttimizzatoreSeoRoute
   '/tools/piano-contenuti': typeof ToolsPianoContenutiRoute
@@ -562,7 +544,7 @@ export interface FileRoutesById {
   '/api/public/content-plan-submit': typeof ApiPublicContentPlanSubmitRoute
   '/api/public/landing-submit': typeof ApiPublicLandingSubmitRoute
   '/api/public/lead-submit': typeof ApiPublicLeadSubmitRoute
-  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/lovable/email/events': typeof LovableEmailEventsRoute
   '/servizi/agenz-ai/a': typeof ServiziAgenzAiARoute
   '/servizi/agenz-ai/b': typeof ServiziAgenzAiBRoute
   '/servizi/brainding/a': typeof ServiziBraindingARoute
@@ -586,10 +568,9 @@ export interface FileRoutesById {
   '/servizi/o-commerce/': typeof ServiziOCommerceIndexRoute
   '/servizi/productos/': typeof ServiziProductosIndexRoute
   '/account/tickets/$ticketId/pay': typeof AccountTicketsTicketIdPayRoute
-  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
-  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
   '/lovable/email/transactional/send-ticket-staff': typeof LovableEmailTransactionalSendTicketStaffRoute
+  '/lovable/email/transactional/welcome-post-purchase': typeof LovableEmailTransactionalWelcomePostPurchaseRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -615,7 +596,6 @@ export interface FileRouteTypes {
     | '/admin/tickets'
     | '/blog/$slug'
     | '/checkout/return'
-    | '/email/unsubscribe'
     | '/settori/$slug'
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
@@ -629,7 +609,7 @@ export interface FileRouteTypes {
     | '/api/public/content-plan-submit'
     | '/api/public/landing-submit'
     | '/api/public/lead-submit'
-    | '/lovable/email/suppression'
+    | '/lovable/email/events'
     | '/servizi/agenz-ai/a'
     | '/servizi/agenz-ai/b'
     | '/servizi/brainding/a'
@@ -653,10 +633,9 @@ export interface FileRouteTypes {
     | '/servizi/o-commerce/'
     | '/servizi/productos/'
     | '/account/tickets/$ticketId/pay'
-    | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
-    | '/lovable/email/transactional/send'
     | '/lovable/email/transactional/send-ticket-staff'
+    | '/lovable/email/transactional/welcome-post-purchase'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -679,7 +658,6 @@ export interface FileRouteTypes {
     | '/admin/tickets'
     | '/blog/$slug'
     | '/checkout/return'
-    | '/email/unsubscribe'
     | '/settori/$slug'
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
@@ -693,7 +671,7 @@ export interface FileRouteTypes {
     | '/api/public/content-plan-submit'
     | '/api/public/landing-submit'
     | '/api/public/lead-submit'
-    | '/lovable/email/suppression'
+    | '/lovable/email/events'
     | '/servizi/agenz-ai/a'
     | '/servizi/agenz-ai/b'
     | '/servizi/brainding/a'
@@ -717,10 +695,9 @@ export interface FileRouteTypes {
     | '/servizi/o-commerce'
     | '/servizi/productos'
     | '/account/tickets/$ticketId/pay'
-    | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
-    | '/lovable/email/transactional/send'
     | '/lovable/email/transactional/send-ticket-staff'
+    | '/lovable/email/transactional/welcome-post-purchase'
   id:
     | '__root__'
     | '/'
@@ -744,7 +721,6 @@ export interface FileRouteTypes {
     | '/admin/tickets'
     | '/blog/$slug'
     | '/checkout/return'
-    | '/email/unsubscribe'
     | '/settori/$slug'
     | '/tools/ottimizzatore-seo'
     | '/tools/piano-contenuti'
@@ -758,7 +734,7 @@ export interface FileRouteTypes {
     | '/api/public/content-plan-submit'
     | '/api/public/landing-submit'
     | '/api/public/lead-submit'
-    | '/lovable/email/suppression'
+    | '/lovable/email/events'
     | '/servizi/agenz-ai/a'
     | '/servizi/agenz-ai/b'
     | '/servizi/brainding/a'
@@ -782,10 +758,9 @@ export interface FileRouteTypes {
     | '/servizi/o-commerce/'
     | '/servizi/productos/'
     | '/account/tickets/$ticketId/pay'
-    | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
-    | '/lovable/email/transactional/send'
     | '/lovable/email/transactional/send-ticket-staff'
+    | '/lovable/email/transactional/welcome-post-purchase'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -807,7 +782,6 @@ export interface RootRouteChildren {
   UnsubscribeRoute: typeof UnsubscribeRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CheckoutReturnRoute: typeof CheckoutReturnRoute
-  EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   SettoriSlugRoute: typeof SettoriSlugRoute
   ToolsOttimizzatoreSeoRoute: typeof ToolsOttimizzatoreSeoRoute
   ToolsPianoContenutiRoute: typeof ToolsPianoContenutiRoute
@@ -817,7 +791,7 @@ export interface RootRouteChildren {
   ApiPublicContentPlanSubmitRoute: typeof ApiPublicContentPlanSubmitRoute
   ApiPublicLandingSubmitRoute: typeof ApiPublicLandingSubmitRoute
   ApiPublicLeadSubmitRoute: typeof ApiPublicLeadSubmitRoute
-  LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
+  LovableEmailEventsRoute: typeof LovableEmailEventsRoute
   ServiziAgenzAiARoute: typeof ServiziAgenzAiARoute
   ServiziAgenzAiBRoute: typeof ServiziAgenzAiBRoute
   ServiziBraindingARoute: typeof ServiziBraindingARoute
@@ -839,10 +813,9 @@ export interface RootRouteChildren {
   ServiziEcomBreakdownIndexRoute: typeof ServiziEcomBreakdownIndexRoute
   ServiziOCommerceIndexRoute: typeof ServiziOCommerceIndexRoute
   ServiziProductosIndexRoute: typeof ServiziProductosIndexRoute
-  LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
-  LovableEmailTransactionalSendRoute: typeof LovableEmailTransactionalSendRoute
   LovableEmailTransactionalSendTicketStaffRoute: typeof LovableEmailTransactionalSendTicketStaffRoute
+  LovableEmailTransactionalWelcomePostPurchaseRoute: typeof LovableEmailTransactionalWelcomePostPurchaseRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1008,13 +981,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckoutReturnRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/email/unsubscribe': {
-      id: '/email/unsubscribe'
-      path: '/email/unsubscribe'
-      fullPath: '/email/unsubscribe'
-      preLoaderRoute: typeof EmailUnsubscribeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/servizi/': {
       id: '/servizi/'
       path: '/servizi'
@@ -1099,11 +1065,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicLeadSubmitRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/lovable/email/suppression': {
-      id: '/lovable/email/suppression'
-      path: '/lovable/email/suppression'
-      fullPath: '/lovable/email/suppression'
-      preLoaderRoute: typeof LovableEmailSuppressionRouteImport
+    '/lovable/email/events': {
+      id: '/lovable/email/events'
+      path: '/lovable/email/events'
+      fullPath: '/lovable/email/events'
+      preLoaderRoute: typeof LovableEmailEventsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/servizi/agenz-ai/': {
@@ -1260,13 +1226,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountTicketsTicketIdPayRouteImport
       parentRoute: typeof AccountRoute
     }
-    '/lovable/email/queue/process': {
-      id: '/lovable/email/queue/process'
-      path: '/lovable/email/queue/process'
-      fullPath: '/lovable/email/queue/process'
-      preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/lovable/email/transactional/preview': {
       id: '/lovable/email/transactional/preview'
       path: '/lovable/email/transactional/preview'
@@ -1274,18 +1233,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/lovable/email/transactional/send': {
-      id: '/lovable/email/transactional/send'
-      path: '/lovable/email/transactional/send'
-      fullPath: '/lovable/email/transactional/send'
-      preLoaderRoute: typeof LovableEmailTransactionalSendRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/lovable/email/transactional/send-ticket-staff': {
       id: '/lovable/email/transactional/send-ticket-staff'
       path: '/lovable/email/transactional/send-ticket-staff'
       fullPath: '/lovable/email/transactional/send-ticket-staff'
       preLoaderRoute: typeof LovableEmailTransactionalSendTicketStaffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lovable/email/transactional/welcome-post-purchase': {
+      id: '/lovable/email/transactional/welcome-post-purchase'
+      path: '/lovable/email/transactional/welcome-post-purchase'
+      fullPath: '/lovable/email/transactional/welcome-post-purchase'
+      preLoaderRoute: typeof LovableEmailTransactionalWelcomePostPurchaseRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -1365,7 +1324,6 @@ const rootRouteChildren: RootRouteChildren = {
   UnsubscribeRoute: UnsubscribeRoute,
   BlogSlugRoute: BlogSlugRoute,
   CheckoutReturnRoute: CheckoutReturnRoute,
-  EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   SettoriSlugRoute: SettoriSlugRoute,
   ToolsOttimizzatoreSeoRoute: ToolsOttimizzatoreSeoRoute,
   ToolsPianoContenutiRoute: ToolsPianoContenutiRoute,
@@ -1375,7 +1333,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicContentPlanSubmitRoute: ApiPublicContentPlanSubmitRoute,
   ApiPublicLandingSubmitRoute: ApiPublicLandingSubmitRoute,
   ApiPublicLeadSubmitRoute: ApiPublicLeadSubmitRoute,
-  LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
+  LovableEmailEventsRoute: LovableEmailEventsRoute,
   ServiziAgenzAiARoute: ServiziAgenzAiARoute,
   ServiziAgenzAiBRoute: ServiziAgenzAiBRoute,
   ServiziBraindingARoute: ServiziBraindingARoute,
@@ -1397,11 +1355,11 @@ const rootRouteChildren: RootRouteChildren = {
   ServiziEcomBreakdownIndexRoute: ServiziEcomBreakdownIndexRoute,
   ServiziOCommerceIndexRoute: ServiziOCommerceIndexRoute,
   ServiziProductosIndexRoute: ServiziProductosIndexRoute,
-  LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
-  LovableEmailTransactionalSendRoute: LovableEmailTransactionalSendRoute,
   LovableEmailTransactionalSendTicketStaffRoute:
     LovableEmailTransactionalSendTicketStaffRoute,
+  LovableEmailTransactionalWelcomePostPurchaseRoute:
+    LovableEmailTransactionalWelcomePostPurchaseRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
